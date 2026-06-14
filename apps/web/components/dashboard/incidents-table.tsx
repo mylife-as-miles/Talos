@@ -1,5 +1,8 @@
 import Link from "next/link";
 import { ChevronRight, Siren } from "lucide-react";
+import { EmptyState } from "@/components/empty-state";
+import { formatRelativeTime } from "@/lib/dashboard-stats";
+import type { TalosTriageReport } from "@/lib/types";
 
 function StatusBadge({ children, tone }: { children: React.ReactNode; tone: "green" | "cyan" | "purple" | "red" | "amber" | "blue" }) {
   const tones = {

@@ -16,7 +16,8 @@ export default async function ReportsPage() {
       {reports.length ? (
         <div className="talos-fade-up talos-stagger-2 mt-6 grid gap-4">
           {reports.map((report, index) => (
-            <Card key={report.incidentId} className="talos-row-enter overflow-hidden" style={{ animationDelay: `${index * 45}ms` }}>
+            <div key={report.incidentId} className="talos-row-enter" style={{ animationDelay: `${index * 45}ms` }}>
+              <Card className="overflow-hidden">
               <CardHeader title={report.incidentId} action={<Badge tone={report.priority === "critical" ? "critical" : "warn"}>{report.priority}</Badge>} />
               <div className="p-5">
                 <p className="text-sm leading-6 text-slate-300">{report.summary}</p>
@@ -29,6 +30,7 @@ export default async function ReportsPage() {
                 </div>
               </div>
             </Card>
+            </div>
           ))}
         </div>
       ) : (

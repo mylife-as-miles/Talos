@@ -150,15 +150,62 @@ pre {
   animation: talos-pulse-glow 2.8s var(--ease-in-out) infinite;
 }
 
+.talos-card-hover {
+  transition: border-color 180ms var(--ease-out), box-shadow 180ms var(--ease-out), transform 180ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .talos-card-hover:hover {
+    border-color: rgba(34, 217, 243, 0.22);
+    box-shadow: 0 0 32px rgba(34, 217, 243, 0.06);
+  }
+}
+
+.talos-empty {
+  position: relative;
+}
+
+.talos-empty::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(120deg, transparent, rgba(34, 217, 243, 0.35), transparent);
+  background-size: 200% 100%;
+  animation: talos-shimmer 3s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+@keyframes talos-sparkline-draw {
+  from {
+    stroke-dashoffset: 240;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.talos-sparkline path {
+  stroke-dasharray: 240;
+  animation: talos-sparkline-draw 900ms var(--ease-out) forwards;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .talos-fade-up,
   .talos-row-enter,
   .talos-bar-segment,
   .talos-empty-icon,
   .talos-skeleton,
-  .talos-spinner {
+  .talos-spinner,
+  .talos-empty::before,
+  .talos-sparkline path {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
+    stroke-dashoffset: 0 !important;
   }
 }

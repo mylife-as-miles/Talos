@@ -16,19 +16,19 @@ export default async function ReportsPage() {
         <div className="talos-fade-up talos-stagger-2 mt-6 grid gap-4">
           {reports.map((report, index) => (
             <div key={report.incidentId} className="talos-row-enter" style={{ animationDelay: `${index * 45}ms` }}>
-              <Card className="overflow-hidden">
-              <CardHeader title={report.incidentId} action={<Badge tone={report.priority === "critical" ? "critical" : "warn"}>{report.priority}</Badge>} />
-              <div className="p-5">
-                <p className="text-sm leading-6 text-slate-300">{report.summary}</p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  <Badge tone="cyan">Mode: {report.splunk.mode.toUpperCase()}</Badge>
-                  <Badge tone="ok">{report.confidence}% confidence</Badge>
-                  <Link className="text-sm font-medium text-talos-cyan transition hover:text-white" href={`/incidents/${report.incidentId}`}>
-                    Open incident
-                  </Link>
+              <Card className="talos-card-hover overflow-hidden">
+                <CardHeader title={report.incidentId} action={<Badge tone={report.priority === "critical" ? "critical" : "warn"}>{report.priority}</Badge>} />
+                <div className="p-5">
+                  <p className="text-sm leading-6 text-slate-300">{report.summary}</p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    <Badge tone="cyan">Mode: {report.splunk.mode.toUpperCase()}</Badge>
+                    <Badge tone="ok">{report.confidence}% confidence</Badge>
+                    <Link className="text-sm font-medium text-talos-cyan transition hover:text-white" href={`/incidents/${report.incidentId}`}>
+                      Open incident
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            </Card>
+              </Card>
             </div>
           ))}
         </div>

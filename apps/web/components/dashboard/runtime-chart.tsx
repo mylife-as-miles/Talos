@@ -36,7 +36,7 @@ export function RuntimeChart({ bars, empty }: { bars: IntakeBar[]; empty?: boole
                     key={segment.key}
                     style={{
                       height: `${segmentHeight(segment.value, maxTotal)}px`,
-                      animationDelay: `${index * 18 + segmentIndex * 8}ms`
+                      animationDelay: `${index * 8 + segmentIndex * 4}ms`
                     }}
                     className={`talos-bar-segment ${segment.className}`}
                   />

@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { BarChart3 } from "lucide-react";
-import { AppShell } from "@/components/app-shell";
 import { EmptyState } from "@/components/empty-state";
 import { PageHeader } from "@/components/page-header";
 import { Badge, Card, CardHeader } from "@/components/ui";
@@ -10,7 +9,7 @@ export default async function ReportsPage() {
   const reports = await listReports();
 
   return (
-    <AppShell>
+    <>
       <PageHeader title="Reports" description="Generated triage reports optimized for Slack, Discord, and engineering handoff." />
 
       {reports.length ? (
@@ -43,6 +42,6 @@ export default async function ReportsPage() {
           />
         </div>
       )}
-    </AppShell>
+    </>
   );
 }

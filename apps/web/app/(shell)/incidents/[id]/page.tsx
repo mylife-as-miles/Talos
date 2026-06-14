@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FileSearch, ScrollText } from "lucide-react";
-import { AppShell } from "@/components/app-shell";
 import { EmptyState } from "@/components/empty-state";
 import { Badge, Card, CardHeader, CodeBlock } from "@/components/ui";
 import { getEvent } from "@/lib/store/events";
@@ -14,7 +13,7 @@ export default async function IncidentDetailPage({ params }: { params: Promise<{
   const event = await getEvent(report.eventId);
 
   return (
-    <AppShell>
+    <>
       <div className="talos-fade-up mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
         <div>
           <h1 className="text-3xl font-semibold">{report.incidentId}</h1>
@@ -139,6 +138,6 @@ export default async function IncidentDetailPage({ params }: { params: Promise<{
           </div>
         </Card>
       </div>
-    </AppShell>
+    </>
   );
 }

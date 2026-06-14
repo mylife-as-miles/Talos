@@ -4,5 +4,6 @@ references/
 dist
 .env
 .env.local
-apps/web/data/*.json.tmp
+*.tsbuildinfo
+apps/web/tmp/
 *.log

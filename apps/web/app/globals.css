@@ -91,7 +91,7 @@ pre {
 
 .talos-fade-up {
   opacity: 0;
-  animation: talos-fade-up 280ms var(--ease-out) forwards;
+  animation: talos-fade-up 180ms var(--ease-out) forwards;
 }
 
 .talos-stagger-1 {
@@ -115,7 +115,7 @@ pre {
 
 .talos-bar-segment {
   transform-origin: bottom;
-  animation: talos-bar-grow 520ms var(--ease-out) backwards;
+  animation: talos-bar-grow 320ms var(--ease-out) backwards;
 }
 
 .talos-empty-icon {

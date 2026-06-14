@@ -1,4 +1,3 @@
-import { AppShell } from "@/components/app-shell";
 import { PageHeader } from "@/components/page-header";
 import { Badge, Card, CardHeader, CodeBlock } from "@/components/ui";
 import { isMockMode } from "@/lib/config";
@@ -17,7 +16,7 @@ export default function SettingsPage() {
   ];
 
   return (
-    <AppShell>
+    <>
       <PageHeader title="Settings" description="Runtime configuration status for local demos and Splunk-backed operation." />
 
       <Card className="talos-fade-up talos-stagger-2 mt-6 overflow-hidden">
@@ -43,6 +42,6 @@ export default function SettingsPage() {
           />
         </div>
       </Card>
-    </AppShell>
+    </>
   );
 }

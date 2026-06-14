@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Box, Brain, ChevronsUp, Crosshair, Filter, Info, ShieldAlert } from "lucide-react";
-import { AppShell } from "@/components/app-shell";
 import { PageHeader } from "@/components/page-header";
 import { EmptyState } from "@/components/empty-state";
 import { InvestigationPanel } from "@/components/dashboard/investigation-panel";
@@ -68,7 +67,7 @@ export default async function DashboardPage() {
   const stats = buildDashboardStats(events, reports);
 
   return (
-    <AppShell>
+    <>
       <PageHeader
         title="Talos Guardian Status"
         description="Real-time overview of SDK intake, Splunk investigations, and AI triage."
@@ -176,6 +175,6 @@ export default async function DashboardPage() {
       </div>
 
       <IncidentsTable reports={reports} />
-    </AppShell>
+    </>
   );
 }

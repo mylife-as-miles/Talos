@@ -1,9 +1,8 @@
-import { AppShell } from "@/components/app-shell";
 import { Skeleton, SkeletonText } from "@/components/skeleton";
 
 export default function IncidentDetailLoading() {
   return (
-    <AppShell>
+    <>
       <div className="mb-6 space-y-3">
         <Skeleton className="h-9 w-48" />
         <Skeleton className="h-4 w-96" />
@@ -24,6 +23,6 @@ export default function IncidentDetailLoading() {
           </div>
         </div>
       </div>
-    </AppShell>
+    </>
   );
 }

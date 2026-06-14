@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Siren } from "lucide-react";
-import { AppShell } from "@/components/app-shell";
 import { EmptyState } from "@/components/empty-state";
 import { PageHeader } from "@/components/page-header";
 import { Badge, Card, CardHeader } from "@/components/ui";
@@ -10,7 +9,7 @@ export default async function IncidentsPage() {
   const reports = await listReports();
 
   return (
-    <AppShell>
+    <>
       <PageHeader
         title="Incidents"
         description="AI-generated Splunk investigations ready for engineering triage."
@@ -71,6 +70,6 @@ export default async function IncidentsPage() {
           </div>
         )}
       </Card>
-    </AppShell>
+    </>
   );
 }

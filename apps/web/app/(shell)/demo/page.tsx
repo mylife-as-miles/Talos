@@ -1,5 +1,4 @@
 import { CirclePlay } from "lucide-react";
-import { AppShell } from "@/components/app-shell";
 import { DemoActions } from "@/components/demo-actions";
 import { EmptyState } from "@/components/empty-state";
 import { PageHeader } from "@/components/page-header";
@@ -17,7 +16,7 @@ export default async function DemoPage() {
   ];
 
   return (
-    <AppShell>
+    <>
       <PageHeader
         title="Hackathon Demo Flow"
         description="A guided Devpost-ready flow from runtime crash to fix recommendation."
@@ -59,6 +58,6 @@ export default async function DemoPage() {
           </div>
         </Card>
       </div>
-    </AppShell>
+    </>
   );
 }

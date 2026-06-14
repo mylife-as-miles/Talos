@@ -1,5 +1,5 @@
 import { buildResolverPrompt } from "./prompt";
-import type { AnomalyScore, SplunkInvestigationContext, TalosErrorEvent, TalosTriageReport } from "../types";
+import type { AnomalyScore, SdkBreadcrumb, SplunkInvestigationContext, TalosErrorEvent, TalosTriageReport } from "../types";
 
 function incidentId(eventId: string) {
   return `INC-${eventId.slice(0, 8).toUpperCase()}`;
@@ -29,11 +29,11 @@ function fallbackReport(input: {
     anomaly,
     evidence: [
       { message: `SDK captured ${event.error.name}: ${event.error.message}`, source: "sdk", timestamp: event.timestamp },
-      ...event.breadcrumbs.slice(-2).map((breadcrumb) => ({ message: breadcrumb.message, source: "sdk" as const, timestamp: breadcrumb.timestamp })),
+      ...event.breadcrumbs.slice(-2).map((breadcrumb: SdkBreadcrumb) => ({ message: breadcrumb.message, source: "sdk" as const, timestamp: breadcrumb.timestamp })),
       ...splunkContext.events.slice(0, 2).map((row) => ({ message: row.message, source: "splunk" as const, timestamp: row.timestamp }))
     ],
     timeline: [
-      ...event.breadcrumbs.map((breadcrumb) => ({ timestamp: breadcrumb.timestamp, title: breadcrumb.category, detail: breadcrumb.message })),
+      ...event.breadcrumbs.map((breadcrumb: SdkBreadcrumb) => ({ timestamp: breadcrumb.timestamp, title: breadcrumb.category, detail: breadcrumb.message })),
       ...splunkContext.timeline.map((row) => ({ timestamp: row.timestamp, title: row.source, detail: row.message }))
     ].slice(0, 8),
     proposedFix: {

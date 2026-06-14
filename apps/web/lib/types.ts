@@ -2,6 +2,13 @@ import type { TalosErrorEvent } from "@talos/sdk";
 
 export type { TalosErrorEvent };
 
+export type SdkBreadcrumb = {
+  timestamp: string;
+  category: string;
+  message: string;
+  data?: Record<string, unknown>;
+};
+
 export type SplunkEvent = {
   timestamp: string;
   service: string;

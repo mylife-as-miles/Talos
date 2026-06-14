@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at top left, rgba(196, 147, 93, 0.12), transparent 30rem),
+    linear-gradient(135deg, #07090d 0%, #0c1118 48%, #080b10 100%);
+  color: #edf2f7;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+pre {
+  overflow: auto;
+}

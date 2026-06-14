@@ -1,10 +1,11 @@
+import { isMockMode } from "../config";
 import { mockSplunkContext } from "../demo-data";
 import type { TalosErrorEvent } from "../types";
 import { SplunkMcpClient } from "./mcp-client";
 import { SplunkRestClient } from "./rest-client";
 
 export async function getSplunkContext({ event }: { event: TalosErrorEvent }) {
-  if (process.env.TALOS_MOCK_MODE === "true") {
+  if (isMockMode()) {
     return mockSplunkContext(event);
   }
 

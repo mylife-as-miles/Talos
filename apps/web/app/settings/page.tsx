@@ -1,5 +1,6 @@
 import { AppShell } from "@/components/app-shell";
 import { Badge, Card, CardHeader, CodeBlock } from "@/components/ui";
+import { isMockMode } from "@/lib/config";
 
 function configured(value?: string, placeholder?: string) {
   return Boolean(value && value !== placeholder);
@@ -11,7 +12,7 @@ export default function SettingsPage() {
     ["Splunk MCP", process.env.SPLUNK_MCP_MODE === "enabled" && configured(process.env.SPLUNK_MCP_SERVER_URL) ? "configured" : "missing"],
     ["AI provider", configured(process.env.GEMINI_API_KEY, "replace_with_key") ? "configured" : "missing"],
     ["Discord webhook", configured(process.env.DISCORD_WEBHOOK_URL, "replace_with_discord_webhook") ? "configured" : "missing"],
-    ["Mock mode", process.env.TALOS_MOCK_MODE === "true" ? "enabled" : "disabled"]
+    ["Mock mode", isMockMode() ? "enabled" : "disabled"]
   ];
 
   return (

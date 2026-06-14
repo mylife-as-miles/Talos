@@ -1,6 +1,7 @@
 import { sendToSplunkHEC } from "@/lib/splunk/hec";
 import { saveEvent } from "@/lib/store/events";
 import { validateTalosEvent } from "@/lib/ingest/validate";
+import { isMockMode } from "@/lib/config";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -11,7 +12,7 @@ export async function POST(req: Request) {
     validateTalosEvent(event);
     await saveEvent(event);
 
-    if (process.env.TALOS_MOCK_MODE !== "true") {
+    if (!isMockMode()) {
       await sendToSplunkHEC(event);
     }
 

@@ -4,12 +4,19 @@ import { DemoActions } from "@/components/demo-actions";
 import { Badge, Card, CardHeader } from "@/components/ui";
 import { listEvents } from "@/lib/store/events";
 import { listReports } from "@/lib/store/reports";
+import type { LucideIcon } from "lucide-react";
 
 export default async function DashboardPage() {
   const [events, reports] = await Promise.all([listEvents(), listReports()]);
   const latestEvent = events[0];
   const latestReport = reports[0];
   const avgConfidence = reports.length ? Math.round(reports.reduce((sum, report) => sum + report.confidence, 0) / reports.length) : 0;
+  const metrics: { label: string; value: string | number; icon: LucideIcon; detail: string }[] = [
+    { label: "Total captured errors", value: events.length, icon: ServerCrash, detail: "SDK runtime intake" },
+    { label: "Critical incidents", value: reports.filter((report) => report.priority === "critical").length, icon: AlertTriangle, detail: "AI triaged" },
+    { label: "Avg diagnosis confidence", value: `${avgConfidence}%`, icon: Brain, detail: "Resolver scoring" },
+    { label: "Latest service affected", value: latestEvent?.service || "none", icon: Clock, detail: latestEvent?.route || "Awaiting event" }
+  ];
 
   return (
     <AppShell>
@@ -24,13 +31,8 @@ export default async function DashboardPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        {[
-          ["Total captured errors", events.length, ServerCrash, "SDK runtime intake"],
-          ["Critical incidents", reports.filter((report) => report.priority === "critical").length, AlertTriangle, "AI triaged"],
-          ["Avg diagnosis confidence", `${avgConfidence}%`, Brain, "Resolver scoring"],
-          ["Latest service affected", latestEvent?.service || "none", Clock, latestEvent?.route || "Awaiting event"]
-        ].map(([label, value, Icon, detail]) => (
-          <Card key={String(label)} className="p-5">
+        {metrics.map(({ label, value, icon: Icon, detail }) => (
+          <Card key={label} className="p-5">
             <div className="flex items-center justify-between">
               <span className="text-xs uppercase tracking-[.18em] text-talos-muted">{label}</span>
               <Icon className="text-talos-bronze" size={18} />

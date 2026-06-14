@@ -1,44 +1,71 @@
-import { Activity, Bot, FileText, Gauge, Settings, Shield, Siren } from "lucide-react";
+import { Activity, BarChart3, CirclePlay, Gauge, Settings, Siren } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 const nav = [
   { href: "/dashboard", label: "Dashboard", icon: Gauge },
   { href: "/incidents", label: "Incidents", icon: Siren },
-  { href: "/reports", label: "Reports", icon: FileText },
-  { href: "/demo", label: "Demo", icon: Activity },
+  { href: "/reports", label: "Reports", icon: BarChart3 },
+  { href: "/demo", label: "Demo", icon: CirclePlay },
   { href: "/settings", label: "Settings", icon: Settings }
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen lg:grid lg:grid-cols-[248px_1fr]">
-      <aside className="border-r border-talos-line bg-black/24 px-4 py-5">
-        <Link href="/dashboard" className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-talos-bronze/40 bg-talos-bronze/10 text-talos-bronze">
-            <Shield size={21} />
-          </div>
-          <div>
-            <div className="text-lg font-semibold tracking-wide">Talos</div>
-            <div className="text-xs text-talos-muted">Splunk Agentic Ops</div>
-          </div>
-        </Link>
-        <nav className="mt-8 grid gap-1">
+    <div className="min-h-screen bg-[#070d10] text-[#d7dee8] lg:grid lg:grid-cols-[270px_1fr]">
+      <aside className="relative m-2 flex min-h-[calc(100vh-16px)] flex-col overflow-hidden rounded-lg border border-[#1f2a30] bg-[linear-gradient(180deg,rgba(16,28,31,.96),rgba(7,13,16,.98))] shadow-[0_0_80px_rgba(0,0,0,.45)]">
+        <div className="px-8 pt-5">
+          <Link href="/dashboard" className="block">
+            <Image
+              src="/assets/talos-logo-lockup.png"
+              alt="Talos self-healing Splunk AI Ops"
+              width={210}
+              height={210}
+              priority
+              className="mx-auto h-[205px] w-[205px] object-contain"
+            />
+          </Link>
+        </div>
+        <nav className="mt-2 grid gap-2 px-2">
           {nav.map((item) => (
-            <Link key={item.href} href={item.href} className="flex items-center gap-3 rounded-md px-3 py-2 text-sm text-slate-300 transition hover:bg-white/5 hover:text-white">
-              <item.icon size={16} />
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`flex h-[62px] items-center gap-4 rounded-md border-l-4 px-7 text-[17px] transition ${
+                item.href === "/dashboard"
+                  ? "border-[#22d9f3] bg-[#10262f] text-[#d8fbff] shadow-[inset_0_0_28px_rgba(34,217,243,.08)]"
+                  : "border-transparent text-[#c7d0db] hover:bg-white/[.035] hover:text-white"
+              }`}
+            >
+              <item.icon size={23} strokeWidth={1.7} className="text-current" />
               {item.label}
             </Link>
           ))}
         </nav>
-        <div className="mt-8 rounded-lg border border-talos-line bg-talos-panel/70 p-4">
-          <div className="flex items-center gap-2 text-sm font-medium">
-            <Bot size={16} className="text-talos-cyan" />
-            Resolver Online
+        <div className="mx-4 mt-auto">
+          <div className="relative h-[420px] overflow-hidden">
+            <Image
+              src="/assets/talos-guardian.png"
+              alt=""
+              width={420}
+              height={720}
+              className="absolute -left-12 bottom-0 h-[415px] w-[320px] object-cover object-bottom opacity-80 mix-blend-screen"
+            />
+            <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#071014] to-transparent" />
           </div>
-          <p className="mt-2 text-xs leading-5 text-talos-muted">SDK intake, Splunk MCP investigation, and AI triage are wired for mock or live Splunk mode.</p>
+          <div className="mb-8 px-8">
+            <div className="flex items-center gap-4">
+              <span className="h-4 w-4 rounded-full bg-[#35d494] shadow-[0_0_20px_rgba(53,212,148,.65)]" />
+              <div>
+                <div className="text-[18px] font-medium text-[#d9e5e9]">Talos Guardian</div>
+                <div className="text-[13px] uppercase tracking-wide text-[#39d78d]">Operational</div>
+              </div>
+            </div>
+            <div className="mt-9 text-center text-[14px] text-[#9aa7b2]">v1.4.2</div>
+          </div>
         </div>
       </aside>
-      <main className="min-w-0 px-4 py-5 sm:px-6 lg:px-8">{children}</main>
+      <main className="min-w-0 px-6 py-8">{children}</main>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { AppShell } from "@/components/app-shell";
+import { PageHeader } from "@/components/page-header";
 import { Badge, Card, CardHeader, CodeBlock } from "@/components/ui";
 import { isMockMode } from "@/lib/config";
 
@@ -17,23 +18,29 @@ export default function SettingsPage() {
 
   return (
     <AppShell>
-      <h1 className="text-3xl font-semibold">Settings</h1>
-      <p className="mt-2 text-sm text-talos-muted">Runtime configuration status for local demos and Splunk-backed operation.</p>
-      <Card className="mt-6">
+      <PageHeader title="Settings" description="Runtime configuration status for local demos and Splunk-backed operation." />
+
+      <Card className="talos-fade-up talos-stagger-2 mt-6 overflow-hidden">
         <CardHeader title="Configuration Status" />
         <div className="divide-y divide-talos-line">
-          {rows.map(([label, status]) => (
-            <div key={label} className="flex items-center justify-between px-5 py-4 text-sm">
+          {rows.map(([label, status], index) => (
+            <div
+              key={label}
+              className="talos-row-enter flex items-center justify-between px-5 py-4 text-sm"
+              style={{ animationDelay: `${index * 40}ms` }}
+            >
               <span>{label}</span>
               <Badge tone={status === "configured" || status === "enabled" ? "ok" : "warn"}>{status}</Badge>
             </div>
           ))}
         </div>
       </Card>
-      <Card className="mt-5">
+      <Card className="talos-fade-up talos-stagger-3 mt-5 overflow-hidden">
         <CardHeader title="Local SDK Usage Example" />
         <div className="p-5">
-          <CodeBlock value={`import { Talos } from "@talos/sdk";\n\nTalos.init({\n  projectKey: "demo_project_key",\n  environment: "production",\n  release: "v1.0.0",\n  service: "checkout-service",\n  ingestUrl: "/api/ingest",\n});`} />
+          <CodeBlock
+            value={`import { Talos } from "@talos/sdk";\n\nTalos.init({\n  projectKey: "demo_project_key",\n  environment: "production",\n  release: "v1.0.0",\n  service: "checkout-service",\n  ingestUrl: "/api/ingest",\n});`}
+          />
         </div>
       </Card>
     </AppShell>

@@ -1,14 +1,6 @@
-import { Activity, BarChart3, CirclePlay, Gauge, Settings, Siren } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-
-const nav = [
-  { href: "/dashboard", label: "Dashboard", icon: Gauge },
-  { href: "/incidents", label: "Incidents", icon: Siren },
-  { href: "/reports", label: "Reports", icon: BarChart3 },
-  { href: "/demo", label: "Demo", icon: CirclePlay },
-  { href: "/settings", label: "Settings", icon: Settings }
-];
+import { AppNav } from "./app-nav";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
@@ -26,22 +18,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             />
           </Link>
         </div>
-        <nav className="mt-2 grid gap-2 px-2">
-          {nav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`flex h-[62px] items-center gap-4 rounded-md border-l-4 px-7 text-[17px] transition ${
-                item.href === "/dashboard"
-                  ? "border-[#22d9f3] bg-[#10262f] text-[#d8fbff] shadow-[inset_0_0_28px_rgba(34,217,243,.08)]"
-                  : "border-transparent text-[#c7d0db] hover:bg-white/[.035] hover:text-white"
-              }`}
-            >
-              <item.icon size={23} strokeWidth={1.7} className="text-current" />
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        <AppNav />
         <div className="mx-4 mt-auto">
           <div className="relative h-[420px] overflow-hidden">
             <Image
@@ -55,7 +32,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </div>
           <div className="mb-8 px-8">
             <div className="flex items-center gap-4">
-              <span className="h-4 w-4 rounded-full bg-[#35d494] shadow-[0_0_20px_rgba(53,212,148,.65)]" />
+              <span className="talos-pulse-dot h-4 w-4 rounded-full bg-[#35d494] shadow-[0_0_20px_rgba(53,212,148,.65)]" />
               <div>
                 <div className="text-[18px] font-medium text-[#d9e5e9]">Talos Guardian</div>
                 <div className="text-[13px] uppercase tracking-wide text-[#39d78d]">Operational</div>

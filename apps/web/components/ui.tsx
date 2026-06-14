@@ -32,7 +32,7 @@ export function Button({ children, className, ...props }: React.ButtonHTMLAttrib
   return (
     <button
       className={clsx(
-        "inline-flex min-h-9 items-center justify-center gap-2 rounded-md border border-talos-line bg-talos-panel2 px-3 text-sm font-medium text-talos-text transition hover:border-talos-cyan/60 hover:bg-cyan-300/10 disabled:cursor-not-allowed disabled:opacity-60",
+        "inline-flex min-h-9 items-center justify-center gap-2 rounded-md border border-talos-line bg-talos-panel2 px-3 text-sm font-medium text-talos-text transition-[transform,border-color,background-color,opacity] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] hover:border-talos-cyan/60 hover:bg-cyan-300/10 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-60",
         className
       )}
       {...props}

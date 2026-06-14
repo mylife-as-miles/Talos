@@ -1,5 +1,8 @@
+import { CirclePlay } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { DemoActions } from "@/components/demo-actions";
+import { EmptyState } from "@/components/empty-state";
+import { PageHeader } from "@/components/page-header";
 import { Badge, Card, CardHeader, CodeBlock } from "@/components/ui";
 import { listReports } from "@/lib/store/reports";
 
@@ -15,26 +18,29 @@ export default async function DemoPage() {
 
   return (
     <AppShell>
-      <div className="mb-6 flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
-        <div>
-          <h1 className="text-3xl font-semibold">Hackathon Demo Flow</h1>
-          <p className="mt-2 text-sm text-talos-muted">A guided Devpost-ready flow from runtime crash to fix recommendation.</p>
-        </div>
-        <DemoActions />
-      </div>
+      <PageHeader
+        title="Hackathon Demo Flow"
+        description="A guided Devpost-ready flow from runtime crash to fix recommendation."
+        actions={<DemoActions />}
+      />
+
       <div className="grid gap-5 xl:grid-cols-[.75fr_1fr]">
-        <Card>
-          <CardHeader title="Demo Runbook" detail="Click the actions left-to-right and refresh to see persisted results." />
+        <Card className="talos-fade-up talos-stagger-2 overflow-hidden">
+          <CardHeader title="Demo Runbook" detail="Click the actions above left-to-right. Results persist and refresh automatically." />
           <div className="space-y-3 p-5">
             {steps.map((step, index) => (
-              <div key={step} className="flex items-center gap-3 rounded-lg border border-talos-line bg-black/20 p-3">
+              <div
+                key={step}
+                className="talos-row-enter flex items-center gap-3 rounded-lg border border-talos-line bg-black/20 p-3"
+                style={{ animationDelay: `${index * 50}ms` }}
+              >
                 <Badge tone="cyan">{index + 1}</Badge>
                 <span className="text-sm">{step}</span>
               </div>
             ))}
           </div>
         </Card>
-        <Card>
+        <Card className="talos-fade-up talos-stagger-3 overflow-hidden">
           <CardHeader title="AI Triage Report" action={<Badge tone={latestReport ? "ok" : "warn"}>{latestReport ? "Generated" : "Waiting"}</Badge>} />
           <div className="p-5">
             {latestReport ? (
@@ -43,7 +49,12 @@ export default async function DemoPage() {
                 <CodeBlock value={latestReport.proposedFix.code || latestReport.proposedFix.explanation} />
               </div>
             ) : (
-              <p className="text-sm text-talos-muted">Run the resolver after triggering the crash to generate the report.</p>
+              <EmptyState
+                compact
+                icon={CirclePlay}
+                title="Waiting for resolver output"
+                description="Trigger the demo crash, then run the headless resolver to generate a fix-ready triage report."
+              />
             )}
           </div>
         </Card>

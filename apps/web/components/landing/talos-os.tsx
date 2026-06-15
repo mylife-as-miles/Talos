@@ -1,0 +1,807 @@
+"use client";
+
+import {
+  Archive,
+  Bell,
+  BookOpen,
+  Boxes,
+  ChevronDown,
+  CircleHelp,
+  Code2,
+  ExternalLink,
+  FileCode2,
+  FileText,
+  FolderGit2,
+  Github,
+  KeyRound,
+  Mail,
+  Maximize2,
+  Minimize2,
+  MonitorPlay,
+  Package,
+  Play,
+  Recycle,
+  Search,
+  Settings,
+  ShieldCheck,
+  Sparkles,
+  TerminalSquare,
+  Users,
+  X
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useMemo, useState } from "react";
+
+type WindowId =
+  | "home"
+  | "sdk"
+  | "docs"
+  | "splunk"
+  | "why"
+  | "changelog"
+  | "handbook"
+  | "tools"
+  | "byok"
+  | "demo"
+  | "github"
+  | "contributors"
+  | "trash";
+
+type DesktopItem = {
+  id: WindowId;
+  label: string;
+  detail: string;
+  icon: typeof FileText;
+  accent: string;
+  dock?: boolean;
+  side?: "left" | "right";
+};
+
+const desktopItems: DesktopItem[] = [
+  { id: "home", label: "home.mdx", detail: "Start here", icon: FileText, accent: "bg-[#00c2c8]", dock: true, side: "left" },
+  { id: "sdk", label: "SDK install", detail: "npm package", icon: Package, accent: "bg-[#ffe100]", dock: true, side: "left" },
+  { id: "docs", label: "Docs", detail: "How to use Talos", icon: BookOpen, accent: "bg-[#ff00ff]", dock: true, side: "left" },
+  { id: "splunk", label: "splunk.mdx", detail: "HEC + MCP", icon: Boxes, accent: "bg-[#f5a019]", dock: true, side: "left" },
+  { id: "byok", label: "BYOK", detail: "AI provider keys", icon: KeyRound, accent: "bg-[#c7ff45]", side: "left" },
+  { id: "demo", label: "demo.mov", detail: "Video flow", icon: MonitorPlay, accent: "bg-[#ff4d5a]", dock: true, side: "left" },
+  { id: "why", label: "Why Talos?", detail: "Crash to fix", icon: CircleHelp, accent: "bg-[#00c2c8]", side: "right" },
+  { id: "changelog", label: "Changelog", detail: "MVP release", icon: Bell, accent: "bg-[#ffe100]", side: "right" },
+  { id: "handbook", label: "Open source handbook", detail: "Build in public", icon: Archive, accent: "bg-[#ff00ff]", side: "right" },
+  { id: "tools", label: "tools.mdx", detail: "SDK, agent, notify", icon: Settings, accent: "bg-[#c7ff45]", side: "right" },
+  { id: "github", label: "GitHub repo", detail: "Source", icon: Github, accent: "bg-[#f5a019]", side: "right" },
+  { id: "contributors", label: "Join as contributor", detail: "Community", icon: Users, accent: "bg-[#00c2c8]", side: "right" },
+  { id: "trash", label: "Recycle bin", detail: "Old ops habits", icon: Recycle, accent: "bg-[#b8b3a0]", side: "right" }
+];
+
+const windowMeta: Record<WindowId, { title: string; subtitle: string; w: string; x: string; y: string }> = {
+  home: { title: "home.mdx", subtitle: "Talos Product OS", w: "min(1020px, calc(100vw - 42px))", x: "21vw", y: "8vh" },
+  sdk: { title: "SDK install", subtitle: "npm package", w: "760px", x: "8vw", y: "16vh" },
+  docs: { title: "Docs", subtitle: "Install and run Talos", w: "790px", x: "13vw", y: "13vh" },
+  splunk: { title: "splunk.mdx", subtitle: "HEC ingestion and MCP investigation", w: "820px", x: "17vw", y: "18vh" },
+  why: { title: "Why Talos?", subtitle: "Developer operations, self-healed", w: "760px", x: "28vw", y: "14vh" },
+  changelog: { title: "Changelog", subtitle: "MVP notes", w: "700px", x: "31vw", y: "18vh" },
+  handbook: { title: "Open source handbook", subtitle: "How we build Talos", w: "750px", x: "19vw", y: "20vh" },
+  tools: { title: "tools.mdx", subtitle: "Talos system pieces", w: "830px", x: "11vw", y: "12vh" },
+  byok: { title: "BYOK", subtitle: "Bring your own AI key", w: "720px", x: "23vw", y: "19vh" },
+  demo: { title: "demo.mov", subtitle: "Devpost walkthrough", w: "790px", x: "24vw", y: "11vh" },
+  github: { title: "GitHub repo", subtitle: "Open source Talos", w: "690px", x: "31vw", y: "17vh" },
+  contributors: { title: "Join as contributor", subtitle: "Help shape agentic ops", w: "720px", x: "21vw", y: "15vh" },
+  trash: { title: "Recycle bin", subtitle: "Deprecated operations rituals", w: "860px", x: "8vw", y: "10vh" }
+};
+
+const command = `npm install @mylife-as-miles/talos-sdk`;
+
+const sdkExample = `import { Talos } from "@mylife-as-miles/talos-sdk";
+
+Talos.init({
+  projectKey: "demo_project_key",
+  service: "checkout-service",
+  environment: "production",
+  release: "v1.0.0",
+  ingestUrl: "https://your-app.com/api/ingest"
+});
+
+Talos.captureException(error, {
+  route: "/api/checkout",
+  userId: "demo-user-123",
+  tags: { feature: "checkout", region: "prod" }
+});`;
+
+function openExternal(url: string) {
+  if (typeof window !== "undefined") window.open(url, "_blank", "noreferrer");
+}
+
+export function TalosOsLanding() {
+  const [openWindows, setOpenWindows] = useState<WindowId[]>(["home"]);
+  const [activeWindow, setActiveWindow] = useState<WindowId>("home");
+  const [minimized, setMinimized] = useState<WindowId[]>([]);
+  const [contributorStatus, setContributorStatus] = useState("idle");
+  const [removedTrash, setRemovedTrash] = useState<string[]>([]);
+
+  const dockItems = useMemo(() => desktopItems.filter((item) => item.dock), []);
+
+  function openWindow(id: WindowId) {
+    setOpenWindows((current) => (current.includes(id) ? current : [...current, id]));
+    setMinimized((current) => current.filter((item) => item !== id));
+    setActiveWindow(id);
+  }
+
+  function closeWindow(id: WindowId) {
+    setOpenWindows((current) => current.filter((item) => item !== id));
+    setMinimized((current) => current.filter((item) => item !== id));
+    if (activeWindow === id) setActiveWindow("home");
+  }
+
+  function minimizeWindow(id: WindowId) {
+    setMinimized((current) => (current.includes(id) ? current : [...current, id]));
+  }
+
+  return (
+    <main className="talos-os min-h-screen overflow-hidden bg-[#f5f1dc] text-black">
+      <TopBar onOpen={openWindow} />
+
+      <section className="relative min-h-[calc(100vh-54px)] overflow-hidden px-4 pb-24 pt-5 sm:px-7">
+        <div className="talos-paper-grain absolute inset-0" aria-hidden />
+        <div className="talos-os-grid absolute inset-0" aria-hidden />
+
+        <div className="relative z-10 grid min-h-[calc(100vh-160px)] grid-cols-[112px_1fr_112px] gap-4 max-lg:grid-cols-[96px_1fr] max-md:grid-cols-1">
+          <DesktopColumn items={desktopItems.filter((item) => item.side === "left")} onOpen={openWindow} />
+
+          <div className="relative hidden min-h-[600px] lg:block">
+            <Image
+              src="/assets/talos-os-island.png"
+              alt="Illustration of the Talos developer operations island"
+              width={1400}
+              height={768}
+              priority
+              unoptimized
+              className="talos-os-island pointer-events-none absolute right-[-5vw] top-[7vh] w-[68vw] max-w-[1180px] object-contain"
+            />
+            <StatusSticker />
+          </div>
+
+          <DesktopColumn items={desktopItems.filter((item) => item.side === "right")} onOpen={openWindow} align="right" />
+        </div>
+
+        <div className="pointer-events-none absolute inset-0 z-20">
+          {openWindows
+            .filter((id) => !minimized.includes(id))
+            .map((id, index) => (
+              <OsWindow
+                key={id}
+                id={id}
+                zIndex={activeWindow === id ? 60 : 40 + index}
+                active={activeWindow === id}
+                onFocus={() => setActiveWindow(id)}
+                onClose={() => closeWindow(id)}
+                onMinimize={() => minimizeWindow(id)}
+              >
+                {renderWindowContent(id, {
+                  onOpen: openWindow,
+                  contributorStatus,
+                  setContributorStatus,
+                  removedTrash,
+                  setRemovedTrash
+                })}
+              </OsWindow>
+            ))}
+        </div>
+
+        <Dock items={dockItems} openWindows={openWindows} minimized={minimized} activeWindow={activeWindow} onOpen={openWindow} />
+      </section>
+    </main>
+  );
+}
+
+function TopBar({ onOpen }: { onOpen: (id: WindowId) => void }) {
+  return (
+    <header className="relative z-40 flex h-[54px] items-center justify-between border-b-2 border-black bg-[#e5e1cf] px-4 shadow-[0_3px_0_#000]">
+      <div className="flex items-center gap-5">
+        <button type="button" onClick={() => onOpen("home")} className="group flex items-center gap-2 font-black">
+          <span className="grid h-8 w-8 place-items-center border-2 border-black bg-[#00c2c8] shadow-[3px_3px_0_#000] transition-transform group-hover:-translate-y-0.5">
+            <ShieldCheck size={19} strokeWidth={3} />
+          </span>
+          <span className="hidden text-[18px] sm:inline">Talos OS</span>
+        </button>
+        <nav className="hidden items-center gap-2 text-sm font-black lg:flex">
+          {[
+            ["Product OS", "home"],
+            ["SDK", "sdk"],
+            ["Docs", "docs"],
+            ["Community", "contributors"],
+            ["Company", "handbook"],
+            ["More", "tools"]
+          ].map(([label, id]) => (
+            <button key={label} type="button" onClick={() => onOpen(id as WindowId)} className="talos-menu-item">
+              {label}
+            </button>
+          ))}
+        </nav>
+      </div>
+
+      <div className="flex items-center gap-2">
+        <Link href="/dashboard" className="talos-primary-button h-9 px-4">
+          Dashboard
+        </Link>
+        <button type="button" onClick={() => onOpen("docs")} aria-label="Search docs" className="talos-top-icon">
+          <Search size={19} />
+        </button>
+        <button type="button" onClick={() => onOpen("contributors")} aria-label="Ask to contribute" className="talos-top-icon">
+          <Mail size={19} />
+        </button>
+        <button type="button" onClick={() => onOpen("byok")} className="hidden h-8 items-center gap-1 border-2 border-black bg-white px-2 text-xs font-black shadow-[2px_2px_0_#000] sm:flex">
+          <KeyRound size={14} />
+          BYOK
+        </button>
+      </div>
+    </header>
+  );
+}
+
+function DesktopColumn({ items, onOpen, align = "left" }: { items: DesktopItem[]; onOpen: (id: WindowId) => void; align?: "left" | "right" }) {
+  return (
+    <div className={`relative z-10 flex flex-col gap-4 ${align === "right" ? "items-end max-md:items-start" : "items-start"} max-md:grid max-md:grid-cols-3 max-sm:grid-cols-2`}>
+      {items.map((item) => (
+        <DesktopIcon key={item.id} item={item} onOpen={() => onOpen(item.id)} align={align} />
+      ))}
+    </div>
+  );
+}
+
+function DesktopIcon({ item, onOpen, align }: { item: DesktopItem; onOpen: () => void; align: "left" | "right" }) {
+  const Icon = item.icon;
+  return (
+    <button type="button" onClick={onOpen} className={`talos-desktop-icon group ${align === "right" ? "text-right" : "text-left"}`}>
+      <span className="relative grid h-14 w-14 place-items-center border-[3px] border-black bg-white shadow-[5px_5px_0_#000] transition-transform group-hover:-translate-y-1">
+        <span className={`absolute -right-2 -top-2 h-5 w-5 border-2 border-black ${item.accent}`} />
+        <Icon size={29} strokeWidth={2.5} />
+      </span>
+      <span className="mt-2 block rounded-sm bg-[#f5f1dc]/85 px-1 text-[13px] font-black leading-tight">{item.label}</span>
+      <span className="mt-0.5 block px-1 text-[11px] font-bold leading-tight text-[#555042]">{item.detail}</span>
+    </button>
+  );
+}
+
+function OsWindow({
+  id,
+  active,
+  zIndex,
+  children,
+  onFocus,
+  onClose,
+  onMinimize
+}: {
+  id: WindowId;
+  active: boolean;
+  zIndex: number;
+  children: React.ReactNode;
+  onFocus: () => void;
+  onClose: () => void;
+  onMinimize: () => void;
+}) {
+  const meta = windowMeta[id];
+  return (
+    <article
+      className={`talos-window pointer-events-auto absolute max-h-[78vh] overflow-hidden border-[3px] border-black bg-[#fffdf1] shadow-[9px_9px_0_#000] ${active ? "talos-window-active" : ""}`}
+      style={{ width: meta.w, left: meta.x, top: meta.y, zIndex }}
+      onMouseDown={onFocus}
+    >
+      <div className="flex h-12 items-center justify-between border-b-[3px] border-black bg-[#d8d3bd] px-3">
+        <div className="flex min-w-0 items-center gap-2">
+          <FileText size={21} strokeWidth={2.5} />
+          <div className="min-w-0">
+            <h2 className="truncate text-[15px] font-black leading-none">{meta.title}</h2>
+            <p className="mt-1 truncate text-[11px] font-bold uppercase tracking-wide text-[#5c5748]">{meta.subtitle}</p>
+          </div>
+          <ChevronDown size={16} strokeWidth={3} />
+        </div>
+        <div className="flex items-center gap-2">
+          <button type="button" onClick={onMinimize} aria-label={`Minimize ${meta.title}`} className="talos-window-control">
+            <Minimize2 size={16} />
+          </button>
+          <button type="button" aria-label={`Maximize ${meta.title}`} className="talos-window-control">
+            <Maximize2 size={16} />
+          </button>
+          <button type="button" onClick={onClose} aria-label={`Close ${meta.title}`} className="talos-window-control bg-[#ff4d5a]">
+            <X size={16} />
+          </button>
+        </div>
+      </div>
+      <div className="flex items-center gap-2 border-b-2 border-black bg-[#f8f5e6] px-3 py-2 text-xs font-black text-[#615b4e]">
+        <button type="button" className="talos-toolbar-button">
+          Undo
+        </button>
+        <button type="button" className="talos-toolbar-button">
+          Zoom
+        </button>
+        <span className="h-6 border-l-2 border-[#b9b29d]" />
+        <span>B</span>
+        <span className="italic">I</span>
+        <span className="underline">U</span>
+        <span className="ml-auto hidden items-center gap-3 sm:flex">
+          <Search size={16} />
+          <Settings size={16} />
+          <button type="button" className="talos-primary-button h-8 px-3">
+            Share
+          </button>
+        </span>
+      </div>
+      <div className="talos-window-body max-h-[calc(78vh-88px)] overflow-y-auto p-5 sm:p-8">{children}</div>
+    </article>
+  );
+}
+
+function Dock({
+  items,
+  openWindows,
+  minimized,
+  activeWindow,
+  onOpen
+}: {
+  items: DesktopItem[];
+  openWindows: WindowId[];
+  minimized: WindowId[];
+  activeWindow: WindowId;
+  onOpen: (id: WindowId) => void;
+}) {
+  return (
+    <div className="fixed bottom-5 left-1/2 z-50 flex -translate-x-1/2 items-end gap-2 border-[3px] border-black bg-[#fffdf1] px-3 py-2 shadow-[7px_7px_0_#000]">
+      {items.map((item) => {
+        const Icon = item.icon;
+        const open = openWindows.includes(item.id);
+        const isMinimized = minimized.includes(item.id);
+        return (
+          <button
+            key={item.id}
+            type="button"
+            onClick={() => onOpen(item.id)}
+            title={item.label}
+            className={`talos-dock-icon ${activeWindow === item.id && !isMinimized ? "talos-dock-icon-active" : ""}`}
+          >
+            <span className={`absolute -right-1 -top-1 h-3 w-3 border border-black ${item.accent}`} />
+            <Icon size={22} strokeWidth={2.6} />
+            {open ? <span className="absolute -bottom-1 h-1.5 w-7 border border-black bg-[#00c2c8]" /> : null}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function StatusSticker() {
+  return (
+    <div className="talos-status-sticker absolute left-[4vw] top-[7vh] max-w-[360px] rotate-[-2deg] border-[3px] border-black bg-[#d8ff2f] p-4 shadow-[7px_7px_0_#000]">
+      <div className="flex items-center gap-3 text-xs font-black uppercase tracking-wide">
+        <span className="talos-live-dot h-4 w-4 border-2 border-black bg-[#ff00ff]" />
+        Runtime loop online
+      </div>
+      <p className="mt-2 text-[30px] font-black leading-[0.94]">SDK crash in. Splunk context out. Fix report ready.</p>
+    </div>
+  );
+}
+
+function renderWindowContent(
+  id: WindowId,
+  state: {
+    onOpen: (id: WindowId) => void;
+    contributorStatus: string;
+    setContributorStatus: (value: string) => void;
+    removedTrash: string[];
+    setRemovedTrash: (value: string[]) => void;
+  }
+) {
+  switch (id) {
+    case "home":
+      return <HomeContent onOpen={state.onOpen} />;
+    case "sdk":
+      return <SdkContent />;
+    case "docs":
+      return <DocsContent onOpen={state.onOpen} />;
+    case "splunk":
+      return <SplunkContent />;
+    case "why":
+      return <WhyContent />;
+    case "changelog":
+      return <ChangelogContent />;
+    case "handbook":
+      return <HandbookContent />;
+    case "tools":
+      return <ToolsContent onOpen={state.onOpen} />;
+    case "byok":
+      return <ByokContent />;
+    case "demo":
+      return <DemoContent onOpen={state.onOpen} />;
+    case "github":
+      return <GithubContent />;
+    case "contributors":
+      return <ContributorsContent status={state.contributorStatus} setStatus={state.setContributorStatus} />;
+    case "trash":
+      return <TrashContent removedTrash={state.removedTrash} setRemovedTrash={state.setRemovedTrash} />;
+    default:
+      return null;
+  }
+}
+
+function HomeContent({ onOpen }: { onOpen: (id: WindowId) => void }) {
+  return (
+    <div className="grid gap-8 lg:grid-cols-[1.08fr_0.92fr]">
+      <div>
+        <div className="flex items-center gap-3">
+          <span className="grid h-12 w-12 place-items-center border-[3px] border-black bg-[#00c2c8] shadow-[4px_4px_0_#000]">
+            <ShieldCheck size={27} strokeWidth={3} />
+          </span>
+          <div>
+            <p className="text-sm font-black uppercase tracking-wide text-[#5b5547]">Talos</p>
+            <p className="text-lg font-black">Self-healing Splunk AI Ops</p>
+          </div>
+        </div>
+
+        <h1 className="mt-8 max-w-[720px] text-[clamp(2.4rem,6vw,5.6rem)] font-black leading-[0.88]">
+          Crash captured. Root cause found. Fix shipped.
+        </h1>
+        <p className="mt-6 max-w-2xl text-xl font-bold leading-8 text-[#333025]">
+          Talos gives developers an npm SDK, a Splunk HEC ingest relay, a headless MCP resolver, and fix-ready AI triage reports in one open Product OS.
+        </p>
+
+        <div className="mt-7 flex flex-wrap gap-3">
+          <button type="button" onClick={() => onOpen("sdk")} className="talos-primary-button h-12 px-5 text-base">
+            Install SDK
+          </button>
+          <Link href="/demo" className="talos-secondary-button h-12 px-5 text-base">
+            Run demo crash
+          </Link>
+          <Link href="/dashboard" className="talos-secondary-button h-12 px-5 text-base">
+            Open dashboard
+          </Link>
+        </div>
+
+        <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 text-[15px] font-black text-[#625c4f]">
+          <button type="button" onClick={() => onOpen("splunk")} className="underline decoration-2 underline-offset-4">
+            Splunk MCP
+          </button>
+          <span>/</span>
+          <button type="button" onClick={() => onOpen("byok")} className="underline decoration-2 underline-offset-4">
+            BYOK
+          </button>
+          <span>/</span>
+          <button type="button" onClick={() => onOpen("contributors")} className="underline decoration-2 underline-offset-4">
+            Join as contributor
+          </button>
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        <div className="border-[3px] border-black bg-[#00c2c8] p-4 shadow-[7px_7px_0_#000]">
+          <div className="flex items-center justify-between border-b-2 border-black pb-3 text-sm font-black uppercase">
+            <span>Resolver loop</span>
+            <span>Mock or live</span>
+          </div>
+          <ol className="mt-4 space-y-3 text-sm font-bold">
+            {["SDK captures runtime crash", "Next.js ingest stores event and forwards HEC", "Splunk MCP returns related logs", "AI resolver creates fix-ready report"].map((step, index) => (
+              <li key={step} className="flex gap-3">
+                <span className="grid h-7 w-7 shrink-0 place-items-center border-2 border-black bg-[#ffe100] font-black">{index + 1}</span>
+                <span>{step}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+        <div className="border-[3px] border-black bg-white p-4 shadow-[7px_7px_0_#000]">
+          <div className="flex items-center gap-2 font-black">
+            <TerminalSquare size={21} />
+            Local package
+          </div>
+          <code className="mt-3 block overflow-x-auto border-2 border-black bg-black p-3 text-sm font-bold text-[#d8ff2f]">{command}</code>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SdkContent() {
+  return (
+    <div className="grid gap-5 lg:grid-cols-[0.85fr_1.15fr]">
+      <div className="space-y-4">
+        <h3 className="text-4xl font-black leading-none">Install the collector.</h3>
+        <p className="text-lg font-bold leading-7 text-[#3d392f]">
+          Published as a scoped npm package. The browser SDK sends to Talos ingest, never directly to Splunk HEC.
+        </p>
+        <div className="border-[3px] border-black bg-[#ffe100] p-4 shadow-[5px_5px_0_#000]">
+          <p className="text-xs font-black uppercase">npm</p>
+          <code className="mt-2 block overflow-x-auto text-lg font-black">{command}</code>
+        </div>
+        <button type="button" className="talos-secondary-button h-11 px-4" onClick={() => navigator.clipboard?.writeText(command)}>
+          Copy install command
+        </button>
+      </div>
+      <pre className="max-h-[430px] overflow-auto border-[3px] border-black bg-black p-5 text-[13px] font-bold leading-6 text-[#d8ff2f] shadow-[6px_6px_0_#000]">
+        {sdkExample}
+      </pre>
+    </div>
+  );
+}
+
+function DocsContent({ onOpen }: { onOpen: (id: WindowId) => void }) {
+  return (
+    <div>
+      <h3 className="text-4xl font-black">How to use Talos</h3>
+      <div className="mt-6 grid gap-4 sm:grid-cols-3">
+        {[
+          ["1", "Install SDK", "Capture errors as AI-readable operational events."],
+          ["2", "Configure Splunk", "Forward events through HEC and investigate through MCP."],
+          ["3", "Run resolver", "Generate priority, evidence, root cause, and patch suggestions."]
+        ].map(([number, title, body]) => (
+          <button key={title} type="button" onClick={() => onOpen(number === "1" ? "sdk" : number === "2" ? "splunk" : "demo")} className="text-left border-[3px] border-black bg-white p-4 shadow-[5px_5px_0_#000] transition-transform hover:-translate-y-1">
+            <span className="grid h-9 w-9 place-items-center border-2 border-black bg-[#ff00ff] text-xl font-black">{number}</span>
+            <h4 className="mt-4 text-xl font-black">{title}</h4>
+            <p className="mt-2 text-sm font-bold leading-6 text-[#4c473c]">{body}</p>
+          </button>
+        ))}
+      </div>
+      <div className="mt-6 border-[3px] border-black bg-[#d8ff2f] p-5 shadow-[6px_6px_0_#000]">
+        <h4 className="text-2xl font-black">Local run path</h4>
+        <code className="mt-3 block overflow-x-auto border-2 border-black bg-black p-4 text-sm font-bold text-[#d8ff2f]">
+          corepack pnpm install{"\n"}corepack pnpm --filter @talos/web dev
+        </code>
+      </div>
+    </div>
+  );
+}
+
+function SplunkContent() {
+  return (
+    <div className="grid gap-5 md:grid-cols-2">
+      <InfoPanel title="HEC intake" color="bg-[#00c2c8]" icon={Boxes}>
+        <p>Talos ingest validates SDK events, stores them locally for the MVP dashboard, then forwards structured payloads to Splunk HEC when mock mode is off.</p>
+        <code className="mt-4 block border-2 border-black bg-black p-3 text-xs font-bold text-[#d8ff2f]">POST /services/collector/event</code>
+      </InfoPanel>
+      <InfoPanel title="MCP investigation" color="bg-[#ff00ff]" icon={Sparkles}>
+        <p>The headless resolver treats Splunk MCP as the primary investigation path, with REST fallback and mock context for local demos.</p>
+        <code className="mt-4 block border-2 border-black bg-black p-3 text-xs font-bold text-[#d8ff2f]">SPLUNK_MCP_MODE=enabled</code>
+      </InfoPanel>
+      <div className="md:col-span-2 border-[3px] border-black bg-white p-5 shadow-[6px_6px_0_#000]">
+        <h4 className="text-2xl font-black">Query Talos uses</h4>
+        <p className="mt-2 text-sm font-bold text-[#514c40]">The resolver scopes by service, route, error message, sourcetype, and recent time window.</p>
+        <code className="mt-4 block overflow-x-auto border-2 border-black bg-black p-4 text-xs font-bold text-[#d8ff2f]">
+          index=main sourcetype=talos:error service=checkout-service route=/api/checkout "Cannot read properties"
+        </code>
+      </div>
+    </div>
+  );
+}
+
+function WhyContent() {
+  return (
+    <div className="space-y-5">
+      <h3 className="text-5xl font-black leading-none">Observability should not stop at a red chart.</h3>
+      <p className="text-lg font-bold leading-8 text-[#3d392f]">
+        Talos turns runtime failures into structured Splunk events, then asks an AI resolver to investigate logs, score impact, and produce a concise triage report engineers can act on.
+      </p>
+      <div className="grid gap-4 sm:grid-cols-3">
+        {["SDK-native crash context", "Splunk-first operations data", "Fix-ready report output"].map((item, index) => (
+          <div key={item} className="border-[3px] border-black bg-white p-4 shadow-[5px_5px_0_#000]">
+            <span className={`grid h-10 w-10 place-items-center border-2 border-black text-lg font-black ${index === 0 ? "bg-[#00c2c8]" : index === 1 ? "bg-[#ffe100]" : "bg-[#ff00ff]"}`}>
+              {index + 1}
+            </span>
+            <p className="mt-4 text-lg font-black">{item}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ChangelogContent() {
+  const changes = [
+    ["0.1.0", "SDK published", "@mylife-as-miles/talos-sdk is available for demo installs."],
+    ["MVP", "Neo-brutalist dashboard", "Incident, report, demo, and settings views are styled for hackathon storytelling."],
+    ["Agent", "Mock-safe resolver", "Reports work locally without a live Splunk instance, while MCP remains the documented primary path."]
+  ];
+  return (
+    <div>
+      <h3 className="text-4xl font-black">Changelog</h3>
+      <div className="mt-5 space-y-4">
+        {changes.map(([tag, title, body]) => (
+          <div key={title} className="grid gap-4 border-[3px] border-black bg-white p-4 shadow-[5px_5px_0_#000] sm:grid-cols-[100px_1fr]">
+            <span className="h-fit border-2 border-black bg-[#d8ff2f] px-3 py-2 text-center text-sm font-black">{tag}</span>
+            <div>
+              <h4 className="text-xl font-black">{title}</h4>
+              <p className="mt-1 text-sm font-bold leading-6 text-[#4b463b]">{body}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function HandbookContent() {
+  return (
+    <div className="space-y-5">
+      <h3 className="text-4xl font-black">Open source handbook</h3>
+      <div className="border-[3px] border-black bg-[#ffe100] p-5 shadow-[6px_6px_0_#000]">
+        <p className="text-xl font-black leading-7">
+          Talos is built like a practical devtool: small SDK surface, clear data contracts, MCP-first investigation, and mock mode so contributors can run it without enterprise infrastructure.
+        </p>
+      </div>
+      <div className="grid gap-4 sm:grid-cols-2">
+        {["Make the demo real before making it large.", "Keep Splunk HEC ingestion server-side.", "Never invent evidence in AI reports.", "Prefer boring storage until the workflow is proven."].map((rule) => (
+          <div key={rule} className="border-[3px] border-black bg-white p-4 text-lg font-black shadow-[5px_5px_0_#000]">
+            {rule}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ToolsContent({ onOpen }: { onOpen: (id: WindowId) => void }) {
+  const tools: Array<[WindowId, string, string, typeof Code2]> = [
+    ["sdk", "SDK collector", "Captures exceptions, breadcrumbs, users, tags, and runtime context.", Code2],
+    ["splunk", "HEC relay", "Validates events and forwards to Splunk with sourcetype talos:error.", Boxes],
+    ["demo", "Resolver agent", "Scores anomalies and generates strict JSON triage reports.", Sparkles],
+    ["contributors", "Triage output", "Posts concise incident summaries to Discord or Slack.", Mail]
+  ];
+  return (
+    <div>
+      <h3 className="text-4xl font-black">Talos tools</h3>
+      <div className="mt-6 grid gap-4 sm:grid-cols-2">
+        {tools.map(([id, title, body, Icon], index) => (
+          <button key={title} type="button" onClick={() => onOpen(id)} className="group text-left border-[3px] border-black bg-white p-5 shadow-[6px_6px_0_#000] transition-transform hover:-translate-y-1">
+            <span className={`grid h-12 w-12 place-items-center border-2 border-black ${index % 2 ? "bg-[#ff00ff]" : "bg-[#00c2c8]"}`}>
+              <Icon size={25} strokeWidth={2.7} />
+            </span>
+            <h4 className="mt-4 text-2xl font-black">{title}</h4>
+            <p className="mt-2 text-sm font-bold leading-6 text-[#4d473c]">{body}</p>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ByokContent() {
+  return (
+    <div className="space-y-5">
+      <h3 className="text-4xl font-black">Bring your own key.</h3>
+      <p className="text-lg font-bold leading-7 text-[#3d392f]">
+        Talos keeps provider credentials in environment variables. The MVP is OpenAI-compatible and can run in mock mode while you wire Gemini, OpenAI, or another compatible endpoint.
+      </p>
+      <div className="grid gap-4 sm:grid-cols-2">
+        {["AI_PROVIDER", "GEMINI_API_KEY", "SPLUNK_HEC_TOKEN", "DISCORD_WEBHOOK_URL"].map((name, index) => (
+          <div key={name} className={`border-[3px] border-black p-4 shadow-[5px_5px_0_#000] ${index % 2 ? "bg-white" : "bg-[#d8ff2f]"}`}>
+            <p className="font-black">{name}</p>
+            <p className="mt-1 text-sm font-bold text-[#4d473d]">Configured through .env.local. No secrets committed.</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function DemoContent({ onOpen }: { onOpen: (id: WindowId) => void }) {
+  return (
+    <div className="grid gap-6 lg:grid-cols-[1fr_0.8fr]">
+      <div className="border-[3px] border-black bg-black p-4 text-white shadow-[6px_6px_0_#000]">
+        <div className="grid aspect-video place-items-center border-2 border-[#d8ff2f] bg-[linear-gradient(135deg,#00c2c8,#ff00ff_55%,#ffe100)] text-center text-black">
+          <div>
+            <Play className="mx-auto mb-3 h-14 w-14 fill-black" strokeWidth={3} />
+            <p className="text-4xl font-black">demo.mov</p>
+            <p className="mt-2 text-sm font-black uppercase">YouTube URL pending</p>
+          </div>
+        </div>
+        <p className="mt-3 text-sm font-bold text-[#d8ff2f]">This slot is ready for the Devpost video link when you send it.</p>
+      </div>
+      <div>
+        <h3 className="text-4xl font-black">3-minute Devpost flow</h3>
+        <ol className="mt-5 space-y-3">
+          {["Problem: crashes need context", "Show SDK install", "Trigger checkout crash", "Run resolver", "Open AI report", "Send Discord notification"].map((step, index) => (
+            <li key={step} className="flex gap-3 border-[3px] border-black bg-white p-3 font-black shadow-[4px_4px_0_#000]">
+              <span className="grid h-8 w-8 shrink-0 place-items-center border-2 border-black bg-[#ffe100]">{index + 1}</span>
+              {step}
+            </li>
+          ))}
+        </ol>
+        <button type="button" onClick={() => onOpen("docs")} className="talos-primary-button mt-5 h-11 px-4">
+          Open setup docs
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function GithubContent() {
+  return (
+    <div className="space-y-5">
+      <h3 className="text-4xl font-black">Open source repo</h3>
+      <p className="text-lg font-bold leading-7 text-[#3d392f]">
+        Talos is organized as a pnpm workspace: SDK package, Next.js web app, Splunk MCP infrastructure, docs, and references.
+      </p>
+      <div className="border-[3px] border-black bg-white p-5 shadow-[6px_6px_0_#000]">
+        <div className="flex items-center gap-3 text-2xl font-black">
+          <FolderGit2 />
+          C:\Users\MILES\Documents\Talos
+        </div>
+        <button type="button" onClick={() => openExternal("https://github.com/mylife-as-miles/talos")} className="talos-primary-button mt-5 h-11 px-4">
+          Open GitHub
+          <ExternalLink size={17} />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function ContributorsContent({ status, setStatus }: { status: string; setStatus: (value: string) => void }) {
+  return (
+    <div className="grid gap-5 md:grid-cols-[0.9fr_1.1fr]">
+      <div>
+        <h3 className="text-4xl font-black leading-none">Join Talos as a contributor.</h3>
+        <p className="mt-4 text-lg font-bold leading-7 text-[#3d392f]">
+          Good first areas: SDK ergonomics, Splunk query adapters, incident UX, AI evals, notification templates, and docs.
+        </p>
+      </div>
+      <form
+        className="border-[3px] border-black bg-[#d8ff2f] p-5 shadow-[6px_6px_0_#000]"
+        onSubmit={(event) => {
+          event.preventDefault();
+          setStatus("saved");
+        }}
+      >
+        <label className="block text-sm font-black uppercase">Contributor handle</label>
+        <input className="mt-2 h-12 w-full border-[3px] border-black bg-white px-3 font-bold outline-none focus:shadow-[4px_4px_0_#000]" placeholder="@your-handle" />
+        <label className="mt-4 block text-sm font-black uppercase">Area of interest</label>
+        <select className="mt-2 h-12 w-full border-[3px] border-black bg-white px-3 font-bold outline-none focus:shadow-[4px_4px_0_#000]">
+          <option>SDK</option>
+          <option>Splunk MCP</option>
+          <option>AI resolver</option>
+          <option>Frontend polish</option>
+        </select>
+        <button type="submit" className="talos-primary-button mt-5 h-11 px-4">
+          Ask to join
+        </button>
+        {status === "saved" ? <p className="mt-4 border-2 border-black bg-white p-3 text-sm font-black">Contributor request captured locally for demo mode.</p> : null}
+      </form>
+    </div>
+  );
+}
+
+function TrashContent({ removedTrash, setRemovedTrash }: { removedTrash: string[]; setRemovedTrash: (value: string[]) => void }) {
+  const trash = ["Manual log digging", "Screenshots without stack traces", "Untriaged production alerts", "Mystery checkout failures", "Secrets in browser SDKs", "AI reports with invented evidence"];
+  const visible = trash.filter((item) => !removedTrash.includes(item));
+  return (
+    <div>
+      <div className="border-[3px] border-black bg-[#e5e1cf] p-4 shadow-[6px_6px_0_#000]">
+        <h3 className="text-4xl font-black">Recycle bin</h3>
+        <p className="mt-2 text-lg font-bold text-[#3f3a31]">Things Talos is trying to remove from incident response.</p>
+      </div>
+      <div className="mt-6 grid gap-4 sm:grid-cols-3">
+        {visible.map((item) => (
+          <button
+            key={item}
+            type="button"
+            onClick={() => setRemovedTrash([...removedTrash, item])}
+            className="min-h-32 border-[3px] border-black bg-white p-4 text-center font-black shadow-[5px_5px_0_#000] transition-transform hover:-translate-y-1"
+          >
+            <Recycle className="mx-auto mb-3" size={30} />
+            {item}
+          </button>
+        ))}
+        {visible.length === 0 ? <p className="col-span-full border-[3px] border-black bg-[#d8ff2f] p-5 text-2xl font-black shadow-[5px_5px_0_#000]">Trash emptied. Resolver online.</p> : null}
+      </div>
+    </div>
+  );
+}
+
+function InfoPanel({ title, color, icon: Icon, children }: { title: string; color: string; icon: typeof FileText; children: React.ReactNode }) {
+  return (
+    <div className={`border-[3px] border-black p-5 font-bold leading-7 shadow-[6px_6px_0_#000] ${color}`}>
+      <div className="mb-4 flex items-center gap-3">
+        <span className="grid h-11 w-11 place-items-center border-2 border-black bg-white">
+          <Icon size={23} strokeWidth={2.7} />
+        </span>
+        <h4 className="text-2xl font-black">{title}</h4>
+      </div>
+      {children}
+    </div>
+  );
+}

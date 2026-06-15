@@ -1,6 +1,12 @@
 import { getBreadcrumbs } from "./breadcrumbs.js";
 import type { TalosCaptureContext, TalosErrorEvent, TalosInitConfig, TalosLevel, TalosUser } from "./types.js";
 
+/**
+ * Generates a unique event identifier.
+ * Uses cryptographically secure randomUUID if available, falling back to a timestamp-based ID.
+ * 
+ * @returns A unique event ID string.
+ */
 export function createEventId() {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
     return crypto.randomUUID();
@@ -8,6 +14,12 @@ export function createEventId() {
   return `evt_${Date.now().toString(36)}_${Math.random().toString(36).slice(2)}`;
 }
 
+/**
+ * Normalizes an unknown error value into a standard error representation structure.
+ * 
+ * @param input The caught exception or error value to normalize.
+ * @returns A structured object containing error name, message, and optional stack trace.
+ */
 export function normalizeError(input: unknown) {
   if (input instanceof Error) {
     return {
@@ -23,6 +35,12 @@ export function normalizeError(input: unknown) {
   };
 }
 
+/**
+ * Creates details about the current execution runtime (e.g. browser context vs Node environment).
+ * 
+ * @param config The current Talos configuration.
+ * @returns An object containing language, framework, Node version, user agent, and URL if applicable.
+ */
 export function createRuntime(config: TalosInitConfig) {
   const isBrowser = typeof window !== "undefined";
   const nav = isBrowser ? window.navigator : undefined;
@@ -38,6 +56,12 @@ export function createRuntime(config: TalosInitConfig) {
   };
 }
 
+/**
+ * Constructs a structured TalosErrorEvent payload from caught error inputs and contexts.
+ * 
+ * @param input Config, caught error, custom context tags, and user context.
+ * @returns A structured TalosErrorEvent object ready for transport ingestion.
+ */
 export function createErrorEvent(input: {
   config: TalosInitConfig;
   error: unknown;
@@ -62,6 +86,15 @@ export function createErrorEvent(input: {
   };
 }
 
+/**
+ * Constructs a custom log message event by packaging it as a structured error event.
+ * 
+ * @param message The message content.
+ * @param level Log severity level.
+ * @param config Current Talos initialization config.
+ * @param user Optional logged-in user context.
+ * @returns A structured TalosErrorEvent containing the custom log message.
+ */
 export function createMessageEvent(message: string, level: TalosLevel, config: TalosInitConfig, user?: TalosUser) {
   return createErrorEvent({
     config,

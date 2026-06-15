@@ -13,7 +13,7 @@ Rules:
 - If root cause is uncertain, say so and lower confidence.
 - Always return strict JSON matching the TalosTriageReport schema.
 - Proposed fixes must be practical for a TypeScript/Next.js engineering team.
-- Prioritize errors affecting checkout, payment, auth, user data, production, or repeated failures.
+- Prioritize errors affecting catalog ingestion, scaffolder tasks, TechDocs publishing, auth, search, production, or repeated failures.
 
 SDK_EVENT:
 ${JSON.stringify(input.event, null, 2)}

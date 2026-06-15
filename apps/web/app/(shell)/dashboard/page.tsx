@@ -67,6 +67,8 @@ function Legend() {
   );
 }
 
+export const dynamic = "force-dynamic";
+
 export default async function DashboardPage() {
   const [events, reports] = await Promise.all([listEvents(), listReports()]);
   const stats = buildDashboardStats(events, reports);

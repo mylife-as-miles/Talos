@@ -6,6 +6,8 @@ import { Badge, Card, CardHeader, CodeBlock } from "@/components/ui";
 import { getEvent } from "@/lib/store/events";
 import { getReport } from "@/lib/store/reports";
 
+export const dynamic = "force-dynamic";
+
 export default async function IncidentDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const report = await getReport(id);

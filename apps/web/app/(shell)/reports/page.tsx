@@ -5,6 +5,8 @@ import { PageHeader } from "@/components/page-header";
 import { Badge, Card, CardHeader } from "@/components/ui";
 import { listReports } from "@/lib/store/reports";
 
+export const dynamic = "force-dynamic";
+
 export default async function ReportsPage() {
   const reports = await listReports();
 

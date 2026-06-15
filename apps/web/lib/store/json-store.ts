@@ -18,6 +18,11 @@ export async function writeJsonArray<T>(fileName: string, rows: T[]) {
   await mkdir(dataDir, { recursive: true });
   const filePath = path.join(dataDir, fileName);
   const tmpPath = `${filePath}.tmp`;
-  await writeFile(tmpPath, JSON.stringify(rows, null, 2), "utf8");
-  await rename(tmpPath, filePath);
+  try {
+    await writeFile(tmpPath, JSON.stringify(rows, null, 2), "utf8");
+    await rename(tmpPath, filePath);
+  } catch {
+    // Fallback if rename fails due to locks/EPERM on Windows
+    await writeFile(filePath, JSON.stringify(rows, null, 2), "utf8");
+  }
 }

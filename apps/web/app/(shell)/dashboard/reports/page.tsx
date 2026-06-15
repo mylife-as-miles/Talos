@@ -15,17 +15,17 @@ export default async function ReportsPage() {
       <PageHeader title="Reports" description="Generated triage reports optimized for Slack, Discord, and engineering handoff." />
 
       {reports.length ? (
-        <div className="talos-fade-up talos-stagger-2 mt-6 grid gap-4">
+        <div className="talos-fade-up talos-stagger-2 mt-4 grid gap-3">
           {reports.map((report, index) => (
             <div key={report.incidentId} className="talos-row-enter" style={{ animationDelay: `${index * 45}ms` }}>
               <Card className="overflow-hidden">
               <CardHeader title={report.incidentId} action={<Badge tone={report.priority === "critical" ? "critical" : "warn"}>{report.priority}</Badge>} />
-              <div className="p-5">
-                <p className="text-sm leading-6 text-slate-300">{report.summary}</p>
-                <div className="mt-4 flex flex-wrap gap-2">
+              <div className="p-3">
+                <p className="text-xs leading-5 text-slate-300">{report.summary}</p>
+                <div className="mt-3 flex flex-wrap gap-2">
                   <Badge tone="cyan">Mode: {report.splunk.mode.toUpperCase()}</Badge>
                   <Badge tone="ok">{report.confidence}% confidence</Badge>
-                  <Link className="text-sm font-medium text-talos-cyan transition hover:text-white" href={`/incidents/${report.incidentId}`}>
+                  <Link className="text-xs font-medium text-talos-cyan transition hover:text-white" href={`/incidents/${report.incidentId}`}>
                     Open incident
                   </Link>
                 </div>
@@ -35,7 +35,7 @@ export default async function ReportsPage() {
           ))}
         </div>
       ) : (
-        <div className="mt-8">
+        <div className="mt-5">
           <EmptyState
             icon={BarChart3}
             title="No reports generated yet"

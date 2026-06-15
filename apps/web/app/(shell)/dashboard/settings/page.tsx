@@ -25,9 +25,9 @@ export default function SettingsPage() {
 
       <SettingsContent envConfig={envConfig} />
 
-      <Card className="talos-fade-up talos-stagger-6 mt-5 overflow-hidden">
+      <Card className="talos-fade-up talos-stagger-6 mt-4 overflow-hidden">
         <CardHeader title="Local SDK Usage Example" />
-        <div className="p-5">
+        <div className="p-3">
           <CodeBlock
             value={`import { Talos } from "@mylife-as-miles/talos-sdk";\n\nTalos.init({\n  projectKey: "demo_project_key",\n  environment: "production",\n  release: "v1.0.0",\n  service: "checkout-service",\n  ingestUrl: "/api/ingest",\n});`}
           />

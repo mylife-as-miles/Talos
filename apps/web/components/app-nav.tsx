@@ -20,7 +20,7 @@ export function AppNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="mt-4 space-y-3 px-3">
+    <nav className="mt-2 space-y-1.5 px-2">
       {nav.map((item) => {
         const active = isActive(pathname, item.href);
         return (
@@ -28,13 +28,13 @@ export function AppNav() {
             key={item.href}
             href={item.href}
             prefetch
-            className={`talos-brutal-control flex h-[56px] items-center gap-4 border-[3px] px-5 text-[16px] font-black shadow-[4px_4px_0_#000] transition-[background-color,box-shadow,transform] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[2px_2px_0_#000] ${
+            className={`talos-brutal-control flex h-[36px] items-center gap-3 border-[2px] px-3 text-[12px] font-black shadow-[3px_3px_0_#000] transition-[background-color,box-shadow,transform] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0_#000] ${
               active
                 ? "border-black bg-[#0000ff] text-white"
                 : "border-black bg-white text-black hover:bg-[#ffe100]"
             }`}
           >
-            <item.icon size={23} strokeWidth={2.7} className="shrink-0 text-current" />
+            <item.icon size={16} strokeWidth={2.7} className="shrink-0 text-current" />
             {item.label}
           </Link>
         );

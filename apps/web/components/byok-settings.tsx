@@ -153,7 +153,7 @@ export function ByokSettings({ envConfigured }: { envConfigured: boolean }) {
             <CheckCircle2 size={14} /> Demo behavior
           </div>
           <p>
-            When you run the resolver, Talos sends this key directly to the Node API route for that request only. If no browser key or env key exists, Talos uses the local analysis engine so the demo still works.
+            When you run the resolver, Talos sends this key directly to the Node API route for that request only. A BYOK Gemini key is required for real AI triage reports.
           </p>
           <p className="mt-3">
             Do not put this key in the SDK. Browser apps should send errors to Talos ingest only; server routes handle AI and Splunk calls.
@@ -259,7 +259,7 @@ export function SplunkHecSettings({ envConfigured }: { envConfigured: boolean })
             <Database size={14} className="text-[#00c2c8]" /> HEC Telemetry Ingestion
           </div>
           <p>
-            When a crash is simulated or captured in the UI, Talos routes the error data through your client credentials.
+            When a real SDK event is captured, Talos routes the error data through your client credentials.
           </p>
           <p className="mt-3">
             Ensure your Splunk instance allows traffic from this host, and HTTP Event Collector (HEC) is enabled under Settings &gt; Data Inputs.

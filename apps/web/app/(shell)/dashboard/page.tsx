@@ -95,9 +95,9 @@ export default async function DashboardPage() {
       <section className="talos-panel talos-scanline talos-fade-up mt-3 p-3 bg-[#fffce2]">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
           <div>
-            <div className="inline-flex border-2 border-black bg-black px-1.5 py-0.5 text-[9px] font-black uppercase tracking-[.08em] text-white">Simulation Mode</div>
-            <h3 className="mt-1.5 text-[14px] font-black leading-none text-black">Simulate Incident</h3>
-            <p className="mt-1 max-w-xl text-[11px] font-bold leading-normal text-[#4d473c]">Trigger a Backstage-style production incident and watch Talos generate a Splunk-backed AI triage report.</p>
+            <div className="inline-flex border-2 border-black bg-black px-1.5 py-0.5 text-[9px] font-black uppercase tracking-[.08em] text-white">IndexedDB Live Data</div>
+            <h3 className="mt-1.5 text-[14px] font-black leading-none text-black">Resolve Real SDK Intake</h3>
+            <p className="mt-1 max-w-xl text-[11px] font-bold leading-normal text-[#4d473c]">Send real runtime events through @mylife-as-miles/talos-sdk, sync them into IndexedDB, then run Splunk-backed AI triage.</p>
           </div>
           <div>
             <DemoActions />

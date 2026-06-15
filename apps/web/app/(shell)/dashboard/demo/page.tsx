@@ -10,24 +10,24 @@ export const dynamic = "force-dynamic";
 export default async function DemoPage() {
   const [latestReport] = await listReports();
   const steps = [
-    "Trigger Backstage production incident",
-    "Send structured event through ingest relay",
-    "Run headless Splunk MCP resolver",
-    "Generate AI triage report",
+    "Install @mylife-as-miles/talos-sdk in a real app",
+    "Send a structured runtime error to /api/ingest",
+    "Sync real intake into browser IndexedDB",
+    "Run Splunk MCP or REST resolver with BYOK AI",
     "Send Discord or Slack notification"
   ];
 
   return (
     <>
       <PageHeader
-        title="Simulation Sandbox"
-        description="A guided simulation flow from runtime crash to fix recommendation."
+        title="Live Data Console"
+        description="Real SDK intake, browser IndexedDB persistence, Splunk investigation, and BYOK AI triage."
         actions={<DemoActions />}
       />
 
       <div className="grid gap-5 xl:grid-cols-[.75fr_1fr]">
         <Card className="talos-fade-up talos-stagger-2 overflow-hidden">
-          <CardHeader title="Simulation Steps" detail="Click the actions above left-to-right. Results persist and refresh automatically." />
+          <CardHeader title="Real Data Steps" detail="Send real SDK events first, then sync and resolve them from this console." />
           <div className="space-y-3 p-5">
             {steps.map((step, index) => (
               <div
@@ -56,7 +56,7 @@ export default async function DemoPage() {
                 compact
                 icon={CirclePlay}
                 title="Waiting for resolver output"
-                description="Trigger a simulation, then run the resolver to generate a fix-ready triage report."
+                description="Send a real SDK event to /api/ingest, sync IndexedDB, then run the resolver to generate a fix-ready triage report."
               />
             )}
           </div>

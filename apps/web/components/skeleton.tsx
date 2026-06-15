@@ -18,7 +18,7 @@ export function SkeletonMetricGrid() {
   return (
     <div className="grid gap-3 xl:grid-cols-4">
       {Array.from({ length: 4 }).map((_, index) => (
-        <div key={index} className="talos-panel rounded-lg p-5">
+        <div key={index} className="talos-panel p-5">
           <Skeleton className="h-3 w-24" />
           <Skeleton className="mt-4 h-10 w-32" />
           <Skeleton className="mt-6 h-10 w-full" />
@@ -30,13 +30,13 @@ export function SkeletonMetricGrid() {
 
 export function SkeletonTable({ rows = 5, cols = 6 }: { rows?: number; cols?: number }) {
   return (
-    <div className="talos-panel overflow-hidden rounded-lg">
-      <div className="border-b border-[#1f2d34] px-5 py-4">
+    <div className="talos-panel overflow-hidden">
+      <div className="border-b-[3px] border-black bg-[#e5e1cf] px-5 py-4">
         <Skeleton className="h-4 w-40" />
       </div>
       <div className="space-y-0 p-2">
         {Array.from({ length: rows }).map((_, row) => (
-          <div key={row} className="grid gap-4 border-b border-[#1c2930] px-3 py-4" style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}>
+          <div key={row} className="grid gap-4 border-b-2 border-black px-3 py-4" style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}>
             {Array.from({ length: cols }).map((__, col) => (
               <Skeleton key={col} className="h-3 w-full" />
             ))}
@@ -51,7 +51,7 @@ export function SkeletonCardList({ count = 3 }: { count?: number }) {
   return (
     <div className="grid gap-4">
       {Array.from({ length: count }).map((_, index) => (
-        <div key={index} className="talos-panel rounded-lg p-5">
+        <div key={index} className="talos-panel p-5">
           <Skeleton className="h-4 w-36" />
           <SkeletonText lines={2} className="mt-4" />
         </div>
@@ -75,11 +75,11 @@ export function DashboardSkeleton() {
       </div>
       <SkeletonMetricGrid />
       <div className="grid gap-5 xl:grid-cols-[1.45fr_1fr]">
-        <div className="talos-panel rounded-lg p-5">
+        <div className="talos-panel p-5">
           <Skeleton className="h-4 w-48" />
           <Skeleton className="mt-8 h-[250px] w-full" />
         </div>
-        <div className="talos-panel rounded-lg p-5">
+        <div className="talos-panel p-5">
           <Skeleton className="h-4 w-56" />
           <SkeletonText lines={4} className="mt-6" />
         </div>

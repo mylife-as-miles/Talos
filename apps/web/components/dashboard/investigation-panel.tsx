@@ -25,8 +25,8 @@ export function InvestigationPanel({ report }: { report?: TalosTriageReport }) {
           compact
           icon={Brain}
           title="No active investigation"
-          description="Trigger a demo crash and run the headless resolver to populate Splunk MCP investigation steps."
-          action={{ label: "Open Demo Flow", href: "/demo" }}
+          description="Trigger a simulation and run the resolver to populate Splunk MCP investigation steps."
+          action={{ label: "Run Simulation", href: "/demo" }}
         />
       </section>
     );

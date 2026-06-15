@@ -38,7 +38,7 @@ export default async function ReportsPage() {
             icon={BarChart3}
             title="No reports generated yet"
             description="Reports appear after the headless resolver investigates Splunk context and produces fix-ready triage output."
-            action={{ label: "Run Demo Flow", href: "/demo" }}
+            action={{ label: "Run Simulation", href: "/demo" }}
           />
         </div>
       )}

@@ -59,14 +59,22 @@ export async function generateTriageReport(input: {
   event: TalosErrorEvent;
   splunkContext: SplunkInvestigationContext;
   anomaly: AnomalyScore;
+  ai?: {
+    provider?: string;
+    apiKey?: string;
+    model?: string;
+  };
 }): Promise<TalosTriageReport> {
-  if (process.env.AI_PROVIDER !== "gemini" || !process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === "replace_with_key") {
+  const provider = input.ai?.provider || process.env.AI_PROVIDER;
+  const apiKey = input.ai?.apiKey || process.env.GEMINI_API_KEY;
+  const model = input.ai?.model || process.env.GEMINI_MODEL || "gemini-3-flash-preview";
+
+  if (provider !== "gemini" || !apiKey || apiKey === "replace_with_key") {
     return fallbackReport(input);
   }
 
   try {
-    const model = process.env.GEMINI_MODEL || "gemini-3-flash-preview";
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${process.env.GEMINI_API_KEY}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

@@ -10,6 +10,9 @@ export const maxDuration = 60;
 
 export async function POST(req: Request) {
   const body = (await req.json().catch(() => ({}))) as { eventId?: string };
+  const aiProvider = req.headers.get("x-talos-ai-provider") || undefined;
+  const aiKey = req.headers.get("x-talos-ai-key") || undefined;
+  const aiModel = req.headers.get("x-talos-ai-model") || undefined;
   const event = await getEvent(body.eventId);
 
   if (!event) {
@@ -25,7 +28,19 @@ export async function POST(req: Request) {
     uniqueRoutesAffected: splunkContext.stats.affectedRoutes.length,
     event
   });
-  const report = await generateTriageReport({ event, splunkContext, anomaly });
+  const report = await generateTriageReport({
+    event,
+    splunkContext,
+    anomaly,
+    ai:
+      aiKey && aiProvider === "gemini"
+        ? {
+            provider: aiProvider,
+            apiKey: aiKey,
+            model: aiModel
+          }
+        : undefined
+  });
   await saveReport(report);
   await notify(report);
 

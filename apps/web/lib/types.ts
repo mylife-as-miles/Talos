@@ -19,7 +19,7 @@ export type SplunkEvent = {
 };
 
 export type SplunkInvestigationContext = {
-  mode: "mcp" | "rest" | "mock";
+  mode: "mcp" | "rest" | "simulation";
   queryUsed: string;
   events: SplunkEvent[];
   timeline: {
@@ -73,7 +73,7 @@ export type TalosTriageReport = {
     steps: string[];
   };
   splunk: {
-    mode: "mcp" | "rest" | "mock";
+    mode: "mcp" | "rest" | "simulation";
     queryUsed: string;
     eventCount: number;
   };

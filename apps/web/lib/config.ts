@@ -1,3 +1,3 @@
-export function isMockMode() {
-  return process.env.TALOS_MOCK_MODE !== "false";
+export function isSimulationMode() {
+  return process.env.TALOS_SIMULATION_MODE !== "false";
 }

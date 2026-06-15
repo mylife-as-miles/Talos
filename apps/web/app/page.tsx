@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation";
+import { TalosOsLanding } from "@/components/landing/talos-os";
 
 export default function HomePage() {
-  redirect("/dashboard");
+  return <TalosOsLanding />;
 }

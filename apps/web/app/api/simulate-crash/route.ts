@@ -1,13 +1,13 @@
-import { demoCheckoutEvent } from "@/lib/demo-data";
+import { simulatedBackstageEvent } from "@/lib/demo-data";
 import { saveEvent } from "@/lib/store/events";
 import { sendToSplunkHEC } from "@/lib/splunk/hec";
-import { isMockMode } from "@/lib/config";
+import { isSimulationMode } from "@/lib/config";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-  const event = demoCheckoutEvent();
+  const event = simulatedBackstageEvent();
   await saveEvent(event);
 
   const hecUrl = req.headers.get("x-talos-hec-url") || undefined;
@@ -16,7 +16,7 @@ export async function POST(req: Request) {
 
   const hasHecOverride = Boolean(hecUrl && hecToken);
 
-  if (!isMockMode() || hasHecOverride) {
+  if (!isSimulationMode() || hasHecOverride) {
     await sendToSplunkHEC(event, { hecUrl, hecToken, index });
   }
 

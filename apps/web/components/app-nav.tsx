@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart3, CirclePlay, Gauge, Settings, Siren } from "lucide-react";
+import { BarChart3, Gauge, Settings, Siren } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -8,7 +8,6 @@ const nav = [
   { href: "/dashboard", label: "Dashboard", icon: Gauge },
   { href: "/incidents", label: "Incidents", icon: Siren },
   { href: "/reports", label: "Reports", icon: BarChart3 },
-  { href: "/demo", label: "Demo", icon: CirclePlay },
   { href: "/settings", label: "Settings", icon: Settings }
 ];
 

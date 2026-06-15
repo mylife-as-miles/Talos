@@ -116,6 +116,7 @@ export function TalosOsLanding() {
   const [openWindows, setOpenWindows] = useState<WindowId[]>(["home"]);
   const [activeWindow, setActiveWindow] = useState<WindowId>("home");
   const [minimized, setMinimized] = useState<WindowId[]>([]);
+  const [maximized, setMaximized] = useState<WindowId[]>([]);
   const [contributorStatus, setContributorStatus] = useState("idle");
   const [removedTrash, setRemovedTrash] = useState<string[]>([]);
 
@@ -130,11 +131,33 @@ export function TalosOsLanding() {
   function closeWindow(id: WindowId) {
     setOpenWindows((current) => current.filter((item) => item !== id));
     setMinimized((current) => current.filter((item) => item !== id));
-    if (activeWindow === id) setActiveWindow("home");
+    setMaximized((current) => current.filter((item) => item !== id));
+    if (activeWindow === id) {
+      const remaining = openWindows.filter((w) => w !== id && !minimized.includes(w));
+      if (remaining.length > 0) {
+        setActiveWindow(remaining[remaining.length - 1]);
+      } else {
+        setActiveWindow("home");
+      }
+    }
   }
 
   function minimizeWindow(id: WindowId) {
     setMinimized((current) => (current.includes(id) ? current : [...current, id]));
+    if (activeWindow === id) {
+      const remaining = openWindows.filter((w) => w !== id && !minimized.includes(w));
+      if (remaining.length > 0) {
+        setActiveWindow(remaining[remaining.length - 1]);
+      } else {
+        setActiveWindow("home");
+      }
+    }
+  }
+
+  function toggleMaximize(id: WindowId) {
+    setMaximized((current) =>
+      current.includes(id) ? current.filter((item) => item !== id) : [...current, id]
+    );
   }
 
   return (
@@ -173,9 +196,11 @@ export function TalosOsLanding() {
                 id={id}
                 zIndex={activeWindow === id ? 60 : 40 + index}
                 active={activeWindow === id}
+                maximized={maximized.includes(id)}
                 onFocus={() => setActiveWindow(id)}
                 onClose={() => closeWindow(id)}
                 onMinimize={() => minimizeWindow(id)}
+                onMaximize={() => toggleMaximize(id)}
               >
                 {renderWindowContent(id, {
                   onOpen: openWindow,
@@ -267,24 +292,34 @@ function OsWindow({
   id,
   active,
   zIndex,
+  maximized,
   children,
   onFocus,
   onClose,
-  onMinimize
+  onMinimize,
+  onMaximize
 }: {
   id: WindowId;
   active: boolean;
   zIndex: number;
+  maximized: boolean;
   children: React.ReactNode;
   onFocus: () => void;
   onClose: () => void;
   onMinimize: () => void;
+  onMaximize: () => void;
 }) {
   const meta = windowMeta[id];
   return (
     <article
-      className={`talos-window pointer-events-auto absolute max-h-[72vh] overflow-hidden border-2 border-black bg-[#fffdf1] shadow-[5px_5px_0_#000] ${active ? "talos-window-active" : ""}`}
-      style={{ width: meta.w, left: meta.x, top: meta.y, zIndex }}
+      className={`talos-window pointer-events-auto absolute overflow-hidden bg-[#fffdf1] ${
+        active ? "talos-window-active" : ""
+      } ${
+        maximized
+          ? "inset-0 shadow-none border-0"
+          : "border-2 border-black shadow-[5px_5px_0_#000] max-h-[72vh]"
+      }`}
+      style={maximized ? { zIndex } : { width: meta.w, left: meta.x, top: meta.y, zIndex }}
       onMouseDown={onFocus}
     >
       <div className="flex h-9 items-center justify-between border-b-2 border-black bg-[#d8d3bd] px-3">
@@ -300,8 +335,15 @@ function OsWindow({
           <button type="button" onClick={onMinimize} aria-label={`Minimize ${meta.title}`} className="talos-window-control">
             <Minimize2 size={13} />
           </button>
-          <button type="button" aria-label={`Maximize ${meta.title}`} className="talos-window-control">
-            <Maximize2 size={13} />
+          <button type="button" onClick={onMaximize} aria-label={`Maximize ${meta.title}`} className="talos-window-control">
+            {maximized ? (
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                <rect x="8" y="4" width="12" height="12" rx="1.5" />
+                <rect x="4" y="8" width="12" height="12" rx="1.5" fill="#fffdf1" />
+              </svg>
+            ) : (
+              <Maximize2 size={13} />
+            )}
           </button>
           <button type="button" onClick={onClose} aria-label={`Close ${meta.title}`} className="talos-window-control bg-[#ff4d5a]">
             <X size={13} />

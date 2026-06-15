@@ -6,19 +6,19 @@ const config: Config = {
     extend: {
       colors: {
         talos: {
-          bg: "#07090d",
-          panel: "#10141c",
-          panel2: "#151b24",
-          line: "#27303d",
-          muted: "#8996a8",
-          text: "#edf2f7",
-          bronze: "#c4935d",
-          cyan: "#38d4ff",
-          danger: "#ff5c7a"
+          bg: "#f5f1dc",
+          panel: "#fffdf1",
+          panel2: "#d8ff2f",
+          line: "#000000",
+          muted: "#3d3d3d",
+          text: "#000000",
+          bronze: "#ffe600",
+          cyan: "#00c2c8",
+          danger: "#ff4d5a"
         }
       },
       boxShadow: {
-        panel: "0 18px 80px rgba(0,0,0,.35)"
+        panel: "8px 8px 0 #000000"
       }
     }
   },

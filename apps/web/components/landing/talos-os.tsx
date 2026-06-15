@@ -75,19 +75,19 @@ const desktopItems: DesktopItem[] = [
 ];
 
 const windowMeta: Record<WindowId, { title: string; subtitle: string; w: string; x: string; y: string }> = {
-  home: { title: "home.mdx", subtitle: "Talos Product OS", w: "min(880px, calc(100vw - 32px))", x: "18vw", y: "4vh" },
-  sdk: { title: "SDK install", subtitle: "npm package", w: "640px", x: "8vw", y: "9vh" },
-  docs: { title: "Docs", subtitle: "Install and run Talos", w: "680px", x: "13vw", y: "8vh" },
-  splunk: { title: "splunk.mdx", subtitle: "HEC ingestion and MCP investigation", w: "720px", x: "15vw", y: "10vh" },
-  why: { title: "Why Talos?", subtitle: "Developer operations, self-healed", w: "660px", x: "25vw", y: "8vh" },
-  changelog: { title: "Changelog", subtitle: "MVP notes", w: "600px", x: "28vw", y: "11vh" },
-  handbook: { title: "Open source handbook", subtitle: "How we build Talos", w: "640px", x: "18vw", y: "12vh" },
-  tools: { title: "tools.mdx", subtitle: "Talos system pieces", w: "720px", x: "11vw", y: "7vh" },
-  byok: { title: "BYOK", subtitle: "Bring your own AI key", w: "600px", x: "20vw", y: "10vh" },
-  demo: { title: "demo.mov", subtitle: "Devpost walkthrough", w: "700px", x: "22vw", y: "7vh" },
-  github: { title: "GitHub repo", subtitle: "Open source Talos", w: "580px", x: "26vw", y: "9vh" },
-  contributors: { title: "Join as contributor", subtitle: "Help shape agentic ops", w: "600px", x: "20vw", y: "9vh" },
-  trash: { title: "Recycle bin", subtitle: "Deprecated operations rituals", w: "720px", x: "8vw", y: "6vh" }
+  home: { title: "home.mdx", subtitle: "Talos Product OS", w: "min(940px, calc(100vw - 32px))", x: "16vw", y: "4vh" },
+  sdk: { title: "SDK install", subtitle: "npm package", w: "680px", x: "8vw", y: "8vh" },
+  docs: { title: "Docs", subtitle: "Install and run Talos", w: "720px", x: "12vw", y: "7vh" },
+  splunk: { title: "splunk.mdx", subtitle: "HEC ingestion and MCP investigation", w: "760px", x: "14vw", y: "9vh" },
+  why: { title: "Why Talos?", subtitle: "Developer operations, self-healed", w: "700px", x: "23vw", y: "7vh" },
+  changelog: { title: "Changelog", subtitle: "MVP notes", w: "640px", x: "26vw", y: "10vh" },
+  handbook: { title: "Open source handbook", subtitle: "How we build Talos", w: "680px", x: "16vw", y: "10vh" },
+  tools: { title: "tools.mdx", subtitle: "Talos system pieces", w: "760px", x: "10vw", y: "6vh" },
+  byok: { title: "BYOK", subtitle: "Bring your own AI key", w: "640px", x: "18vw", y: "9vh" },
+  demo: { title: "demo.mov", subtitle: "Devpost walkthrough", w: "740px", x: "20vw", y: "6vh" },
+  github: { title: "GitHub repo", subtitle: "Open source Talos", w: "620px", x: "24vw", y: "8vh" },
+  contributors: { title: "Join as contributor", subtitle: "Help shape agentic ops", w: "640px", x: "18vw", y: "8vh" },
+  trash: { title: "Recycle bin", subtitle: "Deprecated operations rituals", w: "760px", x: "8vw", y: "5vh" }
 };
 
 const command = `npm install @mylife-as-miles/talos-sdk`;
@@ -172,11 +172,11 @@ export function TalosOsLanding() {
     <main className="talos-os h-screen overflow-hidden bg-[#f5f1dc] text-black">
       <TopBar onOpen={openWindow} />
 
-      <section className="relative h-[calc(100vh-44px)] overflow-hidden px-4 pb-16 pt-3 sm:px-6">
+      <section className="relative h-[calc(100vh-48px)] overflow-hidden px-4 pb-16 pt-3 sm:px-6">
         <div className="talos-paper-grain absolute inset-0" aria-hidden />
         <div className="talos-os-grid absolute inset-0" aria-hidden />
 
-        <div className="relative z-10 grid h-[calc(100vh-115px)] grid-cols-[96px_1fr_96px] gap-2 max-lg:grid-cols-[80px_1fr] max-md:grid-cols-1">
+        <div className="relative z-10 grid h-[calc(100vh-125px)] grid-cols-[108px_1fr_108px] gap-3 max-lg:grid-cols-[96px_1fr] max-md:grid-cols-1">
           <DesktopColumn items={desktopItems.filter((item) => item.side === "left")} onOpen={openWindow} />
 
           <div className="relative hidden lg:block">
@@ -236,15 +236,15 @@ export function TalosOsLanding() {
 
 function TopBar({ onOpen }: { onOpen: (id: WindowId) => void }) {
   return (
-    <header className="relative z-40 flex h-[44px] items-center justify-between border-b-2 border-black bg-[#e5e1cf] px-4 shadow-[0_2px_0_#000]">
+    <header className="relative z-40 flex h-[48px] items-center justify-between border-b-2 border-black bg-[#e5e1cf] px-4 shadow-[0_2px_0_#000]">
       <div className="flex items-center gap-4">
         <button type="button" onClick={() => onOpen("home")} className="group flex items-center gap-2 font-black">
-          <span className="grid h-7 w-7 place-items-center border-2 border-black bg-[#00c2c8] shadow-[2px_2px_0_#000] transition-transform group-hover:-translate-y-0.5">
-            <ShieldCheck size={16} strokeWidth={3} />
+          <span className="grid h-8 w-8 place-items-center border-2 border-black bg-[#00c2c8] shadow-[2px_2px_0_#000] transition-transform group-hover:-translate-y-0.5">
+            <ShieldCheck size={18} strokeWidth={3} />
           </span>
-          <span className="hidden text-[15px] sm:inline">Talos OS</span>
+          <span className="hidden text-[16px] sm:inline">Talos OS</span>
         </button>
-        <nav className="hidden items-center gap-1 text-xs font-black lg:flex">
+        <nav className="hidden items-center gap-1.5 text-[13px] font-black lg:flex">
           {[
             ["Product OS", "home"],
             ["SDK", "sdk"],
@@ -261,7 +261,7 @@ function TopBar({ onOpen }: { onOpen: (id: WindowId) => void }) {
       </div>
 
       <div className="flex items-center gap-2">
-        <Link href="/dashboard" className="talos-primary-button h-7.5 px-3 text-xs">
+        <Link href="/dashboard" className="talos-primary-button h-8.5 px-3.5 text-xs">
           Dashboard
         </Link>
         <button type="button" onClick={() => onOpen("docs")} aria-label="Search docs" className="talos-top-icon">
@@ -270,7 +270,7 @@ function TopBar({ onOpen }: { onOpen: (id: WindowId) => void }) {
         <button type="button" onClick={() => onOpen("contributors")} aria-label="Ask to contribute" className="talos-top-icon">
           <Mail size={16} />
         </button>
-        <button type="button" onClick={() => onOpen("byok")} className="hidden h-7.5 items-center gap-1 border-2 border-black bg-white px-2 text-[11px] font-black shadow-[1.5px_1.5px_0_#000] sm:flex">
+        <button type="button" onClick={() => onOpen("byok")} className="hidden h-8.5 items-center gap-1 border-2 border-black bg-white px-2.5 text-[12px] font-black shadow-[1.5px_1.5px_0_#000] sm:flex">
           <KeyRound size={13} />
           BYOK
         </button>
@@ -281,7 +281,7 @@ function TopBar({ onOpen }: { onOpen: (id: WindowId) => void }) {
 
 function DesktopColumn({ items, onOpen, align = "left" }: { items: DesktopItem[]; onOpen: (id: WindowId) => void; align?: "left" | "right" }) {
   return (
-    <div className={`relative z-10 flex flex-col gap-2 ${align === "right" ? "items-end max-md:items-start" : "items-start"} max-md:grid max-md:grid-cols-3 max-sm:grid-cols-2`}>
+    <div className={`relative z-10 flex flex-col gap-3 ${align === "right" ? "items-end max-md:items-start" : "items-start"} max-md:grid max-md:grid-cols-3 max-sm:grid-cols-2`}>
       {items.map((item) => (
         <DesktopIcon key={item.id} item={item} onOpen={() => onOpen(item.id)} align={align} />
       ))}
@@ -293,12 +293,12 @@ function DesktopIcon({ item, onOpen, align }: { item: DesktopItem; onOpen: () =>
   const Icon = item.icon;
   return (
     <button type="button" onClick={onOpen} className={`talos-desktop-icon group ${align === "right" ? "text-right" : "text-left"}`}>
-      <span className="relative grid h-10 w-10 place-items-center border-2 border-black bg-white shadow-[3px_3px_0_#000] transition-transform group-hover:-translate-y-0.5">
-        <span className={`absolute -right-1.5 -top-1.5 h-3.5 w-3.5 border border-black ${item.accent}`} />
-        <Icon size={20} strokeWidth={2.5} />
+      <span className="relative grid h-12 w-12 place-items-center border-2 border-black bg-white shadow-[3px_3px_0_#000] transition-transform group-hover:-translate-y-0.5">
+        <span className={`absolute -right-1.5 -top-1.5 h-4 w-4 border border-black ${item.accent}`} />
+        <Icon size={24} strokeWidth={2.5} />
       </span>
-      <span className="mt-1 block rounded-sm bg-[#f5f1dc]/85 px-1 text-[11px] font-black leading-tight">{item.label}</span>
-      <span className="mt-0.5 block px-1 text-[9px] font-bold leading-tight text-[#555042]">{item.detail}</span>
+      <span className="mt-1 block rounded-sm bg-[#f5f1dc]/85 px-1 text-[12px] font-black leading-tight">{item.label}</span>
+      <span className="mt-0.5 block px-1 text-[10px] font-bold leading-tight text-[#555042]">{item.detail}</span>
     </button>
   );
 }
@@ -334,17 +334,17 @@ function OsWindow({
       } ${
         maximized
           ? "inset-0 shadow-none border-0"
-          : "border-2 border-black shadow-[5px_5px_0_#000] max-h-[72vh]"
+          : "border-3 border-black shadow-[7px_7px_0_#000] max-h-[72vh]"
       }`}
       style={maximized ? { zIndex } : { width: meta.w, left: meta.x, top: meta.y, zIndex }}
       onMouseDown={onFocus}
     >
-      <div className="flex h-9 items-center justify-between border-b-2 border-black bg-[#d8d3bd] px-3">
-        <div className="flex min-w-0 items-center gap-2">
-          <FileText size={16} strokeWidth={2.5} />
+      <div className="flex h-10.5 items-center justify-between border-b-2 border-black bg-[#d8d3bd] px-3">
+        <div className="flex min-w-0 items-center gap-2.5">
+          <FileText size={18} strokeWidth={2.5} />
           <div className="min-w-0">
-            <h2 className="truncate text-[13px] font-black leading-none">{meta.title}</h2>
-            <p className="mt-0.5 truncate text-[9px] font-bold uppercase tracking-wide text-[#5c5748]">{meta.subtitle}</p>
+            <h2 className="truncate text-[14px] font-black leading-none">{meta.title}</h2>
+            <p className="mt-0.5 truncate text-[10px] font-bold uppercase tracking-wide text-[#5c5748]">{meta.subtitle}</p>
           </div>
           <ChevronDown size={13} strokeWidth={3} />
         </div>
@@ -367,7 +367,7 @@ function OsWindow({
           </button>
         </div>
       </div>
-      <div className="flex items-center gap-2 border-b-2 border-black bg-[#f8f5e6] px-3 py-1 text-[11px] font-black text-[#615b4e]">
+      <div className="flex items-center gap-2 border-b-2 border-black bg-[#f8f5e6] px-3 py-1.5 text-[12px] font-black text-[#615b4e]">
         <button type="button" onClick={() => onAction("Nothing to undo")} className="talos-toolbar-button">
           Undo
         </button>
@@ -399,7 +399,7 @@ function OsWindow({
           </button>
         </span>
       </div>
-      <div className="talos-window-body max-h-[calc(72vh-68px)] overflow-y-auto p-4 sm:p-5">{children}</div>
+      <div className="talos-window-body max-h-[calc(72vh-78px)] overflow-y-auto p-4 sm:p-5">{children}</div>
     </article>
   );
 }
@@ -418,7 +418,7 @@ function Dock({
   onOpen: (id: WindowId) => void;
 }) {
   return (
-    <div className="fixed bottom-3 left-1/2 z-50 flex -translate-x-1/2 items-end gap-1.5 border-2 border-black bg-[#fffdf1] px-2 py-1.5 shadow-[3.5px_3.5px_0_#000]">
+    <div className="fixed bottom-4 left-1/2 z-50 flex -translate-x-1/2 items-end gap-2.5 border-2 border-black bg-[#fffdf1] px-3 py-2 shadow-[3.5px_3.5px_0_#000]">
       {items.map((item) => {
         const Icon = item.icon;
         const open = openWindows.includes(item.id);
@@ -431,8 +431,8 @@ function Dock({
             title={item.label}
             className={`talos-dock-icon ${activeWindow === item.id && !isMinimized ? "talos-dock-icon-active" : ""}`}
           >
-            <span className={`absolute -right-1 -top-1 h-3 w-3 border border-black ${item.accent}`} />
-            <Icon size={18} strokeWidth={2.6} />
+            <span className={`absolute -right-1 -top-1 h-3.5 w-3.5 border border-black ${item.accent}`} />
+            <Icon size={22} strokeWidth={2.6} />
             {open ? <span className="absolute -bottom-1 h-1 w-5 border border-black bg-[#00c2c8]" /> : null}
           </button>
         );
@@ -443,12 +443,12 @@ function Dock({
 
 function StatusSticker() {
   return (
-    <div className="talos-status-sticker absolute left-[4vw] top-[3vh] max-w-[250px] rotate-[-2deg] border-2 border-black bg-[#d8ff2f] p-2.5 shadow-[4px_4px_0_#000]">
-      <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-wide">
-        <span className="talos-live-dot h-3 w-3 border border-black bg-[#ff00ff]" />
+    <div className="talos-status-sticker absolute left-[4vw] top-[3vh] max-w-[280px] rotate-[-2deg] border-2 border-black bg-[#d8ff2f] p-3.5 shadow-[4px_4px_0_#000]">
+      <div className="flex items-center gap-2 text-[11px] font-black uppercase tracking-wide">
+        <span className="talos-live-dot h-3.5 w-3.5 border border-black bg-[#ff00ff]" />
         Runtime loop online
       </div>
-      <p className="mt-1.5 text-[17px] font-black leading-[0.94]">SDK crash in. Splunk context out. Fix report ready.</p>
+      <p className="mt-2 text-[19px] font-black leading-[0.94]">SDK crash in. Splunk context out. Fix report ready.</p>
     </div>
   );
 }
@@ -500,35 +500,35 @@ function HomeContent({ onOpen }: { onOpen: (id: WindowId) => void }) {
     <div className="grid gap-4 lg:grid-cols-[1.08fr_0.92fr]">
       <div>
         <div className="flex items-center gap-2.5">
-          <span className="grid h-9 w-9 place-items-center border-2 border-black bg-[#00c2c8] shadow-[2.5px_2.5px_0_#000]">
-            <ShieldCheck size={20} strokeWidth={3} />
+          <span className="grid h-10 w-10 place-items-center border-2 border-black bg-[#00c2c8] shadow-[2.5px_2.5px_0_#000]">
+            <ShieldCheck size={22} strokeWidth={3} />
           </span>
           <div>
-            <p className="text-xs font-black uppercase tracking-wide text-[#5b5547]">Talos</p>
-            <p className="text-[15px] font-black">Self-healing Splunk AI Ops</p>
+            <p className="text-[11px] font-black uppercase tracking-wide text-[#5b5547]">Talos</p>
+            <p className="text-[16px] font-black">Self-healing Splunk AI Ops</p>
           </div>
         </div>
 
-        <h1 className="mt-4 max-w-[720px] text-[clamp(1.5rem,3.5vw,2.5rem)] font-black leading-[0.88]">
+        <h1 className="mt-4 max-w-[720px] text-[clamp(1.7rem,3.8vw,2.8rem)] font-black leading-[0.88]">
           Crash captured. Root cause found. Fix shipped.
         </h1>
-        <p className="mt-3 max-w-xl text-[14px] font-bold leading-6 text-[#333025]">
+        <p className="mt-3 max-w-xl text-[15px] font-bold leading-6 text-[#333025]">
           Talos gives developers an npm SDK, a Splunk HEC ingest relay, a headless MCP resolver, and fix-ready AI triage reports in one open Product OS.
         </p>
 
-        <div className="mt-4 flex flex-wrap gap-2">
-          <button type="button" onClick={() => onOpen("sdk")} className="talos-primary-button h-9.5 px-4 text-xs">
+        <div className="mt-4 flex flex-wrap gap-2.5">
+          <button type="button" onClick={() => onOpen("sdk")} className="talos-primary-button h-10.5 px-4.5 text-xs">
             Install SDK
           </button>
-          <Link href="/demo" className="talos-secondary-button h-9.5 px-4 text-xs">
+          <Link href="/demo" className="talos-secondary-button h-10.5 px-4.5 text-xs">
             Run simulation
           </Link>
-          <Link href="/dashboard" className="talos-secondary-button h-9.5 px-4 text-xs">
+          <Link href="/dashboard" className="talos-secondary-button h-10.5 px-4.5 text-xs">
             Open dashboard
           </Link>
         </div>
 
-        <div className="mt-3 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-xs font-black text-[#625c4f]">
+        <div className="mt-3 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-sm font-black text-[#625c4f]">
           <button type="button" onClick={() => onOpen("splunk")} className="underline decoration-2 underline-offset-4">
             Splunk MCP
           </button>
@@ -545,11 +545,11 @@ function HomeContent({ onOpen }: { onOpen: (id: WindowId) => void }) {
 
       <div className="space-y-3">
         <div className="border-2 border-black bg-[#00c2c8] p-3 shadow-[4px_4px_0_#000]">
-          <div className="flex items-center justify-between border-b pb-2 text-xs font-black uppercase">
+          <div className="flex items-center justify-between border-b pb-2 text-[13px] font-black uppercase">
             <span>Resolver loop</span>
             <span>Mock or live</span>
           </div>
-          <ol className="mt-2.5 space-y-2 text-xs font-bold">
+          <ol className="mt-2.5 space-y-2 text-[13px] font-bold">
             {["SDK captures runtime crash", "Next.js ingest stores event and forwards HEC", "Splunk MCP returns related logs", "AI resolver creates fix-ready report"].map((step, index) => (
               <li key={step} className="flex gap-2.5">
                 <span className="grid h-5 w-5 shrink-0 place-items-center border-2 border-black bg-[#ffe100] text-[10px] font-black">{index + 1}</span>
@@ -559,11 +559,11 @@ function HomeContent({ onOpen }: { onOpen: (id: WindowId) => void }) {
           </ol>
         </div>
         <div className="border-2 border-black bg-white p-3 shadow-[4px_4px_0_#000]">
-          <div className="flex items-center gap-1.5 font-black text-sm">
+          <div className="flex items-center gap-1.5 font-black text-[15px]">
             <TerminalSquare size={16} />
             Local package
           </div>
-          <code className="mt-2 block overflow-x-auto border border-black bg-black p-2 text-xs font-bold text-[#d8ff2f]">{command}</code>
+          <code className="mt-2 block overflow-x-auto border border-black bg-black p-2 text-[13px] font-bold text-[#d8ff2f]">{command}</code>
         </div>
       </div>
     </div>

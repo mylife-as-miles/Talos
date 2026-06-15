@@ -281,7 +281,7 @@ pre {
 
 .talos-menu-item {
   border: 2px solid transparent;
-  padding: 4px 6px;
+  padding: 6px 8px;
   transition: background-color 140ms var(--ease-out), border-color 140ms var(--ease-out), transform 140ms var(--ease-out);
 }
 
@@ -333,8 +333,8 @@ pre {
 
 .talos-top-icon {
   display: grid;
-  height: 30px;
-  width: 30px;
+  height: 34px;
+  width: 34px;
   place-items: center;
   border: 2px solid #000;
   background: #fffdf1;
@@ -343,7 +343,7 @@ pre {
 }
 
 .talos-desktop-icon {
-  width: 80px;
+  width: 90px;
   color: #000;
   outline: none;
 }
@@ -408,21 +408,21 @@ pre {
 }
 
 .talos-window-control {
-  height: 22px;
-  width: 22px;
+  height: 25px;
+  width: 25px;
 }
 
 .talos-toolbar-button {
-  min-width: 46px;
-  height: 22px;
+  min-width: 50px;
+  height: 25px;
   padding: 0 6px;
 }
 
 .talos-dock-icon {
   position: relative;
   display: grid;
-  height: 40px;
-  width: 40px;
+  height: 45px;
+  width: 45px;
   place-items: center;
   border: 2px solid #000;
   background: #fffdf1;

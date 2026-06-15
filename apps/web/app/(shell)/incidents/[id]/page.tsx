@@ -27,7 +27,7 @@ export default async function IncidentDetailPage({ params }: { params: Promise<{
       </div>
 
       <div className="grid gap-5 xl:grid-cols-[1fr_.85fr]">
-        <Card className="talos-card-hover talos-fade-up talos-stagger-1 overflow-hidden">
+        <Card className="talos-fade-up talos-stagger-1 overflow-hidden">
           <CardHeader title="AI Triage Report" detail="Root cause, evidence, and practical fix recommendation." />
           <div className="space-y-5 p-5">
             <section>
@@ -68,7 +68,7 @@ export default async function IncidentDetailPage({ params }: { params: Promise<{
         </Card>
 
         <div className="space-y-5">
-          <Card className="talos-card-hover talos-fade-up talos-stagger-2">
+          <Card className="talos-fade-up talos-stagger-2">
             <CardHeader title="Incident Metadata" />
             <dl className="grid gap-3 p-5 text-sm">
               <div>
@@ -95,7 +95,7 @@ export default async function IncidentDetailPage({ params }: { params: Promise<{
               </div>
             </dl>
           </Card>
-          <Card className="talos-card-hover talos-fade-up talos-stagger-3">
+          <Card className="talos-fade-up talos-stagger-3">
             <CardHeader title="Evidence Timeline" />
             {report.timeline.length ? (
               <div className="space-y-3 p-5">
@@ -121,13 +121,13 @@ export default async function IncidentDetailPage({ params }: { params: Promise<{
       </div>
 
       <div className="mt-5 grid gap-5 xl:grid-cols-2">
-        <Card className="talos-card-hover talos-fade-up talos-stagger-4">
+        <Card className="talos-fade-up talos-stagger-4">
           <CardHeader title="Splunk Query Used" />
           <div className="p-5">
             <CodeBlock value={report.splunk.queryUsed} />
           </div>
         </Card>
-        <Card className="talos-card-hover talos-fade-up talos-stagger-5">
+        <Card className="talos-fade-up talos-stagger-5">
           <CardHeader title="Raw Event JSON" />
           <div className="p-5">
             {event ? (

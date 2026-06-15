@@ -75,19 +75,19 @@ const desktopItems: DesktopItem[] = [
 ];
 
 const windowMeta: Record<WindowId, { title: string; subtitle: string; w: string; x: string; y: string }> = {
-  home: { title: "home.mdx", subtitle: "Talos Product OS", w: "min(1020px, calc(100vw - 42px))", x: "21vw", y: "8vh" },
-  sdk: { title: "SDK install", subtitle: "npm package", w: "760px", x: "8vw", y: "16vh" },
-  docs: { title: "Docs", subtitle: "Install and run Talos", w: "790px", x: "13vw", y: "13vh" },
-  splunk: { title: "splunk.mdx", subtitle: "HEC ingestion and MCP investigation", w: "820px", x: "17vw", y: "18vh" },
-  why: { title: "Why Talos?", subtitle: "Developer operations, self-healed", w: "760px", x: "28vw", y: "14vh" },
-  changelog: { title: "Changelog", subtitle: "MVP notes", w: "700px", x: "31vw", y: "18vh" },
-  handbook: { title: "Open source handbook", subtitle: "How we build Talos", w: "750px", x: "19vw", y: "20vh" },
-  tools: { title: "tools.mdx", subtitle: "Talos system pieces", w: "830px", x: "11vw", y: "12vh" },
-  byok: { title: "BYOK", subtitle: "Bring your own AI key", w: "720px", x: "23vw", y: "19vh" },
-  demo: { title: "demo.mov", subtitle: "Devpost walkthrough", w: "790px", x: "24vw", y: "11vh" },
-  github: { title: "GitHub repo", subtitle: "Open source Talos", w: "690px", x: "31vw", y: "17vh" },
-  contributors: { title: "Join as contributor", subtitle: "Help shape agentic ops", w: "720px", x: "21vw", y: "15vh" },
-  trash: { title: "Recycle bin", subtitle: "Deprecated operations rituals", w: "860px", x: "8vw", y: "10vh" }
+  home: { title: "home.mdx", subtitle: "Talos Product OS", w: "min(880px, calc(100vw - 32px))", x: "18vw", y: "4vh" },
+  sdk: { title: "SDK install", subtitle: "npm package", w: "640px", x: "8vw", y: "9vh" },
+  docs: { title: "Docs", subtitle: "Install and run Talos", w: "680px", x: "13vw", y: "8vh" },
+  splunk: { title: "splunk.mdx", subtitle: "HEC ingestion and MCP investigation", w: "720px", x: "15vw", y: "10vh" },
+  why: { title: "Why Talos?", subtitle: "Developer operations, self-healed", w: "660px", x: "25vw", y: "8vh" },
+  changelog: { title: "Changelog", subtitle: "MVP notes", w: "600px", x: "28vw", y: "11vh" },
+  handbook: { title: "Open source handbook", subtitle: "How we build Talos", w: "640px", x: "18vw", y: "12vh" },
+  tools: { title: "tools.mdx", subtitle: "Talos system pieces", w: "720px", x: "11vw", y: "7vh" },
+  byok: { title: "BYOK", subtitle: "Bring your own AI key", w: "600px", x: "20vw", y: "10vh" },
+  demo: { title: "demo.mov", subtitle: "Devpost walkthrough", w: "700px", x: "22vw", y: "7vh" },
+  github: { title: "GitHub repo", subtitle: "Open source Talos", w: "580px", x: "26vw", y: "9vh" },
+  contributors: { title: "Join as contributor", subtitle: "Help shape agentic ops", w: "600px", x: "20vw", y: "9vh" },
+  trash: { title: "Recycle bin", subtitle: "Deprecated operations rituals", w: "720px", x: "8vw", y: "6vh" }
 };
 
 const command = `npm install @mylife-as-miles/talos-sdk`;

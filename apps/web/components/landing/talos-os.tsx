@@ -283,51 +283,51 @@ function OsWindow({
   const meta = windowMeta[id];
   return (
     <article
-      className={`talos-window pointer-events-auto absolute max-h-[78vh] overflow-hidden border-[3px] border-black bg-[#fffdf1] shadow-[9px_9px_0_#000] ${active ? "talos-window-active" : ""}`}
+      className={`talos-window pointer-events-auto absolute max-h-[72vh] overflow-hidden border-2 border-black bg-[#fffdf1] shadow-[5px_5px_0_#000] ${active ? "talos-window-active" : ""}`}
       style={{ width: meta.w, left: meta.x, top: meta.y, zIndex }}
       onMouseDown={onFocus}
     >
-      <div className="flex h-12 items-center justify-between border-b-[3px] border-black bg-[#d8d3bd] px-3">
+      <div className="flex h-9 items-center justify-between border-b-2 border-black bg-[#d8d3bd] px-3">
         <div className="flex min-w-0 items-center gap-2">
-          <FileText size={21} strokeWidth={2.5} />
+          <FileText size={16} strokeWidth={2.5} />
           <div className="min-w-0">
-            <h2 className="truncate text-[15px] font-black leading-none">{meta.title}</h2>
-            <p className="mt-1 truncate text-[11px] font-bold uppercase tracking-wide text-[#5c5748]">{meta.subtitle}</p>
+            <h2 className="truncate text-[13px] font-black leading-none">{meta.title}</h2>
+            <p className="mt-0.5 truncate text-[9px] font-bold uppercase tracking-wide text-[#5c5748]">{meta.subtitle}</p>
           </div>
-          <ChevronDown size={16} strokeWidth={3} />
+          <ChevronDown size={13} strokeWidth={3} />
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
           <button type="button" onClick={onMinimize} aria-label={`Minimize ${meta.title}`} className="talos-window-control">
-            <Minimize2 size={16} />
+            <Minimize2 size={13} />
           </button>
           <button type="button" aria-label={`Maximize ${meta.title}`} className="talos-window-control">
-            <Maximize2 size={16} />
+            <Maximize2 size={13} />
           </button>
           <button type="button" onClick={onClose} aria-label={`Close ${meta.title}`} className="talos-window-control bg-[#ff4d5a]">
-            <X size={16} />
+            <X size={13} />
           </button>
         </div>
       </div>
-      <div className="flex items-center gap-2 border-b-2 border-black bg-[#f8f5e6] px-3 py-2 text-xs font-black text-[#615b4e]">
+      <div className="flex items-center gap-2 border-b-2 border-black bg-[#f8f5e6] px-3 py-1 text-[11px] font-black text-[#615b4e]">
         <button type="button" className="talos-toolbar-button">
           Undo
         </button>
         <button type="button" className="talos-toolbar-button">
           Zoom
         </button>
-        <span className="h-6 border-l-2 border-[#b9b29d]" />
+        <span className="h-5 border-l-2 border-[#b9b29d]" />
         <span>B</span>
         <span className="italic">I</span>
         <span className="underline">U</span>
         <span className="ml-auto hidden items-center gap-3 sm:flex">
-          <Search size={16} />
-          <Settings size={16} />
-          <button type="button" className="talos-primary-button h-8 px-3">
+          <Search size={13} />
+          <Settings size={13} />
+          <button type="button" className="talos-primary-button h-6 px-2.5 text-[10px]">
             Share
           </button>
         </span>
       </div>
-      <div className="talos-window-body max-h-[calc(78vh-88px)] overflow-y-auto p-5 sm:p-8">{children}</div>
+      <div className="talos-window-body max-h-[calc(72vh-68px)] overflow-y-auto p-4 sm:p-5">{children}</div>
     </article>
   );
 }
@@ -449,7 +449,7 @@ function HomeContent({ onOpen }: { onOpen: (id: WindowId) => void }) {
             Install SDK
           </button>
           <Link href="/demo" className="talos-secondary-button h-12 px-5 text-base">
-            Run demo crash
+            Run simulation
           </Link>
           <Link href="/dashboard" className="talos-secondary-button h-12 px-5 text-base">
             Open dashboard

@@ -21,12 +21,12 @@ flowchart TD
 ## Components
 
 - `packages/sdk`: captures structured runtime errors and sends them to the ingest relay.
-- `apps/web/app/api/ingest`: validates project key, stores events, forwards to HEC outside mock mode.
+- `apps/web/app/api/ingest`: validates project key, stores events, forwards to HEC when live telemetry credentials are configured.
 - `apps/web/app/api/agent`: fetches an event, investigates Splunk context, scores anomaly severity, generates a report, and notifies chat.
-- `apps/web/lib/splunk`: MCP-first investigation with REST fallback and mock demo context.
+- `apps/web/lib/splunk`: MCP-first investigation with REST fallback and simulated telemetry context.
 - `apps/web/lib/ai`: strict report generation with deterministic fallback when no provider key is configured.
 - `apps/web/lib/store`: JSON file-backed MVP storage.
 
 ## Demo Reliability
 
-Mock mode is a first-class local demo mode. It preserves the product flow while clearly labeling `Mode: MOCK` in reports and dashboard surfaces.
+Simulation mode is a first-class local reliability mode. It preserves the product flow with realistic Backstage-style telemetry while keeping reports and dashboard surfaces production-oriented.

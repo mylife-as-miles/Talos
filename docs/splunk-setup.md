@@ -27,7 +27,7 @@ Talos sends HEC payloads shaped as:
   "sourcetype": "talos:error",
   "source": "talos-sdk",
   "index": "main",
-  "host": "checkout-service"
+  "host": "catalog-service"
 }
 ```
 
@@ -53,7 +53,7 @@ SPLUNK_BASE_URL=https://localhost:8089
 SPLUNK_TOKEN=replace_with_token
 ```
 
-REST is used only when MCP is unavailable and mock mode is disabled.
+REST is used only when MCP is unavailable and live Splunk search credentials are configured.
 
 ## Test Ingestion
 
@@ -61,10 +61,10 @@ REST is used only when MCP is unavailable and mock mode is disabled.
 curl -X POST http://localhost:3000/api/simulate-crash
 ```
 
-When mock mode is off, verify events with:
+When live Splunk ingestion is configured, verify events with:
 
 ```spl
-index=main sourcetype=talos:error service=checkout-service
+index=main sourcetype=talos:error service=catalog-service
 ```
 
 ## Test Resolver

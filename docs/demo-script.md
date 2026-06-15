@@ -10,19 +10,19 @@ Show `@mylife-as-miles/talos-sdk` initialization and breadcrumbs. Explain that T
 
 ## 0:45 Trigger Crash
 
-Open `/demo` and click Trigger Demo Crash. The checkout service simulates:
+Open `/dashboard/demo` and click Simulate Incident. The catalog service simulates:
 
 ```text
 Cannot read properties of undefined (reading 'email')
 ```
 
-## 1:10 Show Splunk Event or Mock Event
+## 1:10 Show Splunk Event or Simulated Telemetry
 
 Open the dashboard. Show the runtime intake timeline and explain that live mode forwards the same event to Splunk HEC.
 
 ## 1:35 Run Headless Resolver
 
-Click Run Headless Resolver. Talos queries Splunk MCP first, uses REST fallback when needed, and uses mock context for a reliable local video.
+Click Run Resolver. Talos queries Splunk MCP first, uses REST fallback when needed, and uses simulated telemetry for a reliable local video.
 
 ## 2:05 Show AI Report
 

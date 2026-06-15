@@ -39,7 +39,7 @@ Talos moves teams beyond passive observability. Instead of stopping at alerts, i
 
 ## Challenges
 
-The hardest part was designing an MVP that honors Splunk MCP as the primary architecture while staying reliable for a local hackathon demo. Mock mode keeps the video flow stable without hiding the intended production integration.
+The hardest part was designing an MVP that honors Splunk MCP as the primary architecture while staying reliable for a local hackathon demo. Simulation mode keeps the video flow stable without hiding the intended production integration.
 
 ## What's Next
 

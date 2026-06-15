@@ -161,24 +161,6 @@ pre {
   }
 }
 
-.talos-empty {
-  position: relative;
-}
-
-.talos-empty::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(120deg, transparent, rgba(34, 217, 243, 0.35), transparent);
-  background-size: 200% 100%;
-  animation: talos-shimmer 3s linear infinite;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
 
 @keyframes talos-sparkline-draw {
   from {

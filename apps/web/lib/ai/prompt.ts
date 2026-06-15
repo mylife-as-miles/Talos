@@ -12,8 +12,10 @@ Rules:
 - Use only the provided SDK and Splunk context.
 - If root cause is uncertain, say so and lower confidence.
 - Always return strict JSON matching the TalosTriageReport schema.
-- Proposed fixes must be practical for a TypeScript/Next.js engineering team.
-- Prioritize errors affecting catalog ingestion, scaffolder tasks, TechDocs publishing, auth, search, production, or repeated failures.
+- Proposed fixes must be practical for the engineering team implied by the SDK payload.
+- Prioritize production impact, repeated failures, checkout/payment/auth/user-data routes, and services with many correlated Splunk events.
+- Include an incidentId like INC-${input.event.eventId.slice(0, 8).toUpperCase()} and eventId ${input.event.eventId}.
+- Return JSON only. Do not wrap it in Markdown.
 
 SDK_EVENT:
 ${JSON.stringify(input.event, null, 2)}

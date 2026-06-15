@@ -1,0 +1,7 @@
+src
+node_modules
+.env
+.env.local
+*.log
+tsconfig.tsbuildinfo
+coverage

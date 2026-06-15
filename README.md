@@ -2,7 +2,7 @@
 
 Talos is a self-healing AI developer operations system for Splunk.
 
-It captures runtime crashes through `@talos/sdk`, sends structured events into Splunk through HEC, investigates them through Splunk MCP, and generates fix-ready triage reports for engineering teams.
+It captures runtime crashes through `@mylife-as-miles/talos-sdk`, sends structured events into Splunk through HEC, investigates them through Splunk MCP, and generates fix-ready triage reports for engineering teams.
 
 ## Why Splunk?
 
@@ -11,14 +11,14 @@ Splunk is the operational source of truth for production logs, alerts, and incid
 ## Architecture
 
 ```text
-Developer app -> @talos/sdk -> Next.js ingest API -> Splunk HEC
+Developer app -> @mylife-as-miles/talos-sdk -> Next.js ingest API -> Splunk HEC
 Splunk -> Splunk MCP Server -> Talos Resolver -> AI RCA report
 Report -> Talos Dashboard -> Discord/Slack
 ```
 
 ## Features
 
-- Local npm-style SDK package: `@talos/sdk`
+- Local npm-style SDK package: `@mylife-as-miles/talos-sdk`
 - Browser-safe ingest relay that never exposes Splunk HEC tokens
 - Next.js App Router dashboard
 - File-backed local MVP store
@@ -57,7 +57,7 @@ No secrets are required for the default demo path.
 
 ```bash
 corepack pnpm install
-corepack pnpm --filter @talos/sdk build
+corepack pnpm --filter @mylife-as-miles/talos-sdk build
 corepack pnpm --filter @talos/web build
 corepack pnpm dev
 ```
@@ -100,7 +100,7 @@ Talos tries MCP first, REST second, and mock context only when mock mode is enab
 ## SDK Usage
 
 ```ts
-import { Talos } from "@talos/sdk";
+import { Talos } from "@mylife-as-miles/talos-sdk";
 
 Talos.init({
   projectKey: "demo_project_key",

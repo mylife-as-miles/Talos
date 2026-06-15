@@ -6,7 +6,7 @@ Developers already capture logs, but incident response still stalls at manual in
 
 ## 0:20 Show SDK
 
-Show `@talos/sdk` initialization and breadcrumbs. Explain that Talos captures AI-readable operational events with service, route, release, user, tags, stack trace, and runtime context.
+Show `@mylife-as-miles/talos-sdk` initialization and breadcrumbs. Explain that Talos captures AI-readable operational events with service, route, release, user, tags, stack trace, and runtime context.
 
 ## 0:45 Trigger Crash
 

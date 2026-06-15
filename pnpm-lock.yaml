@@ -17,7 +17,7 @@ importers:
 
   apps/web:
     dependencies:
-      '@talos/sdk':
+      '@mylife-as-miles/talos-sdk':
         specifier: workspace:*
         version: link:../../packages/sdk
       clsx:

@@ -1,9 +1,9 @@
-# @talos/sdk
+# @mylife-as-miles/talos-sdk
 
 Local TypeScript SDK for Talos runtime error capture.
 
 ```ts
-import { Talos } from "@talos/sdk";
+import { Talos } from "@mylife-as-miles/talos-sdk";
 
 Talos.init({
   projectKey: "demo_project_key",

@@ -4,7 +4,7 @@ Talos closes the loop from runtime crash capture to fix-ready triage.
 
 ```mermaid
 flowchart TD
-    A[Developer App] --> B[@talos/sdk]
+    A[Developer App] --> B[@mylife-as-miles/talos-sdk]
     B --> C[Next.js Ingest API]
     C --> D[Splunk HEC]
     D --> E[Splunk Index]

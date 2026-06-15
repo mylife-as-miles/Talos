@@ -1,10 +1,11 @@
 {
-  "name": "@talos/sdk",
+  "name": "@mylife-as-miles/talos-sdk",
   "version": "0.1.0",
-  "description": "Talos TypeScript SDK for AI-readable runtime error capture.",
+  "description": "A TypeScript SDK for capturing runtime errors and sending AI-ready operational context to Talos.",
   "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -21,8 +22,24 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
+  "keywords": [
+    "splunk",
+    "ai",
+    "observability",
+    "sre",
+    "incident-response",
+    "error-tracking",
+    "sdk",
+    "typescript"
+  ],
+  "author": "Osita Miles",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit"

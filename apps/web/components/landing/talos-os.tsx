@@ -553,7 +553,7 @@ function Taskbar({
                   className="flex flex-1 justify-center items-center gap-1 border-2 border-black bg-[#ff4d5a] py-1 text-[10px] font-black shadow-[1px_1px_0_#000] hover:translate-x-0.5 active:translate-y-0.5"
                 >
                   <MonitorPlay size={11} />
-                  Simulation
+                  Live data
                 </button>
                 <button
                   type="button"
@@ -1010,9 +1010,9 @@ function WhyContent() {
 
 function ChangelogContent() {
   const changes = [
-    ["0.1.0", "SDK published", "@mylife-as-miles/talos-sdk is ready to capture runtime failures in demo apps."],
-    ["MVP", "Incident OS dashboard", "Incidents, reports, simulation, and settings are wired for a crash-to-resolution product story."],
-    ["Agent", "Evidence-safe resolver", "Reports work locally without live Splunk, while MCP remains the production investigation path."]
+    ["0.1.0", "SDK published", "@mylife-as-miles/talos-sdk is ready to capture runtime failures in real apps."],
+    ["MVP", "Incident OS dashboard", "Incidents, reports, live intake, and settings are wired for a crash-to-resolution product story."],
+    ["Agent", "Evidence-safe resolver", "Reports require real SDK events, Splunk context, and BYOK AI output."]
   ];
   return (
     <div>
@@ -1038,7 +1038,7 @@ function HandbookContent() {
       <h3 className="text-2xl font-black">Build the resolver with us</h3>
       <div className="border-2 border-black bg-[#ffe100] p-3.5 shadow-[4px_4px_0_#000]">
         <p className="text-sm font-black leading-6">
-          Talos is built for engineers who want incident response to end with evidence and action, not another tab. Small SDK surface, clear data contracts, MCP-first investigation, and simulation sandboxes make it easy to contribute without enterprise infrastructure.
+          Talos is built for engineers who want incident response to end with evidence and action, not another tab. Small SDK surface, clear data contracts, MCP-first investigation, and browser IndexedDB persistence make it easy to contribute without enterprise infrastructure.
         </p>
       </div>
       <div className="grid gap-3 sm:grid-cols-2">
@@ -1082,7 +1082,7 @@ function ByokContent() {
     <div className="space-y-3">
       <h3 className="text-2xl font-black">Use your own keys.</h3>
       <p className="text-sm font-bold leading-6 text-[#3d392f]">
-        Talos keeps provider and Splunk credentials in environment variables. Start with simulation mode, then connect Gemini, OpenAI-compatible endpoints, Splunk HEC, and team notifications when you are ready.
+        Talos keeps provider and Splunk credentials in environment variables or browser BYOK settings. Send real SDK events first, then connect Gemini, Splunk HEC, MCP, and team notifications when you are ready.
       </p>
       <div className="grid gap-3 sm:grid-cols-2">
         {["AI_PROVIDER", "GEMINI_API_KEY", "SPLUNK_HEC_TOKEN", "DISCORD_WEBHOOK_URL"].map((name, index) => (

@@ -281,7 +281,7 @@ pre {
 
 .talos-menu-item {
   border: 2px solid transparent;
-  padding: 7px 9px;
+  padding: 4px 6px;
   transition: background-color 140ms var(--ease-out), border-color 140ms var(--ease-out), transform 140ms var(--ease-out);
 }
 
@@ -297,12 +297,12 @@ pre {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  border: 3px solid #000;
+  gap: 6px;
+  border: 2px solid #000;
   font-weight: 900;
   line-height: 1;
   text-align: center;
-  box-shadow: 4px 4px 0 #000;
+  box-shadow: 2.5px 2.5px 0 #000;
   transition: transform 140ms var(--ease-out), box-shadow 140ms var(--ease-out);
 }
 
@@ -319,8 +319,8 @@ pre {
 .talos-primary-button:hover,
 .talos-secondary-button:hover,
 .talos-top-icon:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 6px 6px 0 #000;
+  transform: translate(-0.5px, -0.5px);
+  box-shadow: 3.5px 3.5px 0 #000;
 }
 
 .talos-primary-button:active,
@@ -333,17 +333,17 @@ pre {
 
 .talos-top-icon {
   display: grid;
-  height: 36px;
-  width: 36px;
+  height: 30px;
+  width: 30px;
   place-items: center;
   border: 2px solid #000;
   background: #fffdf1;
-  box-shadow: 3px 3px 0 #000;
+  box-shadow: 2px 2px 0 #000;
   transition: transform 140ms var(--ease-out), box-shadow 140ms var(--ease-out);
 }
 
 .talos-desktop-icon {
-  width: 96px;
+  width: 80px;
   color: #000;
   outline: none;
 }

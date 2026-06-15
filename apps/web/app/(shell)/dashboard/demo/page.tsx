@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 export default async function DemoPage() {
   const [latestReport] = await listReports();
   const steps = [
-    "Trigger checkout crash",
+    "Trigger Backstage production incident",
     "Send structured event through ingest relay",
     "Run headless Splunk MCP resolver",
     "Generate AI triage report",

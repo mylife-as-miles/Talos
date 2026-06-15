@@ -4,7 +4,6 @@ import { IncidentsTable } from "@/components/dashboard/incidents-table";
 import { InvestigationPanel } from "@/components/dashboard/investigation-panel";
 import { RuntimeChart } from "@/components/dashboard/runtime-chart";
 import { buildDashboardStats, formatRelativeTime, runtimeLabel } from "@/lib/dashboard-stats";
-import { isMockMode } from "@/lib/config";
 import { listEvents } from "@/lib/store/events";
 import { listReports } from "@/lib/store/reports";
 
@@ -74,7 +73,6 @@ export default async function DashboardPage() {
   const stats = buildDashboardStats(events, reports);
   const latestService = stats.latestEvent?.service || stats.latestReport?.affectedService || "none";
   const latestRuntime = runtimeLabel(stats.latestEvent);
-  const mock = isMockMode();
 
   return (
     <>
@@ -99,7 +97,7 @@ export default async function DashboardPage() {
           <div>
             <div className="inline-flex border-2 border-black bg-black px-1.5 py-0.5 text-[9px] font-black uppercase tracking-[.08em] text-white">Simulation Mode</div>
             <h3 className="mt-1.5 text-[14px] font-black leading-none text-black">Simulate Incident</h3>
-            <p className="mt-1 max-w-xl text-[11px] font-bold leading-normal text-[#4d473c]">Trigger a sample checkout failure and watch Talos generate a Splunk-backed AI triage report.</p>
+            <p className="mt-1 max-w-xl text-[11px] font-bold leading-normal text-[#4d473c]">Trigger a Backstage-style production incident and watch Talos generate a Splunk-backed AI triage report.</p>
           </div>
           <div>
             <DemoActions />
@@ -117,7 +115,7 @@ export default async function DashboardPage() {
               <div className="inline-flex border-2 border-black bg-black px-1.5 py-0.5 text-[9px] font-black uppercase tracking-[.08em] text-white">Latest Service</div>
               <div className="mt-2 text-[18px] font-black text-black">{latestService}</div>
               <div className="mt-2 text-[11px] font-bold text-[#4d473c]">
-                {latestRuntime} <span className="mx-2">/</span> {mock ? "mock mode" : "live Splunk"}
+                {latestRuntime} <span className="mx-2">/</span> Splunk telemetry
               </div>
               <div className="mt-3 inline-flex border-2 border-black bg-white px-1.5 py-0.5 text-[9px] font-black uppercase text-black">
                 {formatRelativeTime(stats.latestEvent?.timestamp || stats.latestReport?.createdAt)}

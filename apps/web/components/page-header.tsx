@@ -15,8 +15,8 @@ export function PageHeader({
   return (
     <div className={clsx("talos-fade-up flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between", className)}>
       <div>
-        <h1 className="text-[34px] font-bold tracking-[-.03em] text-[#f4f7fb]">{title}</h1>
-        {description ? <p className="mt-2 max-w-3xl text-[17px] text-[#aab5bf]">{description}</p> : null}
+        <h1 className="text-[clamp(2.25rem,5vw,4.75rem)] font-black leading-[0.88] text-black">{title}</h1>
+        {description ? <p className="mt-4 max-w-3xl text-[18px] font-bold leading-7 text-[#3d392f]">{description}</p> : null}
       </div>
       {actions ? <div className="talos-fade-up talos-stagger-2 flex flex-wrap items-center gap-3">{actions}</div> : null}
     </div>

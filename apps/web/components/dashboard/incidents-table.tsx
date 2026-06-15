@@ -4,16 +4,15 @@ import { EmptyState } from "@/components/empty-state";
 import { formatRelativeTime } from "@/lib/dashboard-stats";
 import type { TalosTriageReport } from "@/lib/types";
 
-function StatusBadge({ children, tone }: { children: React.ReactNode; tone: "green" | "cyan" | "purple" | "red" | "amber" | "blue" }) {
+function StatusBadge({ children, tone }: { children: React.ReactNode; tone: "green" | "purple" | "red" | "amber" | "blue" }) {
   const tones = {
-    green: "border-[#1d6e55] bg-[#0a362e] text-[#3df49a]",
-    cyan: "border-[#185871] bg-[#0b2a37] text-[#35dffc]",
-    purple: "border-[#5e3b8d] bg-[#241b3d] text-[#bb91ff]",
-    red: "border-[#6d2f35] bg-[#391a20] text-[#ff6d73]",
-    amber: "border-[#724b15] bg-[#342713] text-[#ffb331]",
-    blue: "border-[#154966] bg-[#0a2739] text-[#26baff]"
+    green: "bg-[#d8ff2f]",
+    purple: "bg-[#ff00ff]",
+    red: "bg-[#ff4d5a]",
+    amber: "bg-[#ffe100]",
+    blue: "bg-[#00c2c8]"
   };
-  return <span className={`inline-flex h-9 items-center rounded-md border px-4 text-[13px] font-semibold uppercase ${tones[tone]}`}>{children}</span>;
+  return <span className={`inline-flex h-8 items-center border-2 border-black px-3 text-[12px] font-black uppercase text-black shadow-[3px_3px_0_#000] ${tones[tone]}`}>{children}</span>;
 }
 
 function priorityTone(priority: TalosTriageReport["priority"]) {
@@ -31,22 +30,22 @@ function statusTone(status: TalosTriageReport["status"]) {
 
 export function IncidentsTable({ reports }: { reports: TalosTriageReport[] }) {
   return (
-    <section className="talos-panel talos-fade-up talos-stagger-5 mt-2 rounded-lg">
-      <div className="flex items-center justify-between px-5 py-4">
-        <div className="text-[15px] uppercase tracking-[.08em] text-[#c5ced6]">Active Incidents</div>
+    <section className="talos-panel talos-fade-up talos-stagger-5 mt-2 overflow-hidden">
+      <div className="flex items-center justify-between border-b-[4px] border-black bg-black px-5 py-4 text-white">
+        <div className="text-[15px] font-black uppercase tracking-[.08em]">Active Incidents</div>
         {reports.length ? (
-          <Link href="/incidents" className="talos-btn-glow h-9 rounded-md border border-[#15556a] px-5 text-[14px] leading-9 text-[#36e1ff]">
+          <Link href="/incidents" className="talos-brutal-control h-10 border-[3px] border-black bg-[#ffe100] px-5 text-[14px] font-black leading-9 text-black shadow-[4px_4px_0_#fff]">
             View Full Incidents
           </Link>
         ) : null}
       </div>
       {reports.length ? (
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[1180px] text-left text-[14px]">
-            <thead className="border-y border-[#1f2d34] text-[13px] uppercase text-[#a8b3bd]">
+          <table className="w-full min-w-[1080px] text-left text-[14px]">
+            <thead className="border-b-[3px] border-black bg-[#ffe100] text-[12px] uppercase text-black">
               <tr>
                 {["ID", "Service", "Error", "Priority", "Status", "Created", "Confidence", ""].map((heading) => (
-                  <th key={heading} className="px-5 py-3 font-medium">
+                  <th key={heading} className="px-5 py-3 font-black">
                     {heading}
                   </th>
                 ))}
@@ -56,36 +55,36 @@ export function IncidentsTable({ reports }: { reports: TalosTriageReport[] }) {
               {reports.slice(0, 8).map((report, index) => (
                 <tr
                   key={report.incidentId}
-                  className="talos-row-enter border-b border-[#1c2930] text-[#cbd4dc] transition hover:bg-white/[.02]"
+                  className="talos-brutal-row talos-row-enter border-b-2 border-black bg-white text-black transition hover:bg-[#d8ff2f]"
                   style={{ animationDelay: `${index * 45}ms` }}
                 >
-                  <td className="px-5 py-3 font-medium">
-                    <Link href={`/incidents/${report.incidentId}`} className="text-[#36e1ff] hover:underline">
+                  <td className="px-5 py-3 font-black">
+                    <Link href={`/incidents/${report.incidentId}`} className="underline decoration-2 underline-offset-4">
                       {report.incidentId}
                     </Link>
                   </td>
                   <td className="px-5 py-3">
-                    <span className="block text-[#e0e7ec]">{report.affectedService}</span>
-                    <span className="text-[12px] text-[#8d99a3]">{report.affectedRoute || "—"}</span>
+                    <span className="block font-black text-black">{report.affectedService}</span>
+                    <span className="text-[12px] font-bold text-[#4d473c]">{report.affectedRoute || "-"}</span>
                   </td>
-                  <td className="max-w-[350px] truncate px-5 py-3">{report.trigger}</td>
+                  <td className="max-w-[350px] truncate px-5 py-3 font-bold text-[#3d392f]">{report.trigger}</td>
                   <td className="px-5 py-3">
                     <StatusBadge tone={priorityTone(report.priority)}>{report.priority}</StatusBadge>
                   </td>
                   <td className="px-5 py-3">
                     <StatusBadge tone={statusTone(report.status)}>{report.status}</StatusBadge>
                   </td>
-                  <td className="px-5 py-3 text-[#aeb8c0]">{formatRelativeTime(report.createdAt)}</td>
+                  <td className="px-5 py-3 font-bold text-[#4d473c]">{formatRelativeTime(report.createdAt)}</td>
                   <td className="px-5 py-3">
                     <div className="flex items-center gap-4">
-                      <span>{report.confidence}%</span>
-                      <span className="h-1.5 w-28 overflow-hidden rounded-full bg-[#223038]">
-                        <span className="talos-bar-segment block h-full rounded-full bg-[#35d8e8]" style={{ width: `${report.confidence}%`, transformOrigin: "left" }} />
+                      <span className="font-black">{report.confidence}%</span>
+                      <span className="h-3 w-28 overflow-hidden border-2 border-black bg-white">
+                        <span className="talos-bar-segment block h-full bg-[#00c2c8]" style={{ width: `${report.confidence}%`, transformOrigin: "left" }} />
                       </span>
                     </div>
                   </td>
-                  <td className="px-5 py-3 text-[#7e8a93]">
-                    <Link href={`/incidents/${report.incidentId}`}>
+                  <td className="px-5 py-3">
+                    <Link href={`/incidents/${report.incidentId}`} className="grid h-8 w-8 place-items-center border-2 border-black bg-[#00c2c8] shadow-[3px_3px_0_#000]">
                       <ChevronRight size={18} />
                     </Link>
                   </td>
@@ -95,7 +94,7 @@ export function IncidentsTable({ reports }: { reports: TalosTriageReport[] }) {
           </table>
         </div>
       ) : (
-        <div className="px-5 pb-5">
+        <div className="px-5 pb-5 pt-5">
           <EmptyState
             compact
             icon={Siren}

@@ -7,6 +7,7 @@ import {
   Boxes,
   ChevronDown,
   CircleHelp,
+  Clock,
   Code2,
   ExternalLink,
   FileCode2,
@@ -128,7 +129,6 @@ export function TalosOsLanding() {
     }
   }, [toast]);
 
-  const dockItems = useMemo(() => desktopItems.filter((item) => item.dock), []);
 
   function openWindow(id: WindowId) {
     setOpenWindows((current) => (current.includes(id) ? current : [...current, id]));
@@ -169,14 +169,12 @@ export function TalosOsLanding() {
   }
 
   return (
-    <main className="talos-os h-screen overflow-hidden bg-[#f5f1dc] text-black">
-      <TopBar onOpen={openWindow} />
-
-      <section className="relative h-[calc(100vh-48px)] overflow-hidden px-4 pb-16 pt-3 sm:px-6">
+    <main className="talos-os flex h-screen flex-col overflow-hidden bg-[#f5f1dc] text-black">
+      <section className="relative flex-1 overflow-hidden px-4 pb-4 pt-3 sm:px-6">
         <div className="talos-paper-grain absolute inset-0" aria-hidden />
         <div className="talos-os-grid absolute inset-0" aria-hidden />
 
-        <div className="relative z-10 grid h-[calc(100vh-125px)] grid-cols-[108px_1fr_108px] gap-3 max-lg:grid-cols-[96px_1fr] max-md:grid-cols-1">
+        <div className="relative z-10 grid h-[calc(100vh-80px)] grid-cols-[108px_1fr_108px] gap-3 max-lg:grid-cols-[96px_1fr] max-md:grid-cols-1">
           <DesktopColumn items={desktopItems.filter((item) => item.side === "left")} onOpen={openWindow} />
 
           <div className="relative hidden lg:block">
@@ -221,9 +219,15 @@ export function TalosOsLanding() {
               </OsWindow>
             ))}
         </div>
-
-        <Dock items={dockItems} openWindows={openWindows} minimized={minimized} activeWindow={activeWindow} onOpen={openWindow} />
       </section>
+
+      <Taskbar
+        openWindows={openWindows}
+        minimized={minimized}
+        activeWindow={activeWindow}
+        onOpen={openWindow}
+        onMinimize={minimizeWindow}
+      />
 
       {toast && (
         <div className="fixed bottom-20 right-6 z-[9999] border-2 border-black bg-[#ffe100] px-4 py-2 text-sm font-black shadow-[4px_4px_0_#000] animate-bounce">
@@ -234,48 +238,212 @@ export function TalosOsLanding() {
   );
 }
 
-function TopBar({ onOpen }: { onOpen: (id: WindowId) => void }) {
+function Taskbar({
+  openWindows,
+  minimized,
+  activeWindow,
+  onOpen,
+  onMinimize
+}: {
+  openWindows: WindowId[];
+  minimized: WindowId[];
+  activeWindow: WindowId;
+  onOpen: (id: WindowId) => void;
+  onMinimize: (id: WindowId) => void;
+}) {
+  const [startMenuOpen, setStartMenuOpen] = useState(false);
+  const [time, setTime] = useState("");
+
+  useEffect(() => {
+    const updateClock = () => {
+      const now = new Date();
+      setTime(
+        now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })
+      );
+    };
+    updateClock();
+    const interval = setInterval(updateClock, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (!startMenuOpen) return;
+    const handleOutsideClick = (e: MouseEvent) => {
+      const startMenu = document.getElementById("start-menu");
+      const startBtn = document.getElementById("start-button");
+      if (
+        startMenu &&
+        !startMenu.contains(e.target as Node) &&
+        startBtn &&
+        !startBtn.contains(e.target as Node)
+      ) {
+        setStartMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, [startMenuOpen]);
+
   return (
-    <header className="relative z-40 flex h-[48px] items-center justify-between border-b-2 border-black bg-[#e5e1cf] px-4 shadow-[0_2px_0_#000]">
-      <div className="flex items-center gap-4">
-        <button type="button" onClick={() => onOpen("home")} className="group flex items-center gap-2 font-black">
-          <span className="grid h-8 w-8 place-items-center border-2 border-black bg-[#00c2c8] shadow-[2px_2px_0_#000] transition-transform group-hover:-translate-y-0.5">
-            <ShieldCheck size={18} strokeWidth={3} />
+    <footer className="relative z-50 flex h-12 w-full items-center justify-between border-t-2 border-black bg-[#e5e1cf] px-3 shadow-[0_-2px_0_#000]">
+      {/* Start Button & Start Menu */}
+      <div className="relative">
+        <button
+          id="start-button"
+          type="button"
+          onClick={() => setStartMenuOpen(!startMenuOpen)}
+          className={`flex h-8.5 items-center gap-1.5 border-2 border-black px-3 font-black shadow-[1.5px_1.5px_0_#000] text-xs transition-transform active:translate-y-0.5 ${
+            startMenuOpen ? "bg-[#ffe100]" : "bg-[#00c2c8]"
+          }`}
+        >
+          <span className="grid h-4 w-4 place-items-center bg-black text-white rounded-xs">
+            <ShieldCheck size={12} strokeWidth={3.5} />
           </span>
-          <span className="hidden text-[16px] sm:inline">Talos OS</span>
+          Start
         </button>
-        <nav className="hidden items-center gap-1.5 text-[13px] font-black lg:flex">
-          {[
-            ["Product OS", "home"],
-            ["SDK", "sdk"],
-            ["Docs", "docs"],
-            ["Community", "contributors"],
-            ["Company", "handbook"],
-            ["More", "tools"]
-          ].map(([label, id]) => (
-            <button key={label} type="button" onClick={() => onOpen(id as WindowId)} className="talos-menu-item">
-              {label}
-            </button>
-          ))}
-        </nav>
+
+        {startMenuOpen && (
+          <div
+            id="start-menu"
+            className="absolute bottom-11 left-0 z-50 flex h-[460px] w-[320px] border-3 border-black bg-[#fffdf1] shadow-[6px_-6px_0_#000]"
+          >
+            {/* Start Menu Sidebar */}
+            <div className="flex w-12 flex-col justify-end items-center bg-[#00c2c8] border-r-2 border-black pb-4 select-none">
+              <div className="font-black text-white text-[16px] tracking-widest [writing-mode:vertical-lr] rotate-180 uppercase">
+                Talos OS
+              </div>
+            </div>
+
+            {/* Start Menu Options */}
+            <div className="flex flex-1 flex-col overflow-hidden bg-[#fffdf1]">
+              <div className="border-b-2 border-black bg-[#ffe100] p-3">
+                <p className="text-[9px] font-black uppercase tracking-wider text-[#555]">Programs & shortcuts</p>
+                <p className="text-xs font-black">Select an application</p>
+              </div>
+
+              <div className="flex-1 overflow-y-auto p-1.5 space-y-1">
+                {desktopItems.map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => {
+                      onOpen(item.id);
+                      setStartMenuOpen(false);
+                    }}
+                    className="flex w-full items-center gap-3 border border-transparent hover:border-black hover:bg-[#ffe100] px-2.5 py-1.5 text-left font-black transition-all hover:translate-x-0.5"
+                  >
+                    <span className={`grid h-7 w-7 shrink-0 place-items-center border border-black ${item.accent}`}>
+                      <item.icon size={14} />
+                    </span>
+                    <div className="min-w-0">
+                      <p className="text-[11px] leading-none truncate">{item.label}</p>
+                      <p className="mt-0.5 text-[8px] font-bold text-[#666] leading-none truncate">{item.detail}</p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+
+              {/* Start Menu Footer */}
+              <div className="border-t-2 border-black bg-[#e5e1cf] p-2 flex items-center justify-between gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    onOpen("demo");
+                    setStartMenuOpen(false);
+                  }}
+                  className="flex flex-1 justify-center items-center gap-1 border-2 border-black bg-[#ff4d5a] py-1 text-[10px] font-black shadow-[1px_1px_0_#000] hover:translate-x-0.5 active:translate-y-0.5"
+                >
+                  <MonitorPlay size={11} />
+                  Simulation
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (typeof window !== "undefined") window.location.reload();
+                  }}
+                  className="flex flex-1 justify-center items-center gap-1 border-2 border-black bg-white py-1 text-[10px] font-black shadow-[1px_1px_0_#000] hover:translate-x-0.5 active:translate-y-0.5"
+                >
+                  <X size={11} />
+                  Restart OS
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
-      <div className="flex items-center gap-2">
-        <Link href="/dashboard" className="talos-primary-button h-8.5 px-3.5 text-xs">
+      {/* Task List (Center) */}
+      <div className="flex flex-1 items-center gap-1.5 overflow-x-auto px-4 scrollbar-none">
+        {openWindows.map((id) => {
+          const itemMeta = desktopItems.find((item) => item.id === id);
+          const Icon = itemMeta?.icon || FileText;
+          const label = itemMeta?.label || id;
+          const isMinimized = minimized.includes(id);
+          const isActive = activeWindow === id && !isMinimized;
+
+          return (
+            <button
+              key={id}
+              type="button"
+              onClick={() => {
+                if (isActive) {
+                  onMinimize(id);
+                } else {
+                  onOpen(id);
+                }
+              }}
+              className={`flex h-8.5 max-w-[130px] shrink-0 items-center gap-2 border-2 border-black px-2.5 font-black text-[11px] shadow-[1.5px_1.5px_0_#000] transition-transform active:translate-y-0.5 ${
+                isActive
+                  ? "bg-[#ffe100]"
+                  : "bg-white opacity-70 hover:opacity-100 hover:bg-[#e5e1cf]"
+              }`}
+            >
+              <Icon size={12} strokeWidth={2.5} />
+              <span className="truncate">{label}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* System Tray (Right) */}
+      <div className="flex items-center gap-2 shrink-0">
+        <button
+          type="button"
+          onClick={() => onOpen("docs")}
+          title="Search docs"
+          className="flex h-8.5 w-8.5 items-center justify-center border-2 border-black bg-white shadow-[1.5px_1.5px_0_#000] hover:bg-[#ffe100] active:translate-y-0.5"
+        >
+          <Search size={13} />
+        </button>
+        <button
+          type="button"
+          onClick={() => onOpen("contributors")}
+          title="Ask to contribute"
+          className="flex h-8.5 w-8.5 items-center justify-center border-2 border-black bg-white shadow-[1.5px_1.5px_0_#000] hover:bg-[#ffe100] active:translate-y-0.5"
+        >
+          <Mail size={13} />
+        </button>
+        <button
+          type="button"
+          onClick={() => onOpen("byok")}
+          title="Bring your own AI keys"
+          className="flex h-8.5 items-center gap-1 border-2 border-black bg-white px-2 text-[11px] font-black shadow-[1.5px_1.5px_0_#000] hover:bg-[#ffe100] active:translate-y-0.5"
+        >
+          <KeyRound size={11} />
+          <span className="hidden sm:inline">BYOK</span>
+        </button>
+        <Link
+          href="/dashboard"
+          className="flex h-8.5 items-center justify-center border-2 border-black bg-[#d8ff2f] px-2.5 text-[11px] font-black shadow-[1.5px_1.5px_0_#000] hover:bg-[#ffe100] active:translate-y-0.5"
+        >
           Dashboard
         </Link>
-        <button type="button" onClick={() => onOpen("docs")} aria-label="Search docs" className="talos-top-icon">
-          <Search size={16} />
-        </button>
-        <button type="button" onClick={() => onOpen("contributors")} aria-label="Ask to contribute" className="talos-top-icon">
-          <Mail size={16} />
-        </button>
-        <button type="button" onClick={() => onOpen("byok")} className="hidden h-8.5 items-center gap-1 border-2 border-black bg-white px-2.5 text-[12px] font-black shadow-[1.5px_1.5px_0_#000] sm:flex">
-          <KeyRound size={13} />
-          BYOK
-        </button>
+        <div className="flex h-8.5 items-center gap-1.5 border-2 border-black bg-white px-2.5 text-[11px] font-black shadow-[1.5px_1.5px_0_#000]">
+          <Clock size={11} />
+          <span className="font-mono">{time}</span>
+        </div>
       </div>
-    </header>
+    </footer>
   );
 }
 
@@ -401,43 +569,6 @@ function OsWindow({
       </div>
       <div className="talos-window-body max-h-[calc(72vh-78px)] overflow-y-auto p-4 sm:p-5">{children}</div>
     </article>
-  );
-}
-
-function Dock({
-  items,
-  openWindows,
-  minimized,
-  activeWindow,
-  onOpen
-}: {
-  items: DesktopItem[];
-  openWindows: WindowId[];
-  minimized: WindowId[];
-  activeWindow: WindowId;
-  onOpen: (id: WindowId) => void;
-}) {
-  return (
-    <div className="fixed bottom-4 left-1/2 z-50 flex -translate-x-1/2 items-end gap-2.5 border-2 border-black bg-[#fffdf1] px-3 py-2 shadow-[3.5px_3.5px_0_#000]">
-      {items.map((item) => {
-        const Icon = item.icon;
-        const open = openWindows.includes(item.id);
-        const isMinimized = minimized.includes(item.id);
-        return (
-          <button
-            key={item.id}
-            type="button"
-            onClick={() => onOpen(item.id)}
-            title={item.label}
-            className={`talos-dock-icon ${activeWindow === item.id && !isMinimized ? "talos-dock-icon-active" : ""}`}
-          >
-            <span className={`absolute -right-1 -top-1 h-3.5 w-3.5 border border-black ${item.accent}`} />
-            <Icon size={22} strokeWidth={2.6} />
-            {open ? <span className="absolute -bottom-1 h-1 w-5 border border-black bg-[#00c2c8]" /> : null}
-          </button>
-        );
-      })}
-    </div>
   );
 }
 

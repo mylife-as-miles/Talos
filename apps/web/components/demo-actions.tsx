@@ -3,7 +3,7 @@
 import { Loader2, Play, RadioTower, Send } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { readBrowserByokSettings } from "./byok-settings";
+import { readBrowserByokSettings, readBrowserSplunkSettings, readBrowserWebhookSettings } from "./byok-settings";
 import { Button } from "./ui";
 
 export function DemoActions() {
@@ -17,7 +17,16 @@ export function DemoActions() {
     setBusy("crash");
     setMessage("Simulating crash, capturing payload...");
     try {
-      const response = await fetch("/api/simulate-crash", { method: "POST" });
+      const splunk = readBrowserSplunkSettings();
+      const headers: Record<string, string> = {};
+      if (splunk?.hecUrl) headers["x-talos-hec-url"] = splunk.hecUrl;
+      if (splunk?.hecToken) headers["x-talos-hec-token"] = splunk.hecToken;
+      if (splunk?.index) headers["x-talos-splunk-index"] = splunk.index;
+
+      const response = await fetch("/api/simulate-crash", { 
+        method: "POST",
+        headers 
+      });
       const json = await response.json();
       if (!response.ok) throw new Error(json.error || "Simulation failed");
       setEventId(json.event.eventId);
@@ -33,20 +42,34 @@ export function DemoActions() {
   async function runResolver() {
     setBusy("agent");
     const byok = readBrowserByokSettings();
+    const splunk = readBrowserSplunkSettings();
+    const webhooks = readBrowserWebhookSettings();
+
     setMessage(byok ? "Running resolver with your BYOK Gemini key..." : "Running resolver in mock AI fallback mode...");
     try {
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json"
+      };
+
+      if (byok) {
+        headers["x-talos-ai-provider"] = byok.provider;
+        headers["x-talos-ai-key"] = byok.apiKey;
+        headers["x-talos-ai-model"] = byok.model;
+      }
+      if (splunk) {
+        if (splunk.hecUrl) headers["x-talos-hec-url"] = splunk.hecUrl;
+        if (splunk.hecToken) headers["x-talos-hec-token"] = splunk.hecToken;
+        if (splunk.mcpMode) headers["x-talos-mcp-mode"] = splunk.mcpMode;
+        if (splunk.mcpUrl) headers["x-talos-mcp-url"] = splunk.mcpUrl;
+      }
+      if (webhooks) {
+        if (webhooks.discordWebhook) headers["x-talos-discord-webhook"] = webhooks.discordWebhook;
+        if (webhooks.slackWebhook) headers["x-talos-slack-webhook"] = webhooks.slackWebhook;
+      }
+
       const response = await fetch("/api/agent", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(byok
-            ? {
-                "x-talos-ai-provider": byok.provider,
-                "x-talos-ai-key": byok.apiKey,
-                "x-talos-ai-model": byok.model
-              }
-            : {})
-        },
+        headers,
         body: JSON.stringify({ eventId })
       });
       const json = await response.json();
@@ -65,9 +88,18 @@ export function DemoActions() {
     setBusy("notify");
     setMessage("Sending Discord notification...");
     try {
+      const webhooks = readBrowserWebhookSettings();
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json"
+      };
+      if (webhooks) {
+        if (webhooks.discordWebhook) headers["x-talos-discord-webhook"] = webhooks.discordWebhook;
+        if (webhooks.slackWebhook) headers["x-talos-slack-webhook"] = webhooks.slackWebhook;
+      }
+
       const response = await fetch("/api/notify", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({ incidentId })
       });
       const json = await response.json();

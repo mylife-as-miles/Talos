@@ -1,161 +1,357 @@
-# Talos
+# Talos 🤖
 
-Talos is a self-healing AI developer operations system for Splunk.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/mylife-as-miles/Talos/pulls)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)](https://www.typescriptlang.org/)
+[![Framework: Next.js 15](https://img.shields.io/badge/Framework-Next.js%2015-black)](https://nextjs.org/)
 
-It captures runtime crashes through `@mylife-as-miles/talos-sdk`, sends structured events into Splunk through HEC, investigates them through Splunk MCP, and generates fix-ready triage reports for engineering teams.
+Talos is an advanced, **self-healing AI developer operations (DevOps) and site reliability engineering (SRE) system** integrated with **Splunk**. 
 
-## Why Splunk?
+By closing the loop between runtime crash captures, telemetry ingestion, and agentic root-cause analysis (RCA), Talos transforms Splunk from a passive search utility into an active, autonomous partner for resolution. When an application crashes, Talos captures the context via its SDK, sends it to Splunk, uses an AI agent via the **Model Context Protocol (MCP)** to search and correlate logs, runs statistical anomaly analysis, and pushes fix-ready code diffs to developer dashboards and team communication channels (Slack/Discord).
 
-Splunk is the operational source of truth for production logs, alerts, and incident history. Talos keeps that center of gravity: SDK events flow into Splunk HEC, while the resolver uses Splunk MCP first for agentic investigation. REST search is available as a fallback, and mock mode keeps the hackathon demo reliable without a live Splunk instance.
+---
 
-## Architecture
+## 📐 Architecture Topology
+
+Talos is designed around a strict decoupling of telemetry collection, data warehousing, agentic investigation, and interactive reporting.
+
+<p align="center">
+  <img src="./architecture.svg" alt="Talos Topology Diagram" width="950" />
+</p>
+
+### The 4-Step Self-Healing Loop
+
+1. **Capture & Intercept**: The `@mylife-as-miles/talos-sdk` catches unhandled exceptions, records user interactions (breadcrumbs), and packages them into a structured JSON payload.
+2. **Ingest & Forward**: The browser-safe Ingest API Gateway validates the project payload and securely forwards events to the **Splunk HTTP Event Collector (HEC)** while caching a local copy for resilience.
+3. **Agentic Investigation**: When an incident is registered, the Headless AI Resolver triggers. It accesses Splunk via the **Splunk MCP Server** to run context-gathering search queries. If Splunk MCP is offline, it falls back to the Splunk REST search API, or local mock data during offline demos.
+4. **Cognitive Analysis & Alerting**: The resolver calculates statistical anomaly scores, feeds the full context to a Gemini model, generates a structured triage report with code-level proposed fixes, updates the Talos dashboard, and sends chat alerts.
+
+---
+
+## 🚀 Key Features
+
+* **📦 `@mylife-as-miles/talos-sdk`**: A multi-environment (Browser & Node.js) TypeScript SDK for capturing unhandled runtime exceptions and tracking event breadcrumbs.
+* **🛡️ Browser-Safe Ingest Gateway**: Next.js App Router endpoints that act as secure relays, protecting Splunk HEC auth tokens and secrets from being exposed on the client side.
+* **🔌 Splunk MCP Server Integration**: An integration layer supporting the Model Context Protocol (MCP) to let AI agents run search queries, check index metadata, and inspect logs natively.
+* **🧠 Cognitive RCA Engine**: Integrates with Gemini models (e.g., `gemini-3.5-flash`) via structured JSON schema mode to synthesize root-cause assessments and code-level proposed fixes.
+* **📈 Statistical Anomaly Engine**: Performs standard-deviation calculations over baseline error rates, event frequency, and route criticality weights to classify blast radius.
+* **💬 Webhook Dispatchers**: Formats and delivers incident reports to Slack and Discord channels with Markdown code-diff attachments.
+* **💻 Brutalist Neubrutalism Dashboard**: A high-impact Next.js dashboard built using neubrutalist UI design specs (loud borders, sparklines, interactive telemetry inspect tables, and inline AI diff comparisons).
+* **🔌 Offline Sandbox Mode**: First-class mock mode which simulates the entire pipeline without requiring a live Splunk instance or active LLM API keys.
+
+---
+
+## 📂 Repository Workspace Structure
+
+Talos is managed as a monorepo utilizing **pnpm workspaces**:
 
 ```text
-Developer app -> @mylife-as-miles/talos-sdk -> Next.js ingest API -> Splunk HEC
-Splunk -> Splunk MCP Server -> Talos Resolver -> AI RCA report
-Report -> Talos Dashboard -> Discord/Slack
+Talos/
+├── apps/
+│   └── web/                   # Next.js App Router dashboard UI and Ingest/Agent APIs
+│       ├── app/               # Routes, shell views, and API controllers
+│       ├── components/        # Neubrutalist React components
+│       ├── data/              # Local file-backed database storage (events.json / reports.json)
+│       └── lib/               # Core business logic (AI, Splunk clients, Anomaly scorer)
+├── packages/
+│   └── sdk/                   # TypeScript SDK source package
+│       ├── src/               # Breadcrumb logging, stacktrace parsers, and transport layers
+│       └── dist/              # Compiled ESM/CJS exports for distribution
+├── infra/
+│   └── splunk-mcp-server/     # Git submodule of upstream Splunk MCP server integration
+├── docs/                      # Supplemental setup and scripting documentation
+├── architecture.svg           # Scalable vector graphics system topology diagram
+├── package.json               # Root monorepo configuration
+├── pnpm-workspace.yaml        # PNPM workspace definition
+└── pnpm-lock.yaml             # Lockfile for reproducible builds
 ```
 
-## Features
+---
 
-- Local npm-style SDK package: `@mylife-as-miles/talos-sdk`
-- Browser-safe ingest relay that never exposes Splunk HEC tokens
-- Next.js App Router dashboard
-- File-backed local MVP store
-- Splunk HEC sender
-- MCP-first Splunk investigation adapter with REST and mock fallback
-- Headless AI resolver with strict report schema and deterministic mock fallback
-- Discord notification output and optional Slack webhook
-- Devpost-ready demo flow
+## 🛠️ Quickstart Installation
 
-## Tech Stack
+Ensure you have [Node.js v18+](https://nodejs.org/) installed on your machine.
 
-TypeScript, pnpm workspaces, Next.js App Router, Tailwind CSS, lucide-react, Splunk HEC, Splunk MCP Server, Gemini-compatible report generation, and local JSON storage.
-
-## Quickstart
+### 1. Enable Corepack & Install Dependencies
+Talos uses `pnpm` for monorepo dependency resolution. Enable corepack to guarantee the correct package manager version:
 
 ```bash
+corepack enable
 corepack pnpm install
-copy .env.example apps\web\.env.local
-corepack pnpm dev
 ```
 
-Open `http://localhost:3000/dashboard`.
-
-## Environment Variables
-
-Copy `.env.example` into `apps/web/.env.local`. Mock mode is enabled by default:
-
-```env
-TALOS_MOCK_MODE=true
-TALOS_PROJECT_KEY=demo_project_key
-```
-
-No secrets are required for the default demo path.
-
-## Running Locally
+### 2. Configure Environment Variables
+Copy the template configuration file to your web app's local environment:
 
 ```bash
-corepack pnpm install
+cp .env.example apps/web/.env.local
+```
+
+> [!NOTE]
+> By default, `TALOS_MOCK_MODE=true` is enabled in `.env.example`. This allows you to explore the dashboard and run simulation scenarios without configure credentials for Splunk or Gemini.
+
+### 3. Build SDK and Run Development Servers
+Build the SDK package and launch the Next.js development server:
+
+```bash
+# Build the local SDK workspace package
 corepack pnpm --filter @mylife-as-miles/talos-sdk build
-corepack pnpm --filter @talos/web build
+
+# Start the dev servers
 corepack pnpm dev
 ```
 
-## Running With Mock Mode
+Open [http://localhost:3000/dashboard](http://localhost:3000/dashboard) to explore the neubrutalist Talos Dashboard.
 
-Keep `TALOS_MOCK_MODE=true`. Use `/demo` or `/dashboard`:
+---
 
-1. Trigger Demo Crash
-2. Run Headless Resolver
-3. Open the generated incident report
-4. Send Discord notification if a webhook is configured
+## 🔌 Splunk Integration Setup
 
-## Running With Splunk HEC
+To shift from the offline sandbox into production-grade live telemetry, follow these configuration setups:
 
-Set:
+### 1. HTTP Event Collector (HEC) Setup
+The SDK forwards events via the Ingest Gateway into the Splunk HTTP Event Collector.
+1. In your Splunk Enterprise or Cloud instance, navigate to **Settings** > **Data Inputs** > **HTTP Event Collector**.
+2. Click **New Token** and name it `talos-sdk`.
+3. Select your destination index (typically `main`).
+4. Enable the token, copy the secret value, and update `apps/web/.env.local`:
+   ```env
+   TALOS_MOCK_MODE=false
+   SPLUNK_HEC_URL=http://your-splunk-host:8088
+   SPLUNK_HEC_TOKEN=your-hec-token-uuid
+   SPLUNK_INDEX=main
+   SPLUNK_SOURCE=talos-sdk
+   SPLUNK_SOURCETYPE=talos:error
+   ```
 
+### 2. Splunk Model Context Protocol (MCP) Server Setup
+Talos uses the MCP protocol as its primary SRE investigation mechanism, giving the AI agent natural search capabilities over logs.
+1. The server code is located under `infra/splunk-mcp-server`.
+2. Follow its upstream instructions to install python dependencies and configure connection tokens.
+3. Start the MCP server locally (typically binds to port `8000`).
+4. Update `apps/web/.env.local` to enable MCP-first resolving:
+   ```env
+   SPLUNK_MCP_MODE=enabled
+   SPLUNK_MCP_SERVER_URL=http://localhost:8000
+   ```
+
+### 3. Splunk REST Fallback API
+If the Splunk MCP server is unreachable, Talos automatically routes search queries through the default Splunk REST API:
 ```env
-TALOS_MOCK_MODE=false
-SPLUNK_HEC_URL=https://localhost:8088
-SPLUNK_HEC_TOKEN=...
-SPLUNK_INDEX=main
-SPLUNK_SOURCE=talos-sdk
-SPLUNK_SOURCETYPE=talos:error
+SPLUNK_BASE_URL=https://your-splunk-host:8089
+SPLUNK_USERNAME=admin
+SPLUNK_PASSWORD=your-admin-password
+SPLUNK_TOKEN=your-auth-token
 ```
 
-`/api/ingest` stores the event locally, then forwards it to `/services/collector/event`.
+---
 
-## Running With Splunk MCP
+## 🧠 AI Cognitive Engine Configurations
 
-Clone is included under `infra/splunk-mcp-server`. Start the MCP server using its upstream instructions, then set:
+Talos utilizes Google's Gemini models to analyze incident context, formulate hypotheses, and propose code fixes.
 
+Update the following keys in `apps/web/.env.local` to connect your keys:
 ```env
-SPLUNK_MCP_MODE=enabled
-SPLUNK_MCP_SERVER_URL=http://localhost:8000
+AI_PROVIDER=gemini
+GEMINI_API_KEY=AIzaSy...your-gemini-key
+GEMINI_MODEL=gemini-3.5-flash-medium
 ```
 
-Talos tries MCP first, REST second, and mock context only when mock mode is enabled.
+> [!TIP]
+> **BYOK (Bring Your Own Key)** is supported directly in the Talos UI! You can paste your Gemini API Key directly in the dashboard settings panel. This key is saved in browser local storage and transmitted safely via request headers, bypassing server-side configurations.
 
-## SDK Usage
+---
 
-```ts
+## 📦 Talos SDK Integration Guide
+
+Integrating the SDK into your own TypeScript application requires just a few lines of code.
+
+### Installation
+Reference the local package in your project's `package.json` dependencies:
+```json
+"dependencies": {
+  "@mylife-as-miles/talos-sdk": "workspace:*"
+}
+```
+
+### Initialization
+Initialize the SDK at your application's entrypoint:
+```typescript
 import { Talos } from "@mylife-as-miles/talos-sdk";
 
 Talos.init({
-  projectKey: "demo_project_key",
+  projectKey: "checkout-prod-009",
   environment: "production",
-  release: "v1.0.0",
+  release: "v1.4.2",
   service: "checkout-service",
-  ingestUrl: "/api/ingest"
+  ingestUrl: "http://localhost:3000/api/ingest" // Points to your Talos gateway
 });
+```
 
+### Capturing Errors & Context
+Capture exceptions dynamically within try-catch blocks and associate user tags or metadata:
+```typescript
+// Add breadcrumbs for trace correlation
 Talos.addBreadcrumb({
   category: "ui",
-  message: "User opened checkout page"
+  message: "User clicked submit checkout order button",
+  timestamp: new Date().toISOString()
 });
 
-await Talos.captureException(error, {
-  route: "/api/checkout",
-  userId: "demo-user-123",
-  tags: {
-    feature: "checkout",
-    region: "demo"
+try {
+  await executePayment(cart);
+} catch (error) {
+  // Capture the error and provide execution context
+  await Talos.captureException(error, {
+    route: "/api/checkout/submit",
+    userId: "user_99a8b11c",
+    tags: {
+      gateway: "Stripe",
+      currency: "USD"
+    }
+  });
+}
+```
+
+---
+
+## 📊 Technical Deep-Dive
+
+### 1. The Anomaly Scoring Formula
+Talos calculates an anomaly score \(\text{Score} \in [0, 100]\) for every incident to determine SRE priority. The score combines real-time volume metrics with code criticality markers:
+
+$$\text{Score} = \text{Base} + S_V + S_M + S_C + S_P + S_R$$
+
+Where:
+* **Base**: Initial starting constant score of \(20\).
+* **Volume Variance ($S_V$)**: Evaluated using standard deviations ($\sigma$) of the error rate over the historical average ($\mu$):
+  $$S_V = \begin{cases} 45 & \text{if } V > \mu + 3\sigma \\ 32 & \text{if } V > \mu + 2\sigma \\ 18 & \text{if } V > \mu + \sigma \\ 0 & \text{otherwise} \end{cases}$$
+* **Match Repeat Frequency ($S_M$)**: Splunk repeat counts. If matching logs exceed limit:
+  $$S_M = \begin{cases} 18 & \text{if } M \ge 5 \\ 0 & \text{otherwise} \end{cases}$$
+* **Critical Route ($S_C$)**: Regular expression matching on critical namespaces (`checkout`, `payment`, `auth`, `user`):
+  $$S_C = \begin{cases} 15 & \text{if path matches} \\ 0 & \text{otherwise} \end{cases}$$
+* **Environment ($S_P$)**: Production blast penalty. If environment is `"production"`, $S_P = 10$, else $0$.
+* **Release Regression Scope ($S_R$)**: If no release version metadata is specified, debugging difficulty rises. If `release` is missing, $S_R = 5$, else $0$.
+
+The final score is capped: \(\text{Score} = \min(100, \text{Score})\). The severity tier is mapped as follows:
+* **Critical**: \(\ge 85\)
+* **High**: \(\ge 70\)
+* **Warning**: \(\ge 45\)
+* **Normal**: \(< 45\)
+
+---
+
+## 📈 Example Telemetry Dataset
+
+Below are raw telemetry payloads illustrating the data structures transmitted throughout the system:
+
+### 1. Ingest Payload (`TalosErrorEvent`)
+Sent by the SDK when an exception is caught:
+
+```json
+{
+  "eventId": "e4b2d13a-7f2c-4903-a178-59a6c9d74f32",
+  "projectKey": "demo_project_key",
+  "environment": "production",
+  "release": "v1.0.0",
+  "service": "checkout-service",
+  "route": "/api/checkout",
+  "timestamp": "2026-06-15T11:45:00.000Z",
+  "error": {
+    "name": "TypeError",
+    "message": "Cannot read properties of undefined (reading 'email')",
+    "stack": "TypeError: Cannot read properties of undefined (reading 'email')\n    at processPayment (/app/apps/web/lib/checkout.ts:44:28)\n    at POST (/app/apps/web/app/api/checkout/route.ts:12:10)"
+  },
+  "breadcrumbs": [
+    { "category": "ui", "message": "User clicked submit payment", "timestamp": "2026-06-15T11:44:50.000Z" },
+    { "category": "network", "message": "POST /api/cart/validate - 200 OK", "timestamp": "2026-06-15T11:44:52.000Z" }
+  ],
+  "context": {
+    "userId": "demo-user-123",
+    "tags": {
+      "feature": "checkout",
+      "region": "us-east"
+    }
   }
-});
+}
 ```
 
-## Demo Flow
+### 2. Output AI Triage Report (`TalosTriageReport`)
+Generated by the AI resolver after Splunk investigation and anomaly scoring:
 
-The demo simulates a checkout crash:
-
-```text
-TypeError: Cannot read properties of undefined (reading 'email')
-Cause: missing user guard before payment execution
+```json
+{
+  "incidentId": "INC-E4B2D13A",
+  "eventId": "e4b2d13a-7f2c-4903-a178-59a6c9d74f32",
+  "priority": "critical",
+  "status": "triaged",
+  "trigger": "TypeError: Cannot read properties of undefined (reading 'email')",
+  "summary": "checkout-service crashed on /api/checkout after the SDK captured TypeError. Splunk context shows 12 matching errors.",
+  "rootCause": "Checkout code assumes a user object exists before accessing user.email during payment execution.",
+  "timeSinceEvent": "just now",
+  "affectedService": "checkout-service",
+  "affectedRoute": "/api/checkout",
+  "anomaly": {
+    "score": 98,
+    "level": "critical",
+    "reasons": [
+      "Current error volume is more than three standard deviations above baseline.",
+      "Splunk found repeated matching errors.",
+      "Failure affects checkout, payment, auth, or user data flow.",
+      "Event occurred in production."
+    ]
+  },
+  "evidence": [
+    { "message": "SDK captured TypeError: Cannot read properties of undefined (reading 'email')", "source": "sdk", "timestamp": "2026-06-15T11:45:00.000Z" }
+  ],
+  "proposedFix": {
+    "explanation": "Guard the authenticated user before payment execution and return a typed 401 response when user context is absent.",
+    "code": "if (!user?.email) {\n  return NextResponse.json({ error: \"Unauthorized\" }, { status: 401 });\n}\n\nawait processPayment({ userEmail: user.email, cart });",
+    "steps": [
+      "Add a user guard before reading user.email.",
+      "Add a regression test for anonymous checkout submission.",
+      "Deploy with release metadata so Talos can correlate future regressions."
+    ]
+  },
+  "splunk": {
+    "mode": "mcp",
+    "queryUsed": "search index=main service=checkout-service route=/api/checkout \"Cannot read properties of undefined (reading 'email')\" earliest=-15m",
+    "eventCount": 12
+  },
+  "confidence": 95,
+  "createdAt": "2026-06-15T11:45:10.000Z"
+}
 ```
 
-Talos stores the event, investigates mock Splunk context, scores anomaly severity, generates a report, and displays it in the dashboard.
+---
 
-## Screenshots
+## 🛠️ Development & QA Workflows
 
-Add screenshots after recording the Devpost walkthrough:
+Ensure your code changes comply with the repository formatting and styling standards:
 
-- Dashboard
-- Incident detail
-- Demo flow
-- Discord notification
+### Run Code Linter
+Analyze source files for syntax and stylistic inconsistencies:
+```bash
+corepack pnpm --filter @talos/web lint
+```
 
-## Production TODO
+### Run Type Checking
+Verify TypeScript compiler options and type assertions:
+```bash
+corepack pnpm --filter @talos/web typecheck
+```
 
-- Replace JSON file store with Supabase or Postgres.
-- Add auth and project scoping.
-- Add real MCP tool-call protocol support for the selected Splunk MCP deployment mode.
-- Add workflow engine primitives for remediation approvals.
+---
 
-## Attribution
+## 🔮 Production Roadmap
 
-Reference repositories live under `references/` for architecture inspiration only. The official Splunk MCP Server is cloned under `infra/splunk-mcp-server` as the integration layer reference. Talos code in this repository is reimplemented in TypeScript.
+* [ ] **Permanent Storage Layer**: Migrate from local file-backed JSON stores (`/data/*.json`) to a secure Supabase/PostgreSQL schema.
+* [ ] **Auto-Remediation PR Generator**: Automate the creation of GitHub Pull Requests containing the AI resolver's code-level fixes.
+* [ ] **MCP Tooling Enhancements**: Equip the Splunk MCP server with interactive remediation actions (e.g. service restarts, rollback deployments).
+* [ ] **SAML/OIDC Auth**: Configure SSO credentials to limit dashboard read access to certified DevOps engineers.
 
-## License
+---
 
-MIT.
+## 📄 License
+
+Distributed under the MIT License. See [LICENSE](file:///c:/Users/MILES/Documents/Talos/LICENSE) for more information.

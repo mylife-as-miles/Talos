@@ -8,7 +8,7 @@ flowchart TD
     B --> C[Next.js Ingest API]
     C --> D[Splunk HEC]
     D --> E[Splunk Index]
-    E --> F[Splunk Alert or Demo Trigger]
+    E --> F[Splunk Alert or Manual Resolver Trigger]
     F --> G[Talos Headless Resolver]
     G --> H[Splunk MCP Server]
     H --> E
@@ -23,10 +23,11 @@ flowchart TD
 - `packages/sdk`: captures structured runtime errors and sends them to the ingest relay.
 - `apps/web/app/api/ingest`: validates project key, stores events, forwards to HEC when live telemetry credentials are configured.
 - `apps/web/app/api/agent`: fetches an event, investigates Splunk context, scores anomaly severity, generates a report, and notifies chat.
-- `apps/web/lib/splunk`: MCP-first investigation with REST fallback and simulated telemetry context.
-- `apps/web/lib/ai`: strict report generation with deterministic fallback when no provider key is configured.
-- `apps/web/lib/store`: JSON file-backed MVP storage.
+- `apps/web/lib/splunk`: MCP-first investigation with REST fallback.
+- `apps/web/lib/ai`: strict BYOK/provider-backed report generation.
+- `apps/web/lib/client/indexed-db`: browser IndexedDB persistence for real ingested events and reports.
+- `apps/web/lib/store`: server relay cache for API routes that cannot access browser IndexedDB.
 
-## Demo Reliability
+## Data Policy
 
-Simulation mode is a first-class local reliability mode. It preserves the product flow with realistic Backstage-style telemetry while keeping reports and dashboard surfaces production-oriented.
+Talos does not generate incident records for the dashboard. The Live Data Console syncs real SDK intake and resolver output into browser IndexedDB.

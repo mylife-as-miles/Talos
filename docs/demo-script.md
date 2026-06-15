@@ -8,21 +8,21 @@ Developers already capture logs, but incident response still stalls at manual in
 
 Show `@mylife-as-miles/talos-sdk` initialization and breadcrumbs. Explain that Talos captures AI-readable operational events with service, route, release, user, tags, stack trace, and runtime context.
 
-## 0:45 Trigger Crash
+## 0:45 Send Real SDK Event
 
-Open `/dashboard/demo` and click Simulate Incident. The catalog service simulates:
+Run a real app with the SDK installed and trigger/capture an exception:
 
 ```text
-Cannot read properties of undefined (reading 'email')
+await Talos.captureException(error, { route: "/api/catalog/entities" })
 ```
 
-## 1:10 Show Splunk Event or Simulated Telemetry
+## 1:10 Show Splunk Event and IndexedDB Sync
 
-Open the dashboard. Show the runtime intake timeline and explain that live mode forwards the same event to Splunk HEC.
+Open the dashboard. Show the runtime intake timeline and click Sync Real Data so the browser stores the ingested event in IndexedDB.
 
 ## 1:35 Run Headless Resolver
 
-Click Run Resolver. Talos queries Splunk MCP first, uses REST fallback when needed, and uses simulated telemetry for a reliable local video.
+Click Run Resolver. Talos queries Splunk MCP first, uses REST fallback when needed, and sends the real context to the BYOK Gemini provider.
 
 ## 2:05 Show AI Report
 

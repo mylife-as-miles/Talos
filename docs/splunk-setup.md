@@ -58,7 +58,9 @@ REST is used only when MCP is unavailable and live Splunk search credentials are
 ## Test Ingestion
 
 ```bash
-curl -X POST http://localhost:3000/api/simulate-crash
+curl -X POST http://localhost:3000/api/ingest \
+  -H "Content-Type: application/json" \
+  -d @real-talos-event.json
 ```
 
 When live Splunk ingestion is configured, verify events with:
@@ -72,7 +74,7 @@ index=main sourcetype=talos:error service=catalog-service
 ```bash
 curl -X POST http://localhost:3000/api/agent ^
   -H "Content-Type: application/json" ^
-  -d "{}"
+  -d "{\"eventId\":\"YOUR_EVENT_ID\"}"
 ```
 
 The response includes `report.splunk.mode`, `queryUsed`, and the generated triage report.

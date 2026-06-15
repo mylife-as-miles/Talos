@@ -23,7 +23,7 @@ Talos is designed around a strict decoupling of telemetry collection, data wareh
 
 1. **Capture & Intercept**: The `@mylife-as-miles/talos-sdk` catches unhandled exceptions, records user interactions (breadcrumbs), and packages them into a structured JSON payload.
 2. **Ingest & Forward**: The browser-safe Ingest API Gateway validates the project payload and securely forwards events to the **Splunk HTTP Event Collector (HEC)** while caching a local copy for resilience.
-3. **Agentic Investigation**: When an incident is registered, the Headless AI Resolver triggers. It accesses Splunk via the **Splunk MCP Server** to run context-gathering search queries. If Splunk MCP is offline, it falls back to the Splunk REST search API, or simulated telemetry during offline demos.
+3. **Agentic Investigation**: When an incident is registered, the Headless AI Resolver triggers. It accesses Splunk via the **Splunk MCP Server** to run context-gathering search queries. If Splunk MCP is offline, it falls back to the Splunk REST search API.
 4. **Cognitive Analysis & Alerting**: The resolver calculates statistical anomaly scores, feeds the full context to a Gemini model, generates a structured triage report with code-level proposed fixes, updates the Talos dashboard, and sends chat alerts.
 
 ---
@@ -37,7 +37,7 @@ Talos is designed around a strict decoupling of telemetry collection, data wareh
 * **📈 Statistical Anomaly Engine**: Performs standard-deviation calculations over baseline error rates, event frequency, and route criticality weights to classify blast radius.
 * **💬 Webhook Dispatchers**: Formats and delivers incident reports to Slack and Discord channels with Markdown code-diff attachments.
 * **💻 Brutalist Neubrutalism Dashboard**: A high-impact Next.js dashboard built using neubrutalist UI design specs (loud borders, sparklines, interactive telemetry inspect tables, and inline AI diff comparisons).
-* **🔌 Simulation Sandbox**: First-class simulated telemetry mode which exercises the entire pipeline without requiring a live Splunk instance or active LLM API keys.
+* **Browser IndexedDB Persistence**: The dashboard syncs real ingested SDK events and AI reports into browser IndexedDB for local inspection without shipping secrets to the client.
 
 ---
 
@@ -51,7 +51,7 @@ Talos/
 │   └── web/                   # Next.js App Router dashboard UI and Ingest/Agent APIs
 │       ├── app/               # Routes, shell views, and API controllers
 │       ├── components/        # Neubrutalist React components
-│       ├── data/              # Local file-backed database storage (events.json / reports.json)
+    apps/web/data/              # Server relay cache for ingested events and reports
 │       └── lib/               # Core business logic (AI, Splunk clients, Anomaly scorer)
 ├── packages/
 │   └── sdk/                   # TypeScript SDK source package
@@ -88,7 +88,7 @@ cp .env.example apps/web/.env.local
 ```
 
 > [!NOTE]
-> By default, `TALOS_SIMULATION_MODE=true` is enabled in `.env.example`. This allows you to explore the dashboard and run simulation scenarios without configuring credentials for Splunk or Gemini.
+> Talos no longer ships generated incident data. Send real SDK events to `/api/ingest`, then use the Live Data Console to sync them into browser IndexedDB.
 
 ### 3. Build SDK and Run Development Servers
 Build the SDK package and launch the Next.js development server:
@@ -107,7 +107,7 @@ Open [http://localhost:3000/dashboard](http://localhost:3000/dashboard) to explo
 
 ## 🔌 Splunk Integration Setup
 
-To shift from the offline sandbox into production-grade live telemetry, follow these configuration setups:
+To connect production-grade live telemetry, follow these configuration setups:
 
 ### 1. HTTP Event Collector (HEC) Setup
 The SDK forwards events via the Ingest Gateway into the Splunk HTTP Event Collector.
@@ -116,7 +116,6 @@ The SDK forwards events via the Ingest Gateway into the Splunk HTTP Event Collec
 3. Select your destination index (typically `main`).
 4. Enable the token, copy the secret value, and update `apps/web/.env.local`:
    ```env
-   TALOS_SIMULATION_MODE=false
    SPLUNK_HEC_URL=http://your-splunk-host:8088
    SPLUNK_HEC_TOKEN=your-hec-token-uuid
    SPLUNK_INDEX=main
@@ -345,7 +344,7 @@ corepack pnpm --filter @talos/web typecheck
 
 ## 🔮 Production Roadmap
 
-* [ ] **Permanent Storage Layer**: Migrate from local file-backed JSON stores (`/data/*.json`) to a secure Supabase/PostgreSQL schema.
+* [ ] **Permanent Storage Layer**: Migrate from the server relay cache and browser IndexedDB to a secure Supabase/PostgreSQL schema.
 * [ ] **Auto-Remediation PR Generator**: Automate the creation of GitHub Pull Requests containing the AI resolver's code-level fixes.
 * [ ] **MCP Tooling Enhancements**: Equip the Splunk MCP server with interactive remediation actions (e.g. service restarts, rollback deployments).
 * [ ] **SAML/OIDC Auth**: Configure SSO credentials to limit dashboard read access to certified DevOps engineers.

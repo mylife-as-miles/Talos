@@ -346,7 +346,7 @@ function Dock({
   onOpen: (id: WindowId) => void;
 }) {
   return (
-    <div className="fixed bottom-5 left-1/2 z-50 flex -translate-x-1/2 items-end gap-2 border-[3px] border-black bg-[#fffdf1] px-3 py-2 shadow-[7px_7px_0_#000]">
+    <div className="fixed bottom-3 left-1/2 z-50 flex -translate-x-1/2 items-end gap-1.5 border-2 border-black bg-[#fffdf1] px-2 py-1.5 shadow-[3.5px_3.5px_0_#000]">
       {items.map((item) => {
         const Icon = item.icon;
         const open = openWindows.includes(item.id);
@@ -360,8 +360,8 @@ function Dock({
             className={`talos-dock-icon ${activeWindow === item.id && !isMinimized ? "talos-dock-icon-active" : ""}`}
           >
             <span className={`absolute -right-1 -top-1 h-3 w-3 border border-black ${item.accent}`} />
-            <Icon size={22} strokeWidth={2.6} />
-            {open ? <span className="absolute -bottom-1 h-1.5 w-7 border border-black bg-[#00c2c8]" /> : null}
+            <Icon size={18} strokeWidth={2.6} />
+            {open ? <span className="absolute -bottom-1 h-1 w-5 border border-black bg-[#00c2c8]" /> : null}
           </button>
         );
       })}

@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Brain, ChevronDown, ChevronRight, Crosshair, FlaskConical, Info, Link2, RefreshCw } from "lucide-react";
 import { EmptyState } from "@/components/empty-state";
 import { formatRelativeTime } from "@/lib/dashboard-stats";
-import { isMockMode } from "@/lib/config";
 import type { TalosTriageReport } from "@/lib/types";
 
 function StatusBadge({ children, tone }: { children: React.ReactNode; tone: "green" | "cyan" | "purple" | "amber" }) {
@@ -16,7 +15,6 @@ function StatusBadge({ children, tone }: { children: React.ReactNode; tone: "gre
 }
 
 export function InvestigationPanel({ report }: { report?: TalosTriageReport }) {
-  const mock = isMockMode();
 
   if (!report) {
     return (
@@ -55,11 +53,7 @@ export function InvestigationPanel({ report }: { report?: TalosTriageReport }) {
         <StatusBadge tone="cyan">
           <Crosshair size={13} className="mr-1.5" /> HEC Ready
         </StatusBadge>
-        {mock ? (
-          <StatusBadge tone="purple">
-            <FlaskConical size={13} className="mr-1.5" /> Mock Mode
-          </StatusBadge>
-        ) : null}
+
       </div>
 
       <div className="mt-3 flex items-start justify-between gap-3">

@@ -18,7 +18,6 @@ type EnvConfig = {
   aiProvider: boolean;
   discordWebhook: boolean;
   slackWebhook: boolean;
-  mockMode: boolean;
 };
 
 export function SettingsContent({ envConfig }: { envConfig: EnvConfig }) {
@@ -26,8 +25,7 @@ export function SettingsContent({ envConfig }: { envConfig: EnvConfig }) {
     hec: "missing",
     mcp: "missing",
     ai: "BYOK required",
-    webhook: "missing",
-    mock: envConfig.mockMode ? "enabled" : "disabled"
+    webhook: "missing"
   });
 
   function updateStatuses() {
@@ -71,8 +69,7 @@ export function SettingsContent({ envConfig }: { envConfig: EnvConfig }) {
       hec: hecStatus,
       mcp: mcpStatus,
       ai: aiStatus,
-      webhook: webhookStatus,
-      mock: envConfig.mockMode ? "enabled" : "disabled"
+      webhook: webhookStatus
     });
   }
 
@@ -88,8 +85,7 @@ export function SettingsContent({ envConfig }: { envConfig: EnvConfig }) {
     ["Splunk HEC", statuses.hec],
     ["Splunk MCP", statuses.mcp],
     ["AI provider", statuses.ai],
-    ["Discord webhook", statuses.webhook],
-    ["Mock mode", statuses.mock]
+    ["Discord webhook", statuses.webhook]
   ];
 
   return (

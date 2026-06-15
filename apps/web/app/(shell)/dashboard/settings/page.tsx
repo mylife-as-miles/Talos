@@ -1,7 +1,6 @@
 import { PageHeader } from "@/components/page-header";
 import { Card, CardHeader, CodeBlock } from "@/components/ui";
 import { SettingsContent } from "@/components/settings-content";
-import { isMockMode } from "@/lib/config";
 
 export const dynamic = "force-dynamic";
 
@@ -15,8 +14,7 @@ export default function SettingsPage() {
     splunkMcp: process.env.SPLUNK_MCP_MODE === "enabled" && configured(process.env.SPLUNK_MCP_SERVER_URL),
     aiProvider: configured(process.env.GEMINI_API_KEY, "replace_with_key"),
     discordWebhook: configured(process.env.DISCORD_WEBHOOK_URL, "replace_with_discord_webhook"),
-    slackWebhook: configured(process.env.SLACK_WEBHOOK_URL),
-    mockMode: isMockMode()
+    slackWebhook: configured(process.env.SLACK_WEBHOOK_URL)
   };
 
   return (
@@ -29,7 +27,7 @@ export default function SettingsPage() {
         <CardHeader title="Local SDK Usage Example" />
         <div className="p-3">
           <CodeBlock
-            value={`import { Talos } from "@mylife-as-miles/talos-sdk";\n\nTalos.init({\n  projectKey: "demo_project_key",\n  environment: "production",\n  release: "v1.0.0",\n  service: "checkout-service",\n  ingestUrl: "/api/ingest",\n});`}
+            value={`import { Talos } from "@mylife-as-miles/talos-sdk";\n\nTalos.init({\n  projectKey: "demo_project_key",\n  environment: "production",\n  release: "v2.4.1",\n  service: "catalog-service",\n  ingestUrl: "/api/ingest",\n});`}
           />
         </div>
       </Card>

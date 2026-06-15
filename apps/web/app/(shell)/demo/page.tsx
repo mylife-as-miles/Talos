@@ -18,14 +18,14 @@ export default async function DemoPage() {
   return (
     <>
       <PageHeader
-        title="Hackathon Demo Flow"
-        description="A guided Devpost-ready flow from runtime crash to fix recommendation."
+        title="Simulation Sandbox"
+        description="A guided simulation flow from runtime crash to fix recommendation."
         actions={<DemoActions />}
       />
 
       <div className="grid gap-5 xl:grid-cols-[.75fr_1fr]">
         <Card className="talos-fade-up talos-stagger-2 overflow-hidden">
-          <CardHeader title="Demo Runbook" detail="Click the actions above left-to-right. Results persist and refresh automatically." />
+          <CardHeader title="Simulation Steps" detail="Click the actions above left-to-right. Results persist and refresh automatically." />
           <div className="space-y-3 p-5">
             {steps.map((step, index) => (
               <div
@@ -52,7 +52,7 @@ export default async function DemoPage() {
                 compact
                 icon={CirclePlay}
                 title="Waiting for resolver output"
-                description="Trigger the demo crash, then run the headless resolver to generate a fix-ready triage report."
+                description="Trigger a simulation, then run the resolver to generate a fix-ready triage report."
               />
             )}
           </div>

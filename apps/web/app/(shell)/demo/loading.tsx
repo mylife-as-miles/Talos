@@ -4,7 +4,7 @@ import { Skeleton, SkeletonText } from "@/components/skeleton";
 export default function DemoLoading() {
   return (
     <>
-      <PageHeader title="Hackathon Demo Flow" description="A guided Devpost-ready flow from runtime crash to fix recommendation." />
+      <PageHeader title="Simulation Sandbox" description="A guided simulation flow from runtime crash to fix recommendation." />
       <div className="grid gap-5 xl:grid-cols-[.75fr_1fr]">
         <div className="talos-panel rounded-lg p-5">
           <Skeleton className="h-4 w-32" />

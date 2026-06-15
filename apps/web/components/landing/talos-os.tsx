@@ -31,7 +31,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type WindowId =
   | "home"
@@ -119,6 +119,14 @@ export function TalosOsLanding() {
   const [maximized, setMaximized] = useState<WindowId[]>([]);
   const [contributorStatus, setContributorStatus] = useState("idle");
   const [removedTrash, setRemovedTrash] = useState<string[]>([]);
+  const [toast, setToast] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (toast) {
+      const timer = setTimeout(() => setToast(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [toast]);
 
   const dockItems = useMemo(() => desktopItems.filter((item) => item.dock), []);
 
@@ -201,6 +209,7 @@ export function TalosOsLanding() {
                 onClose={() => closeWindow(id)}
                 onMinimize={() => minimizeWindow(id)}
                 onMaximize={() => toggleMaximize(id)}
+                onAction={(msg) => setToast(msg)}
               >
                 {renderWindowContent(id, {
                   onOpen: openWindow,
@@ -215,6 +224,12 @@ export function TalosOsLanding() {
 
         <Dock items={dockItems} openWindows={openWindows} minimized={minimized} activeWindow={activeWindow} onOpen={openWindow} />
       </section>
+
+      {toast && (
+        <div className="fixed bottom-20 right-6 z-[9999] border-2 border-black bg-[#ffe100] px-4 py-2 text-sm font-black shadow-[4px_4px_0_#000] animate-bounce">
+          {toast}
+        </div>
+      )}
     </main>
   );
 }
@@ -297,7 +312,8 @@ function OsWindow({
   onFocus,
   onClose,
   onMinimize,
-  onMaximize
+  onMaximize,
+  onAction
 }: {
   id: WindowId;
   active: boolean;
@@ -308,6 +324,7 @@ function OsWindow({
   onClose: () => void;
   onMinimize: () => void;
   onMaximize: () => void;
+  onAction: (msg: string) => void;
 }) {
   const meta = windowMeta[id];
   return (
@@ -351,20 +368,33 @@ function OsWindow({
         </div>
       </div>
       <div className="flex items-center gap-2 border-b-2 border-black bg-[#f8f5e6] px-3 py-1 text-[11px] font-black text-[#615b4e]">
-        <button type="button" className="talos-toolbar-button">
+        <button type="button" onClick={() => onAction("Nothing to undo")} className="talos-toolbar-button">
           Undo
         </button>
-        <button type="button" className="talos-toolbar-button">
+        <button type="button" onClick={() => onAction("Zoom set to 100% (Optimized)")} className="talos-toolbar-button">
           Zoom
         </button>
         <span className="h-5 border-l-2 border-[#b9b29d]" />
-        <span>B</span>
-        <span className="italic">I</span>
-        <span className="underline">U</span>
-        <span className="ml-auto hidden items-center gap-3 sm:flex">
-          <Search size={13} />
-          <Settings size={13} />
-          <button type="button" className="talos-primary-button h-6 px-2.5 text-[10px]">
+        <button type="button" onClick={() => onAction("Font weight set to Bold")} className="talos-toolbar-button w-6 font-black">
+          B
+        </button>
+        <button type="button" onClick={() => onAction("Font style set to Italic")} className="talos-toolbar-button w-6 italic">
+          I
+        </button>
+        <button type="button" onClick={() => onAction("Font decoration set to Underline")} className="talos-toolbar-button w-6 underline">
+          U
+        </button>
+        <span className="ml-auto hidden items-center gap-2.5 sm:flex">
+          <button type="button" onClick={() => onAction("Search indexing active")} aria-label="Search inside file" className="grid h-5 w-5 place-items-center border border-black bg-[#fffdf1] hover:bg-[#ffe100]">
+            <Search size={10} />
+          </button>
+          <button type="button" onClick={() => onAction("Window settings loaded")} aria-label="Settings" className="grid h-5 w-5 place-items-center border border-black bg-[#fffdf1] hover:bg-[#ffe100]">
+            <Settings size={10} />
+          </button>
+          <button type="button" onClick={() => {
+            navigator.clipboard?.writeText(window.location.href);
+            onAction("Link copied to clipboard!");
+          }} className="talos-primary-button h-6 px-2.5 text-[10px]">
             Share
           </button>
         </span>

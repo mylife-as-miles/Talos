@@ -196,15 +196,15 @@ export function TalosOsLanding() {
 
 function TopBar({ onOpen }: { onOpen: (id: WindowId) => void }) {
   return (
-    <header className="relative z-40 flex h-[54px] items-center justify-between border-b-2 border-black bg-[#e5e1cf] px-4 shadow-[0_3px_0_#000]">
-      <div className="flex items-center gap-5">
+    <header className="relative z-40 flex h-[44px] items-center justify-between border-b-2 border-black bg-[#e5e1cf] px-4 shadow-[0_2px_0_#000]">
+      <div className="flex items-center gap-4">
         <button type="button" onClick={() => onOpen("home")} className="group flex items-center gap-2 font-black">
-          <span className="grid h-8 w-8 place-items-center border-2 border-black bg-[#00c2c8] shadow-[3px_3px_0_#000] transition-transform group-hover:-translate-y-0.5">
-            <ShieldCheck size={19} strokeWidth={3} />
+          <span className="grid h-7 w-7 place-items-center border-2 border-black bg-[#00c2c8] shadow-[2px_2px_0_#000] transition-transform group-hover:-translate-y-0.5">
+            <ShieldCheck size={16} strokeWidth={3} />
           </span>
-          <span className="hidden text-[18px] sm:inline">Talos OS</span>
+          <span className="hidden text-[15px] sm:inline">Talos OS</span>
         </button>
-        <nav className="hidden items-center gap-2 text-sm font-black lg:flex">
+        <nav className="hidden items-center gap-1 text-xs font-black lg:flex">
           {[
             ["Product OS", "home"],
             ["SDK", "sdk"],
@@ -221,17 +221,17 @@ function TopBar({ onOpen }: { onOpen: (id: WindowId) => void }) {
       </div>
 
       <div className="flex items-center gap-2">
-        <Link href="/dashboard" className="talos-primary-button h-9 px-4">
+        <Link href="/dashboard" className="talos-primary-button h-7.5 px-3 text-xs">
           Dashboard
         </Link>
         <button type="button" onClick={() => onOpen("docs")} aria-label="Search docs" className="talos-top-icon">
-          <Search size={19} />
+          <Search size={16} />
         </button>
         <button type="button" onClick={() => onOpen("contributors")} aria-label="Ask to contribute" className="talos-top-icon">
-          <Mail size={19} />
+          <Mail size={16} />
         </button>
-        <button type="button" onClick={() => onOpen("byok")} className="hidden h-8 items-center gap-1 border-2 border-black bg-white px-2 text-xs font-black shadow-[2px_2px_0_#000] sm:flex">
-          <KeyRound size={14} />
+        <button type="button" onClick={() => onOpen("byok")} className="hidden h-7.5 items-center gap-1 border-2 border-black bg-white px-2 text-[11px] font-black shadow-[1.5px_1.5px_0_#000] sm:flex">
+          <KeyRound size={13} />
           BYOK
         </button>
       </div>

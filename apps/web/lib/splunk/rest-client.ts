@@ -1,10 +1,13 @@
 import type { SplunkInvestigationContext, SplunkInvestigator } from "./types";
 
 export class SplunkRestClient implements SplunkInvestigator {
+  constructor(private readonly options?: { index?: string }) {}
+
   async investigateError(input: Parameters<SplunkInvestigator["investigateError"]>[0]): Promise<SplunkInvestigationContext> {
     const baseUrl = process.env.SPLUNK_BASE_URL;
     const token = process.env.SPLUNK_TOKEN;
-    const queryUsed = `search index=${process.env.SPLUNK_INDEX || "main"} service=${input.service} ${input.route ? `route=${input.route}` : ""} "${input.errorMessage}" earliest=${input.timeWindow}`;
+    const index = this.options?.index || process.env.SPLUNK_INDEX || "main";
+    const queryUsed = `search index=${index} service=${input.service} ${input.route ? `route=${input.route}` : ""} "${input.errorMessage}" earliest=${input.timeWindow}`;
 
     if (!baseUrl || !token || token === "replace_with_token") {
       throw new Error("Splunk REST fallback is not configured.");

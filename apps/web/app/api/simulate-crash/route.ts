@@ -6,11 +6,19 @@ import { isMockMode } from "@/lib/config";
 export const runtime = "nodejs";
 export const maxDuration = 30;
 
-export async function POST() {
+export async function POST(req: Request) {
   const event = demoCheckoutEvent();
   await saveEvent(event);
-  if (!isMockMode()) {
-    await sendToSplunkHEC(event);
+
+  const hecUrl = req.headers.get("x-talos-hec-url") || undefined;
+  const hecToken = req.headers.get("x-talos-hec-token") || undefined;
+  const index = req.headers.get("x-talos-splunk-index") || undefined;
+
+  const hasHecOverride = Boolean(hecUrl && hecToken);
+
+  if (!isMockMode() || hasHecOverride) {
+    await sendToSplunkHEC(event, { hecUrl, hecToken, index });
   }
+
   return Response.json({ ok: true, event });
 }

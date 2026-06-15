@@ -1,7 +1,7 @@
 import type { TalosTriageReport } from "../types";
 
-export async function sendDiscordNotification(report: TalosTriageReport) {
-  const webhook = process.env.DISCORD_WEBHOOK_URL;
+export async function sendDiscordNotification(report: TalosTriageReport, webhookOverride?: string) {
+  const webhook = webhookOverride || process.env.DISCORD_WEBHOOK_URL;
   if (!webhook || webhook === "replace_with_discord_webhook") {
     return { skipped: true, reason: "Discord webhook not configured." };
   }

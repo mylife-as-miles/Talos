@@ -1,10 +1,14 @@
 import type { SplunkInvestigationContext, SplunkInvestigator } from "./types";
 
 export class SplunkMcpClient implements SplunkInvestigator {
-  constructor(private readonly serverUrl = process.env.SPLUNK_MCP_SERVER_URL || "http://localhost:8000") {}
+  constructor(
+    private readonly serverUrl = process.env.SPLUNK_MCP_SERVER_URL || "http://localhost:8000",
+    private readonly options?: { index?: string }
+  ) {}
 
   async investigateError(input: Parameters<SplunkInvestigator["investigateError"]>[0]): Promise<SplunkInvestigationContext> {
-    const queryUsed = `search index=${process.env.SPLUNK_INDEX || "main"} service=${input.service} ${input.route ? `route=${input.route}` : ""} "${input.errorMessage}" earliest=${input.timeWindow}`;
+    const index = this.options?.index || process.env.SPLUNK_INDEX || "main";
+    const queryUsed = `search index=${index} service=${input.service} ${input.route ? `route=${input.route}` : ""} "${input.errorMessage}" earliest=${input.timeWindow}`;
     const response = await fetch(`${this.serverUrl.replace(/\/$/, "")}/investigate`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

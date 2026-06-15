@@ -13,13 +13,29 @@ export async function POST(req: Request) {
   const aiProvider = req.headers.get("x-talos-ai-provider") || undefined;
   const aiKey = req.headers.get("x-talos-ai-key") || undefined;
   const aiModel = req.headers.get("x-talos-ai-model") || undefined;
+
+  const hecUrl = req.headers.get("x-talos-hec-url") || undefined;
+  const hecToken = req.headers.get("x-talos-hec-token") || undefined;
+  const splunkIndex = req.headers.get("x-talos-splunk-index") || undefined;
+  const mcpMode = req.headers.get("x-talos-mcp-mode") || undefined;
+  const mcpUrl = req.headers.get("x-talos-mcp-url") || undefined;
+
+  const discordWebhook = req.headers.get("x-talos-discord-webhook") || undefined;
+  const slackWebhook = req.headers.get("x-talos-slack-webhook") || undefined;
+
   const event = await getEvent(body.eventId);
 
   if (!event) {
     return Response.json({ ok: false, error: "No Talos event found. Trigger a demo crash first." }, { status: 404 });
   }
 
-  const splunkContext = await getSplunkContext({ event });
+  const splunkContext = await getSplunkContext({ event }, {
+    hecUrl,
+    hecToken,
+    index: splunkIndex,
+    mcpMode,
+    mcpUrl
+  });
   const anomaly = scoreAnomaly({
     currentErrorCount: splunkContext.stats.totalEvents,
     baselineAverage: 3,
@@ -42,7 +58,7 @@ export async function POST(req: Request) {
         : undefined
   });
   await saveReport(report);
-  await notify(report);
+  await notify(report, { discordWebhook, slackWebhook });
 
   return Response.json({ ok: true, report });
 }

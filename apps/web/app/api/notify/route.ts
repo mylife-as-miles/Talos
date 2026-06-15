@@ -10,5 +10,12 @@ export async function POST(req: Request) {
   if (!report) {
     return Response.json({ ok: false, error: "No report found." }, { status: 404 });
   }
-  return Response.json({ ok: true, result: await notify(report) });
+
+  const discordWebhook = req.headers.get("x-talos-discord-webhook") || undefined;
+  const slackWebhook = req.headers.get("x-talos-slack-webhook") || undefined;
+
+  return Response.json({
+    ok: true,
+    result: await notify(report, { discordWebhook, slackWebhook })
+  });
 }

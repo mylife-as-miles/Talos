@@ -10,6 +10,12 @@ type StoredBreadcrumb = {
 
 let breadcrumbs: StoredBreadcrumb[] = [];
 
+/**
+ * Adds a new breadcrumb to the stored log.
+ * Limits the total breadcrumbs stored to MAX_BREADCRUMBS.
+ * 
+ * @param input Breadcrumb data containing category, message, and optional extra metadata.
+ */
 export function addBreadcrumb(input: TalosBreadcrumb) {
   const breadcrumb = {
     ...input,
@@ -18,10 +24,18 @@ export function addBreadcrumb(input: TalosBreadcrumb) {
   breadcrumbs = [...breadcrumbs, breadcrumb].slice(-MAX_BREADCRUMBS);
 }
 
+/**
+ * Retrieves a copy of the current breadcrumb stack.
+ * 
+ * @returns An array of stored breadcrumbs.
+ */
 export function getBreadcrumbs() {
   return breadcrumbs.map((breadcrumb) => ({ ...breadcrumb }));
 }
 
+/**
+ * Resets the breadcrumb history to an empty stack.
+ */
 export function clearBreadcrumbs() {
   breadcrumbs = [];
 }

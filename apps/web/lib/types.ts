@@ -1,4 +1,4 @@
-import type { TalosErrorEvent } from "@mylife-as-miles/talos-sdk";
+import type { TalosErrorEvent } from "@talos/sdk";
 
 export type { TalosErrorEvent };
 

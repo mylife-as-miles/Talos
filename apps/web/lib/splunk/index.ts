@@ -1,5 +1,5 @@
-import { isMockMode } from "../config";
-import { mockSplunkContext } from "../demo-data";
+import { isSimulationMode } from "../config";
+import { simulateSplunkContext } from "../demo-data";
 import type { TalosErrorEvent } from "../types";
 import { SplunkMcpClient } from "./mcp-client";
 import { SplunkRestClient } from "./rest-client";
@@ -9,8 +9,8 @@ export async function getSplunkContext(
   overrides?: { hecUrl?: string; hecToken?: string; index?: string; mcpMode?: string; mcpUrl?: string }
 ) {
   const hasCustomSplunk = Boolean(overrides?.hecUrl || overrides?.hecToken || overrides?.mcpUrl);
-  if (isMockMode() && !hasCustomSplunk) {
-    return mockSplunkContext(event);
+  if (isSimulationMode() && !hasCustomSplunk) {
+    return simulateSplunkContext(event);
   }
 
   const input = {

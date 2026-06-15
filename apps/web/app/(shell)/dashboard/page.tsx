@@ -92,10 +92,18 @@ export default async function DashboardPage() {
         <div className="talos-sticker absolute -bottom-7 right-8 hidden px-4 py-2 text-center text-xl font-black uppercase leading-none md:block">Focus always visible</div>
       </div>
 
-      <div className="mt-11 flex flex-wrap items-end justify-between gap-4">
-        <DemoActions />
-        <div className="talos-sticker talos-danger-sticker px-4 py-2 text-center text-lg font-black uppercase leading-none">One primary action</div>
-      </div>
+      <section className="talos-panel talos-scanline talos-fade-up mt-7 p-6 bg-[#fffce2]">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div>
+            <div className="inline-flex border-2 border-black bg-black px-2 py-1 text-[11px] font-black uppercase tracking-[.09em] text-white">Simulation Mode</div>
+            <h3 className="mt-2.5 text-[20px] font-black leading-none text-black">Simulate Incident</h3>
+            <p className="mt-2 max-w-xl text-[14px] font-bold leading-normal text-[#4d473c]">Trigger a sample checkout failure and watch Talos generate a Splunk-backed AI triage report.</p>
+          </div>
+          <div>
+            <DemoActions />
+          </div>
+        </div>
+      </section>
 
       <div className="mt-7 grid gap-4 xl:grid-cols-4">
         <MetricCard label="Captured Errors" value={String(stats.eventCount)} detail="SDK runtime intake" tone="cyan" icon={<Crosshair size={28} strokeWidth={2.7} />} />

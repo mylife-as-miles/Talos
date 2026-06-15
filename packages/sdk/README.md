@@ -9,20 +9,20 @@ Talos.init({
   projectKey: "demo_project_key",
   environment: "production",
   release: "v1.0.0",
-  service: "checkout-service",
+  service: "catalog-service",
   ingestUrl: "/api/ingest"
 });
 
 Talos.addBreadcrumb({
   category: "ui",
-  message: "User opened checkout page"
+  message: "Catalog provider refresh started"
 });
 
 await Talos.captureException(new TypeError("Cannot read properties of undefined (reading 'email')"), {
-  route: "/api/checkout",
+  route: "/api/catalog/entities",
   userId: "demo-user-123",
   tags: {
-    feature: "checkout",
+    feature: "entity-processing",
     region: "demo"
   }
 });

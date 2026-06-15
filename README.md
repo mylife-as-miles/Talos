@@ -23,7 +23,7 @@ Talos is designed around a strict decoupling of telemetry collection, data wareh
 
 1. **Capture & Intercept**: The `@mylife-as-miles/talos-sdk` catches unhandled exceptions, records user interactions (breadcrumbs), and packages them into a structured JSON payload.
 2. **Ingest & Forward**: The browser-safe Ingest API Gateway validates the project payload and securely forwards events to the **Splunk HTTP Event Collector (HEC)** while caching a local copy for resilience.
-3. **Agentic Investigation**: When an incident is registered, the Headless AI Resolver triggers. It accesses Splunk via the **Splunk MCP Server** to run context-gathering search queries. If Splunk MCP is offline, it falls back to the Splunk REST search API, or local mock data during offline demos.
+3. **Agentic Investigation**: When an incident is registered, the Headless AI Resolver triggers. It accesses Splunk via the **Splunk MCP Server** to run context-gathering search queries. If Splunk MCP is offline, it falls back to the Splunk REST search API, or simulated telemetry during offline demos.
 4. **Cognitive Analysis & Alerting**: The resolver calculates statistical anomaly scores, feeds the full context to a Gemini model, generates a structured triage report with code-level proposed fixes, updates the Talos dashboard, and sends chat alerts.
 
 ---
@@ -37,7 +37,7 @@ Talos is designed around a strict decoupling of telemetry collection, data wareh
 * **📈 Statistical Anomaly Engine**: Performs standard-deviation calculations over baseline error rates, event frequency, and route criticality weights to classify blast radius.
 * **💬 Webhook Dispatchers**: Formats and delivers incident reports to Slack and Discord channels with Markdown code-diff attachments.
 * **💻 Brutalist Neubrutalism Dashboard**: A high-impact Next.js dashboard built using neubrutalist UI design specs (loud borders, sparklines, interactive telemetry inspect tables, and inline AI diff comparisons).
-* **🔌 Offline Sandbox Mode**: First-class mock mode which simulates the entire pipeline without requiring a live Splunk instance or active LLM API keys.
+* **🔌 Simulation Sandbox**: First-class simulated telemetry mode which exercises the entire pipeline without requiring a live Splunk instance or active LLM API keys.
 
 ---
 
@@ -88,7 +88,7 @@ cp .env.example apps/web/.env.local
 ```
 
 > [!NOTE]
-> By default, `TALOS_MOCK_MODE=true` is enabled in `.env.example`. This allows you to explore the dashboard and run simulation scenarios without configure credentials for Splunk or Gemini.
+> By default, `TALOS_SIMULATION_MODE=true` is enabled in `.env.example`. This allows you to explore the dashboard and run simulation scenarios without configuring credentials for Splunk or Gemini.
 
 ### 3. Build SDK and Run Development Servers
 Build the SDK package and launch the Next.js development server:
@@ -116,7 +116,7 @@ The SDK forwards events via the Ingest Gateway into the Splunk HTTP Event Collec
 3. Select your destination index (typically `main`).
 4. Enable the token, copy the secret value, and update `apps/web/.env.local`:
    ```env
-   TALOS_MOCK_MODE=false
+   TALOS_SIMULATION_MODE=false
    SPLUNK_HEC_URL=http://your-splunk-host:8088
    SPLUNK_HEC_TOKEN=your-hec-token-uuid
    SPLUNK_INDEX=main
@@ -180,10 +180,10 @@ Initialize the SDK at your application's entrypoint:
 import { Talos } from "@mylife-as-miles/talos-sdk";
 
 Talos.init({
-  projectKey: "checkout-prod-009",
+  projectKey: "backstage-prod-009",
   environment: "production",
   release: "v1.4.2",
-  service: "checkout-service",
+  service: "catalog-service",
   ingestUrl: "http://localhost:3000/api/ingest" // Points to your Talos gateway
 });
 ```
@@ -194,7 +194,7 @@ Capture exceptions dynamically within try-catch blocks and associate user tags o
 // Add breadcrumbs for trace correlation
 Talos.addBreadcrumb({
   category: "ui",
-  message: "User clicked submit checkout order button",
+  message: "Catalog provider refresh started",
   timestamp: new Date().toISOString()
 });
 
@@ -203,7 +203,7 @@ try {
 } catch (error) {
   // Capture the error and provide execution context
   await Talos.captureException(error, {
-    route: "/api/checkout/submit",
+    route: "/api/catalog/entities",
     userId: "user_99a8b11c",
     tags: {
       gateway: "Stripe",
@@ -228,7 +228,7 @@ Where:
   $$S_V = \begin{cases} 45 & \text{if } V > \mu + 3\sigma \\ 32 & \text{if } V > \mu + 2\sigma \\ 18 & \text{if } V > \mu + \sigma \\ 0 & \text{otherwise} \end{cases}$$
 * **Match Repeat Frequency ($S_M$)**: Splunk repeat counts. If matching logs exceed limit:
   $$S_M = \begin{cases} 18 & \text{if } M \ge 5 \\ 0 & \text{otherwise} \end{cases}$$
-* **Critical Route ($S_C$)**: Regular expression matching on critical namespaces (`checkout`, `payment`, `auth`, `user`):
+* **Critical Route ($S_C$)**: Regular expression matching on critical developer portal namespaces (`catalog`, `scaffolder`, `techdocs`, `auth`, `search`):
   $$S_C = \begin{cases} 15 & \text{if path matches} \\ 0 & \text{otherwise} \end{cases}$$
 * **Environment ($S_P$)**: Production blast penalty. If environment is `"production"`, $S_P = 10$, else $0$.
 * **Release Regression Scope ($S_R$)**: If no release version metadata is specified, debugging difficulty rises. If `release` is missing, $S_R = 5$, else $0$.
@@ -254,13 +254,13 @@ Sent by the SDK when an exception is caught:
   "projectKey": "demo_project_key",
   "environment": "production",
   "release": "v1.0.0",
-  "service": "checkout-service",
-  "route": "/api/checkout",
+  "service": "catalog-service",
+  "route": "/api/catalog/entities",
   "timestamp": "2026-06-15T11:45:00.000Z",
   "error": {
     "name": "TypeError",
-    "message": "Cannot read properties of undefined (reading 'email')",
-    "stack": "TypeError: Cannot read properties of undefined (reading 'email')\n    at processPayment (/app/apps/web/lib/checkout.ts:44:28)\n    at POST (/app/apps/web/app/api/checkout/route.ts:12:10)"
+    "message": "Cannot read properties of undefined (reading 'metadata')",
+    "stack": "TypeError: Cannot read properties of undefined (reading 'metadata')\n    at processCatalogEntity (packages/backend/src/plugins/catalog.ts:87:22)\n    at CatalogBuilder.build (packages/backend/src/catalog/CatalogBuilder.ts:142:9)"
   },
   "breadcrumbs": [
     { "category": "ui", "message": "User clicked submit payment", "timestamp": "2026-06-15T11:44:50.000Z" },
@@ -269,7 +269,7 @@ Sent by the SDK when an exception is caught:
   "context": {
     "userId": "demo-user-123",
     "tags": {
-      "feature": "checkout",
+      "feature": "entity-processing",
       "region": "us-east"
     }
   }
@@ -285,19 +285,19 @@ Generated by the AI resolver after Splunk investigation and anomaly scoring:
   "eventId": "e4b2d13a-7f2c-4903-a178-59a6c9d74f32",
   "priority": "critical",
   "status": "triaged",
-  "trigger": "TypeError: Cannot read properties of undefined (reading 'email')",
-  "summary": "checkout-service crashed on /api/checkout after the SDK captured TypeError. Splunk context shows 12 matching errors.",
-  "rootCause": "Checkout code assumes a user object exists before accessing user.email during payment execution.",
+  "trigger": "TypeError: Cannot read properties of undefined (reading 'metadata')",
+  "summary": "catalog-service crashed on /api/catalog/entities after the SDK captured TypeError. Splunk context shows 12 matching errors.",
+  "rootCause": "The catalog processor received an entity without a complete metadata block during provider refresh.",
   "timeSinceEvent": "just now",
-  "affectedService": "checkout-service",
-  "affectedRoute": "/api/checkout",
+  "affectedService": "catalog-service",
+  "affectedRoute": "/api/catalog/entities",
   "anomaly": {
     "score": 98,
     "level": "critical",
     "reasons": [
       "Current error volume is more than three standard deviations above baseline.",
       "Splunk found repeated matching errors.",
-      "Failure affects checkout, payment, auth, or user data flow.",
+      "Failure affects a critical developer portal workflow.",
       "Event occurred in production."
     ]
   },
@@ -308,14 +308,14 @@ Generated by the AI resolver after Splunk investigation and anomaly scoring:
     "explanation": "Guard the authenticated user before payment execution and return a typed 401 response when user context is absent.",
     "code": "if (!user?.email) {\n  return NextResponse.json({ error: \"Unauthorized\" }, { status: 401 });\n}\n\nawait processPayment({ userEmail: user.email, cart });",
     "steps": [
-      "Add a user guard before reading user.email.",
-      "Add a regression test for anonymous checkout submission.",
+      "Guard catalog entity metadata before processor access.",
+      "Add a regression test for malformed provider entities.",
       "Deploy with release metadata so Talos can correlate future regressions."
     ]
   },
   "splunk": {
     "mode": "mcp",
-    "queryUsed": "search index=main service=checkout-service route=/api/checkout \"Cannot read properties of undefined (reading 'email')\" earliest=-15m",
+    "queryUsed": "search index=main service=catalog-service route=/api/catalog/entities \"Cannot read properties of undefined (reading 'metadata')\" earliest=-15m",
     "eventCount": 12
   },
   "confidence": 95,

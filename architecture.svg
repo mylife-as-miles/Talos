@@ -81,7 +81,7 @@
       <rect x="0" y="0" width="160" height="90" rx="8" fill="#111827" stroke="#475569" stroke-width="2" />
       <text x="15" y="30" font-size="14" font-weight="800" fill="#f1f5f9">Client App</text>
       <text x="15" y="50" font-size="11" font-weight="500" fill="#94a3b8">Next.js / Node / Browser</text>
-      <text x="15" y="70" font-size="10" font-weight="700" fill="#e2e8f0" bg="black" style="font-family: monospace;">checkout-service</text>
+      <text x="15" y="70" font-size="10" font-weight="700" fill="#e2e8f0" bg="black" style="font-family: monospace;">catalog-service</text>
     </g>
 
     <!-- Talos SDK -->
@@ -164,7 +164,7 @@
       
       <text x="15" y="75" font-size="9" font-weight="600" fill="#cbd5e1">Tool: `splunk_investigate`</text>
       <text x="15" y="90" font-size="9" font-weight="600" fill="#cbd5e1">Fallback: Splunk REST API</text>
-      <text x="15" y="102" font-size="9" font-weight="600" fill="#cbd5e1">Mode: Mock Fallback Demo</text>
+      <text x="15" y="102" font-size="9" font-weight="600" fill="#cbd5e1">Mode: Simulated Telemetry</text>
     </g>
   </g>
 

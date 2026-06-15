@@ -12,7 +12,7 @@ function StatusBadge({ children, tone }: { children: React.ReactNode; tone: "gre
     amber: "bg-[#ffe100]",
     blue: "bg-[#00c2c8]"
   };
-  return <span className={`inline-flex h-8 items-center border-2 border-black px-3 text-[12px] font-black uppercase text-black shadow-[3px_3px_0_#000] ${tones[tone]}`}>{children}</span>;
+  return <span className={`inline-flex h-9 items-center border-2 border-black px-3.5 text-[13px] font-black uppercase text-black shadow-[3px_3px_0_#000] ${tones[tone]}`}>{children}</span>;
 }
 
 function priorityTone(priority: TalosTriageReport["priority"]) {
@@ -31,21 +31,21 @@ function statusTone(status: TalosTriageReport["status"]) {
 export function IncidentsTable({ reports }: { reports: TalosTriageReport[] }) {
   return (
     <section className="talos-panel talos-fade-up talos-stagger-5 mt-2 overflow-hidden">
-      <div className="flex items-center justify-between border-b-[4px] border-black bg-black px-5 py-4 text-white">
-        <div className="text-[15px] font-black uppercase tracking-[.08em]">Active Incidents</div>
+      <div className="flex items-center justify-between border-b-[4px] border-black bg-black px-6 py-4.5 text-white">
+        <div className="text-[17px] font-black uppercase tracking-[.08em]">Active Incidents</div>
         {reports.length ? (
-          <Link href="/incidents" className="talos-brutal-control h-10 border-[3px] border-black bg-[#ffe100] px-5 text-[14px] font-black leading-9 text-black shadow-[4px_4px_0_#fff]">
+          <Link href="/dashboard/incidents" className="talos-brutal-control h-11 border-[3px] border-black bg-[#ffe100] px-5 text-[15px] font-black leading-10 text-black shadow-[4px_4px_0_#fff]">
             View Full Incidents
           </Link>
         ) : null}
       </div>
       {reports.length ? (
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[1080px] text-left text-[14px]">
-            <thead className="border-b-[3px] border-black bg-[#ffe100] text-[12px] uppercase text-black">
+          <table className="w-full min-w-[1080px] text-left text-[15px]">
+            <thead className="border-b-[3px] border-black bg-[#ffe100] text-[13px] uppercase text-black">
               <tr>
                 {["ID", "Service", "Error", "Priority", "Status", "Created", "Confidence", ""].map((heading) => (
-                  <th key={heading} className="px-5 py-3 font-black">
+                  <th key={heading} className="px-5 py-3.5 font-black">
                     {heading}
                   </th>
                 ))}
@@ -59,13 +59,13 @@ export function IncidentsTable({ reports }: { reports: TalosTriageReport[] }) {
                   style={{ animationDelay: `${index * 45}ms` }}
                 >
                   <td className="px-5 py-3 font-black">
-                    <Link href={`/incidents/${report.incidentId}`} className="underline decoration-2 underline-offset-4">
+                    <Link href={`/dashboard/incidents/${report.incidentId}`} className="underline decoration-2 underline-offset-4">
                       {report.incidentId}
                     </Link>
                   </td>
                   <td className="px-5 py-3">
                     <span className="block font-black text-black">{report.affectedService}</span>
-                    <span className="text-[12px] font-bold text-[#4d473c]">{report.affectedRoute || "-"}</span>
+                    <span className="text-[13px] font-bold text-[#4d473c]">{report.affectedRoute || "-"}</span>
                   </td>
                   <td className="max-w-[350px] truncate px-5 py-3 font-bold text-[#3d392f]">{report.trigger}</td>
                   <td className="px-5 py-3">
@@ -84,7 +84,7 @@ export function IncidentsTable({ reports }: { reports: TalosTriageReport[] }) {
                     </div>
                   </td>
                   <td className="px-5 py-3">
-                    <Link href={`/incidents/${report.incidentId}`} className="grid h-8 w-8 place-items-center border-2 border-black bg-[#00c2c8] shadow-[3px_3px_0_#000]">
+                    <Link href={`/dashboard/incidents/${report.incidentId}`} className="grid h-9 w-9 place-items-center border-2 border-black bg-[#00c2c8] shadow-[3px_3px_0_#000]">
                       <ChevronRight size={18} />
                     </Link>
                   </td>
@@ -100,8 +100,8 @@ export function IncidentsTable({ reports }: { reports: TalosTriageReport[] }) {
             icon={Siren}
             title="No incidents yet"
             description="Run the guided simulation to capture a crash, investigate with Splunk MCP, and generate your first AI triage report."
-            action={{ label: "Run Simulation", href: "/demo" }}
-            secondaryAction={{ label: "View settings", href: "/settings" }}
+            action={{ label: "Run Simulation", href: "/dashboard/demo" }}
+            secondaryAction={{ label: "View settings", href: "/dashboard/settings" }}
           />
         </div>
       )}

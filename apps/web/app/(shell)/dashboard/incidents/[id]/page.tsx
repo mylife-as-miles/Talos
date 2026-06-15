@@ -135,7 +135,7 @@ export default async function IncidentDetailPage({ params }: { params: Promise<{
             {event ? (
               <CodeBlock value={JSON.stringify(event, null, 2)} />
             ) : (
-              <EmptyState compact icon={FileSearch} title="Source event unavailable" description="The linked SDK event was not found in local storage." action={{ label: "Back to incidents", href: "/incidents" }} />
+              <EmptyState compact icon={FileSearch} title="Source event unavailable" description="The linked SDK event was not found in local storage." action={{ label: "Back to incidents", href: "/dashboard/incidents" }} />
             )}
           </div>
         </Card>

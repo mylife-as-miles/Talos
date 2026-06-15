@@ -6,13 +6,13 @@ import { usePathname } from "next/navigation";
 
 const nav = [
   { href: "/dashboard", label: "Dashboard", icon: Gauge },
-  { href: "/incidents", label: "Incidents", icon: Siren },
-  { href: "/reports", label: "Reports", icon: BarChart3 },
-  { href: "/settings", label: "Settings", icon: Settings }
+  { href: "/dashboard/incidents", label: "Incidents", icon: Siren },
+  { href: "/dashboard/reports", label: "Reports", icon: BarChart3 },
+  { href: "/dashboard/settings", label: "Settings", icon: Settings }
 ];
 
 function isActive(pathname: string, href: string) {
-  if (href === "/dashboard") return pathname === "/dashboard" || pathname === "/";
+  if (href === "/dashboard") return pathname === "/dashboard";
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 

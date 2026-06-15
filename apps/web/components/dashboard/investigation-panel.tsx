@@ -12,7 +12,7 @@ function StatusBadge({ children, tone }: { children: React.ReactNode; tone: "gre
     purple: "bg-[#ff00ff]",
     amber: "bg-[#ffe100]"
   };
-  return <span className={`inline-flex h-9 items-center border-2 border-black px-4 text-[13px] font-black uppercase text-black shadow-[3px_3px_0_#000] ${tones[tone]}`}>{children}</span>;
+  return <span className={`inline-flex h-10 items-center border-2 border-black px-4.5 text-[14px] font-black uppercase text-black shadow-[3px_3px_0_#000] ${tones[tone]}`}>{children}</span>;
 }
 
 export function InvestigationPanel({ report }: { report?: TalosTriageReport }) {
@@ -26,7 +26,7 @@ export function InvestigationPanel({ report }: { report?: TalosTriageReport }) {
           icon={Brain}
           title="No active investigation"
           description="Trigger a simulation and run the resolver to populate Splunk MCP investigation steps."
-          action={{ label: "Run Simulation", href: "/demo" }}
+          action={{ label: "Run Simulation", href: "/dashboard/demo" }}
         />
       </section>
     );
@@ -41,8 +41,8 @@ export function InvestigationPanel({ report }: { report?: TalosTriageReport }) {
 
   return (
     <section className="talos-panel talos-fade-up talos-stagger-4 overflow-hidden p-0">
-      <div className="flex items-center justify-between border-b-[4px] border-black bg-black px-6 py-4 text-white">
-        <div className="flex items-center gap-2 text-[15px] font-black uppercase tracking-[.08em]">
+      <div className="flex items-center justify-between border-b-[4px] border-black bg-black px-6 py-4.5 text-white">
+        <div className="flex items-center gap-2 text-[17px] font-black uppercase tracking-[.08em]">
           Splunk MCP Investigation <Info size={15} className="text-white" />
         </div>
         <ChevronDown size={17} className="rotate-180 text-white" />
@@ -64,37 +64,37 @@ export function InvestigationPanel({ report }: { report?: TalosTriageReport }) {
 
       <div className="mt-6 flex items-start justify-between gap-4">
         <div>
-          <div className="text-[15px] font-black text-black">Active Investigation</div>
-          <div className="mt-3 text-[14px] font-bold text-[#3d392f]">
+          <div className="text-[16px] font-black text-black">Active Investigation</div>
+          <div className="mt-3 text-[15px] font-bold text-[#3d392f]">
             {report.affectedService} / {report.trigger}
           </div>
-          <div className="mt-2 text-[14px] font-bold text-[#4d473c]">
-            {formatRelativeTime(report.createdAt)} <span className="mx-2">/</span> Confidence <span className="bg-[#d8ff2f] px-1 text-black">{report.confidence}%</span>
+          <div className="mt-2 text-[15px] font-bold text-[#4d473c]">
+            {formatRelativeTime(report.createdAt)} <span className="mx-2">/</span> Confidence <span className="bg-[#d8ff2f] px-1.5 py-0.5 text-black">{report.confidence}%</span>
           </div>
         </div>
-        <div className="text-[14px] font-black text-black">{report.incidentId}</div>
+        <div className="text-[15px] font-black text-black">{report.incidentId}</div>
       </div>
 
-      <div className="mt-4 h-3 overflow-hidden border-2 border-black bg-white">
+      <div className="mt-4 h-3.5 overflow-hidden border-2 border-black bg-white">
         <div className="talos-bar-segment h-full bg-[#00c2c8]" style={{ width: `${report.confidence}%`, transformOrigin: "left" }} />
       </div>
 
-      <div className="mt-6 text-[15px] font-black text-black">Investigation Steps</div>
+      <div className="mt-6 text-[16px] font-black text-black">Investigation Steps</div>
       <div className="mt-3 border-[3px] border-black bg-white">
         {steps.map(([title, detail, state]) => (
           <div key={title} className="grid grid-cols-[34px_1fr] gap-3 border-b-2 border-black px-4 py-3 last:border-b-0">
-            <div className={`mt-1 grid h-5 w-5 place-items-center border-2 border-black ${state === "spin" ? "bg-[#00c2c8]" : "bg-[#d8ff2f]"}`}>
+            <div className={`mt-1 grid h-5.5 w-5.5 place-items-center border-2 border-black ${state === "spin" ? "bg-[#00c2c8]" : "bg-[#d8ff2f]"}`}>
               {state === "spin" ? <RefreshCw size={13} className="talos-spinner" /> : <ChevronDown size={13} />}
             </div>
             <div>
-              <div className="text-[15px] font-black text-black">{title}</div>
-              <div className="text-[13px] font-bold text-[#4d473c]">{detail}</div>
+              <div className="text-[16px] font-black text-black">{title}</div>
+              <div className="text-[14px] font-bold text-[#4d473c]">{detail}</div>
             </div>
           </div>
         ))}
       </div>
 
-      <Link href={`/incidents/${report.incidentId}`} className="talos-btn-glow mt-4 flex h-11 w-72 items-center justify-center gap-3 border-[3px] border-black bg-[#f5a019] text-[14px] font-black text-black shadow-[4px_4px_0_#000]">
+      <Link href={`/dashboard/incidents/${report.incidentId}`} className="talos-btn-glow mt-4 flex h-12 w-76 items-center justify-center gap-3 border-[3px] border-black bg-[#f5a019] text-[15px] font-black text-black shadow-[4px_4px_0_#000]">
         View Full Investigation <ChevronRight size={17} />
       </Link>
       </div>

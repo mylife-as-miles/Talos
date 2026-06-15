@@ -122,6 +122,58 @@ export function TalosOsLanding() {
   const [removedTrash, setRemovedTrash] = useState<string[]>([]);
   const [toast, setToast] = useState<string | null>(null);
 
+  const [iconPositions, setIconPositions] = useState<Record<WindowId, { x: number; y: number; align: "left" | "right" }>>(() => {
+    return {
+      home: { x: 24, y: 20, align: "left" },
+      sdk: { x: 24, y: 120, align: "left" },
+      docs: { x: 24, y: 220, align: "left" },
+      splunk: { x: 24, y: 320, align: "left" },
+      byok: { x: 24, y: 420, align: "left" },
+      demo: { x: 24, y: 520, align: "left" },
+      why: { x: 24, y: 20, align: "right" },
+      changelog: { x: 24, y: 120, align: "right" },
+      handbook: { x: 24, y: 220, align: "right" },
+      tools: { x: 24, y: 320, align: "right" },
+      github: { x: 24, y: 420, align: "right" },
+      contributors: { x: 24, y: 520, align: "right" },
+      trash: { x: 24, y: 620, align: "right" }
+    };
+  });
+
+  const [windowPositions, setWindowPositions] = useState<Record<WindowId, { x: number; y: number }>>(() => {
+    return {
+      home: { x: 200, y: 40 },
+      sdk: { x: 100, y: 80 },
+      docs: { x: 150, y: 70 },
+      splunk: { x: 180, y: 90 },
+      why: { x: 300, y: 70 },
+      changelog: { x: 350, y: 100 },
+      handbook: { x: 200, y: 100 },
+      tools: { x: 120, y: 60 },
+      byok: { x: 240, y: 90 },
+      demo: { x: 260, y: 60 },
+      github: { x: 320, y: 80 },
+      contributors: { x: 240, y: 80 },
+      trash: { x: 100, y: 50 }
+    };
+  });
+
+  const [draggedIcon, setDraggedIcon] = useState<{
+    id: WindowId;
+    startX: number;
+    startY: number;
+    startIconX: number;
+    startIconY: number;
+  } | null>(null);
+
+  const [draggedWindow, setDraggedWindow] = useState<{
+    id: WindowId;
+    startX: number;
+    startY: number;
+    startWindowX: number;
+    startWindowY: number;
+  } | null>(null);
+
   useEffect(() => {
     if (toast) {
       const timer = setTimeout(() => setToast(null), 3000);
@@ -129,6 +181,130 @@ export function TalosOsLanding() {
     }
   }, [toast]);
 
+  // Icon dragging mouse listeners
+  useEffect(() => {
+    if (!draggedIcon) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const container = document.getElementById("desktop-container");
+      if (!container) return;
+      const containerRect = container.getBoundingClientRect();
+
+      const deltaX = e.clientX - draggedIcon.startX;
+      const deltaY = e.clientY - draggedIcon.startY;
+
+      let newX = draggedIcon.startIconX + deltaX;
+      let newY = draggedIcon.startIconY + deltaY;
+
+      // Constrain within the desktop container boundaries
+      newX = Math.max(8, Math.min(containerRect.width - 96, newX));
+      newY = Math.max(8, Math.min(containerRect.height - 96, newY));
+
+      setIconPositions((prev) => ({
+        ...prev,
+        [draggedIcon.id]: {
+          x: newX,
+          y: newY,
+          align: "left"
+        }
+      }));
+    };
+
+    const handleMouseUp = (e: MouseEvent) => {
+      const moveDistance = Math.hypot(e.clientX - draggedIcon.startX, e.clientY - draggedIcon.startY);
+      if (moveDistance < 5) {
+        openWindow(draggedIcon.id);
+      }
+      setDraggedIcon(null);
+    };
+
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [draggedIcon]);
+
+  // Window dragging mouse listeners
+  useEffect(() => {
+    if (!draggedWindow) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const container = document.getElementById("desktop-container");
+      if (!container) return;
+      const containerRect = container.getBoundingClientRect();
+
+      const deltaX = e.clientX - draggedWindow.startX;
+      const deltaY = e.clientY - draggedWindow.startY;
+
+      let newX = draggedWindow.startWindowX + deltaX;
+      let newY = draggedWindow.startWindowY + deltaY;
+
+      // Constrain window header to stay on-screen so they don't lose the window
+      newX = Math.max(-100, Math.min(containerRect.width - 100, newX));
+      newY = Math.max(0, Math.min(containerRect.height - 40, newY));
+
+      setWindowPositions((prev) => ({
+        ...prev,
+        [draggedWindow.id]: { x: newX, y: newY }
+      }));
+    };
+
+    const handleMouseUp = () => {
+      setDraggedWindow(null);
+    };
+
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [draggedWindow]);
+
+  const handleIconMouseDown = (id: WindowId, e: React.MouseEvent) => {
+    if (e.button !== 0) return; // Only drag with left click
+    e.preventDefault();
+
+    const container = document.getElementById("desktop-container");
+    if (!container) return;
+    const containerRect = container.getBoundingClientRect();
+
+    const pos = iconPositions[id];
+    let startX = pos.x;
+    if (pos.align === "right") {
+      startX = containerRect.width - pos.x - 88;
+    }
+
+    setDraggedIcon({
+      id,
+      startX: e.clientX,
+      startY: e.clientY,
+      startIconX: startX,
+      startIconY: pos.y
+    });
+  };
+
+  const handleWindowMouseDown = (id: WindowId, e: React.MouseEvent) => {
+    if (e.button !== 0) return; // Only drag with left click
+
+    // Do not drag if clicking header buttons/controls
+    const target = e.target as HTMLElement;
+    if (target.closest("button") || target.closest("a")) return;
+
+    const pos = windowPositions[id] || { x: 100, y: 100 };
+
+    setDraggedWindow({
+      id,
+      startX: e.clientX,
+      startY: e.clientY,
+      startWindowX: pos.x,
+      startWindowY: pos.y
+    });
+
+    setActiveWindow(id);
+  };
 
   function openWindow(id: WindowId) {
     setOpenWindows((current) => (current.includes(id) ? current : [...current, id]));
@@ -170,29 +346,49 @@ export function TalosOsLanding() {
 
   return (
     <main className="talos-os flex h-screen flex-col overflow-hidden bg-[#f5f1dc] text-black">
-      <section className="relative flex-1 overflow-hidden px-4 pb-4 pt-3 sm:px-6">
+      <section id="desktop-container" className="relative flex-1 overflow-hidden px-4 pb-4 pt-3 sm:px-6">
         <div className="talos-paper-grain absolute inset-0" aria-hidden />
         <div className="talos-os-grid absolute inset-0" aria-hidden />
 
-        <div className="relative z-10 grid h-[calc(100vh-80px)] grid-cols-[108px_1fr_108px] gap-3 max-lg:grid-cols-[96px_1fr] max-md:grid-cols-1">
-          <DesktopColumn items={desktopItems.filter((item) => item.side === "left")} onOpen={openWindow} />
-
-          <div className="relative hidden lg:block">
-            <Image
-              src="/assets/talos-os-island.png"
-              alt="Illustration of the Talos developer operations island"
-              width={1400}
-              height={768}
-              priority
-              unoptimized
-              className="talos-os-island pointer-events-none absolute right-[-5vw] top-[2vh] w-[64vw] max-w-[1180px] object-contain"
-            />
-            <StatusSticker />
-          </div>
-
-          <DesktopColumn items={desktopItems.filter((item) => item.side === "right")} onOpen={openWindow} align="right" />
+        {/* Desktop Island Background & Sticker (rendered under icons) */}
+        <div className="absolute inset-0 z-0 pointer-events-none hidden lg:block">
+          <Image
+            src="/assets/talos-os-island.png"
+            alt="Illustration of the Talos developer operations island"
+            width={1400}
+            height={768}
+            priority
+            unoptimized
+            className="talos-os-island absolute right-[-5vw] top-[2vh] w-[64vw] max-w-[1180px] object-contain opacity-50"
+          />
+          <StatusSticker />
         </div>
 
+        {/* Draggable Desktop Icons */}
+        {desktopItems.map((item) => {
+          const pos = iconPositions[item.id];
+          const style: React.CSSProperties = {
+            position: "absolute",
+            top: `${pos.y}px`,
+            zIndex: 10,
+          };
+          if (pos.align === "left") {
+            style.left = `${pos.x}px`;
+          } else {
+            style.right = `${pos.x}px`;
+          }
+
+          return (
+            <DesktopIcon
+              key={item.id}
+              item={item}
+              style={style}
+              onMouseDown={(e) => handleIconMouseDown(item.id, e)}
+            />
+          );
+        })}
+
+        {/* App Windows */}
         <div className="pointer-events-none absolute inset-0 z-20">
           {openWindows
             .filter((id) => !minimized.includes(id))
@@ -203,6 +399,9 @@ export function TalosOsLanding() {
                 zIndex={activeWindow === id ? 60 : 40 + index}
                 active={activeWindow === id}
                 maximized={maximized.includes(id)}
+                x={windowPositions[id]?.x ?? 100}
+                y={windowPositions[id]?.y ?? 100}
+                onHeaderMouseDown={(e) => handleWindowMouseDown(id, e)}
                 onFocus={() => setActiveWindow(id)}
                 onClose={() => closeWindow(id)}
                 onMinimize={() => minimizeWindow(id)}
@@ -447,27 +646,33 @@ function Taskbar({
   );
 }
 
-function DesktopColumn({ items, onOpen, align = "left" }: { items: DesktopItem[]; onOpen: (id: WindowId) => void; align?: "left" | "right" }) {
-  return (
-    <div className={`relative z-10 flex flex-col gap-3 ${align === "right" ? "items-end max-md:items-start" : "items-start"} max-md:grid max-md:grid-cols-3 max-sm:grid-cols-2`}>
-      {items.map((item) => (
-        <DesktopIcon key={item.id} item={item} onOpen={() => onOpen(item.id)} align={align} />
-      ))}
-    </div>
-  );
-}
-
-function DesktopIcon({ item, onOpen, align }: { item: DesktopItem; onOpen: () => void; align: "left" | "right" }) {
+function DesktopIcon({
+  item,
+  style,
+  onMouseDown
+}: {
+  item: DesktopItem;
+  style: React.CSSProperties;
+  onMouseDown: (e: React.MouseEvent) => void;
+}) {
   const Icon = item.icon;
   return (
-    <button type="button" onClick={onOpen} className={`talos-desktop-icon group ${align === "right" ? "text-right" : "text-left"}`}>
-      <span className="relative grid h-12 w-12 place-items-center border-2 border-black bg-white shadow-[3px_3px_0_#000] transition-transform group-hover:-translate-y-0.5">
+    <div
+      style={style}
+      onMouseDown={onMouseDown}
+      className="talos-desktop-icon group flex flex-col items-center text-center w-22 cursor-grab active:cursor-grabbing select-none"
+    >
+      <span className="relative grid h-12 w-12 place-items-center border-2 border-black bg-white shadow-[3px_3px_0_#000] transition-transform group-hover:-translate-y-0.5 pointer-events-none">
         <span className={`absolute -right-1.5 -top-1.5 h-4 w-4 border border-black ${item.accent}`} />
         <Icon size={24} strokeWidth={2.5} />
       </span>
-      <span className="mt-1 block rounded-sm bg-[#f5f1dc]/85 px-1 text-[12px] font-black leading-tight">{item.label}</span>
-      <span className="mt-0.5 block px-1 text-[10px] font-bold leading-tight text-[#555042]">{item.detail}</span>
-    </button>
+      <span className="mt-1.5 block rounded-sm bg-[#f5f1dc]/85 px-1.5 py-0.5 text-[11px] font-black leading-tight pointer-events-none break-all">
+        {item.label}
+      </span>
+      <span className="mt-0.5 block px-1 text-[9px] font-bold leading-tight text-[#555042] pointer-events-none">
+        {item.detail}
+      </span>
+    </div>
   );
 }
 
@@ -476,7 +681,10 @@ function OsWindow({
   active,
   zIndex,
   maximized,
+  x,
+  y,
   children,
+  onHeaderMouseDown,
   onFocus,
   onClose,
   onMinimize,
@@ -487,7 +695,10 @@ function OsWindow({
   active: boolean;
   zIndex: number;
   maximized: boolean;
+  x: number;
+  y: number;
   children: React.ReactNode;
+  onHeaderMouseDown: (e: React.MouseEvent) => void;
   onFocus: () => void;
   onClose: () => void;
   onMinimize: () => void;
@@ -504,10 +715,13 @@ function OsWindow({
           ? "inset-0 shadow-none border-0"
           : "border-3 border-black shadow-[7px_7px_0_#000] max-h-[72vh]"
       }`}
-      style={maximized ? { zIndex } : { width: meta.w, left: meta.x, top: meta.y, zIndex }}
+      style={maximized ? { zIndex } : { width: meta.w, left: x, top: y, zIndex }}
       onMouseDown={onFocus}
     >
-      <div className="flex h-10.5 items-center justify-between border-b-2 border-black bg-[#d8d3bd] px-3">
+      <div
+        className="flex h-10.5 cursor-move items-center justify-between border-b-2 border-black bg-[#d8d3bd] px-3"
+        onMouseDown={onHeaderMouseDown}
+      >
         <div className="flex min-w-0 items-center gap-2.5">
           <FileText size={18} strokeWidth={2.5} />
           <div className="min-w-0">

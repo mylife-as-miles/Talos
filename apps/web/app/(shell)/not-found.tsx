@@ -9,7 +9,7 @@ export default function ShellNotFound() {
       title="Page not found"
       description="The resource you requested does not exist or may have been removed from the local incident store."
       action={{ label: "Back to dashboard", href: "/dashboard" }}
-      secondaryAction={{ label: "View incidents", href: "/incidents" }}
+      secondaryAction={{ label: "View incidents", href: "/dashboard/incidents" }}
     />
   );
 }

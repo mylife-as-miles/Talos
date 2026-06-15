@@ -1,5 +1,6 @@
 import { PageHeader } from "@/components/page-header";
 import { Badge, Card, CardHeader, CodeBlock } from "@/components/ui";
+import { ByokSettings } from "@/components/byok-settings";
 import { isMockMode } from "@/lib/config";
 
 function configured(value?: string, placeholder?: string) {
@@ -7,10 +8,11 @@ function configured(value?: string, placeholder?: string) {
 }
 
 export default function SettingsPage() {
+  const envAiConfigured = configured(process.env.GEMINI_API_KEY, "replace_with_key");
   const rows = [
     ["Splunk HEC", configured(process.env.SPLUNK_HEC_TOKEN, "replace_with_hec_token") ? "configured" : "missing"],
     ["Splunk MCP", process.env.SPLUNK_MCP_MODE === "enabled" && configured(process.env.SPLUNK_MCP_SERVER_URL) ? "configured" : "missing"],
-    ["AI provider", configured(process.env.GEMINI_API_KEY, "replace_with_key") ? "configured" : "missing"],
+    ["AI provider", envAiConfigured ? "env configured" : "BYOK required"],
     ["Discord webhook", configured(process.env.DISCORD_WEBHOOK_URL, "replace_with_discord_webhook") ? "configured" : "missing"],
     ["Mock mode", isMockMode() ? "enabled" : "disabled"]
   ];
@@ -29,11 +31,14 @@ export default function SettingsPage() {
               style={{ animationDelay: `${index * 40}ms` }}
             >
               <span>{label}</span>
-              <Badge tone={status === "configured" || status === "enabled" ? "ok" : "warn"}>{status}</Badge>
+              <Badge tone={status === "configured" || status === "env configured" || status === "enabled" ? "ok" : "warn"}>{status}</Badge>
             </div>
           ))}
         </div>
       </Card>
+
+      <ByokSettings envConfigured={envAiConfigured} />
+
       <Card className="talos-fade-up talos-stagger-3 mt-5 overflow-hidden">
         <CardHeader title="Local SDK Usage Example" />
         <div className="p-5">

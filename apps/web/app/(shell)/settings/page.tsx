@@ -19,7 +19,7 @@ export default function SettingsPage() {
     <>
       <PageHeader title="Settings" description="Runtime configuration status for local demos and Splunk-backed operation." />
 
-      <Card className="talos-card-hover talos-fade-up talos-stagger-2 mt-6 overflow-hidden">
+      <Card className="talos-fade-up talos-stagger-2 mt-6 overflow-hidden">
         <CardHeader title="Configuration Status" />
         <div className="divide-y divide-talos-line">
           {rows.map(([label, status], index) => (
@@ -34,11 +34,11 @@ export default function SettingsPage() {
           ))}
         </div>
       </Card>
-      <Card className="talos-card-hover talos-fade-up talos-stagger-3 mt-5 overflow-hidden">
+      <Card className="talos-fade-up talos-stagger-3 mt-5 overflow-hidden">
         <CardHeader title="Local SDK Usage Example" />
         <div className="p-5">
           <CodeBlock
-            value={`import { Talos } from "@mylife-as-miles/talos-sdk";\n\nTalos.init({\n  projectKey: "demo_project_key",\n  environment: "production",\n  release: "v1.0.0",\n  service: "checkout-service",\n  ingestUrl: "/api/ingest",\n});`}
+            value={`import { Talos } from "@talos/sdk";\n\nTalos.init({\n  projectKey: "demo_project_key",\n  environment: "production",\n  release: "v1.0.0",\n  service: "checkout-service",\n  ingestUrl: "/api/ingest",\n});`}
           />
         </div>
       </Card>

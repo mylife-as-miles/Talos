@@ -1,7 +1,7 @@
 import { sendToSplunkHEC } from "@/lib/splunk/hec";
 import { saveEvent } from "@/lib/store/events";
 import { validateTalosEvent } from "@/lib/ingest/validate";
-import { isMockMode } from "@/lib/config";
+import { isSimulationMode } from "@/lib/config";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
 
     const hasHecOverride = Boolean(hecUrl && hecToken);
 
-    if (!isMockMode() || hasHecOverride) {
+    if (!isSimulationMode() || hasHecOverride) {
       await sendToSplunkHEC(event, { hecUrl, hecToken, index });
     }
 

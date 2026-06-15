@@ -12,7 +12,7 @@ export type AnomalyInput = {
 export function scoreAnomaly(input: AnomalyInput): AnomalyScore {
   let score = 20;
   const reasons: string[] = [];
-  const criticalRoute = Boolean(input.event?.route?.match(/checkout|payment|auth|user/i));
+  const criticalRoute = Boolean(input.event?.route?.match(/catalog|scaffolder|techdocs|auth|search/i));
 
   if (input.currentErrorCount > input.baselineAverage + 3 * input.baselineStdDev) {
     score += 45;
@@ -31,7 +31,7 @@ export function scoreAnomaly(input: AnomalyInput): AnomalyScore {
   }
   if (criticalRoute) {
     score += 15;
-    reasons.push("Failure affects checkout, payment, auth, or user data flow.");
+    reasons.push("Failure affects a critical developer portal workflow.");
   }
   if (input.event?.environment === "production") {
     score += 10;

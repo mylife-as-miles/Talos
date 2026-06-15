@@ -241,7 +241,7 @@ function TopBar({ onOpen }: { onOpen: (id: WindowId) => void }) {
 
 function DesktopColumn({ items, onOpen, align = "left" }: { items: DesktopItem[]; onOpen: (id: WindowId) => void; align?: "left" | "right" }) {
   return (
-    <div className={`relative z-10 flex flex-col gap-4 ${align === "right" ? "items-end max-md:items-start" : "items-start"} max-md:grid max-md:grid-cols-3 max-sm:grid-cols-2`}>
+    <div className={`relative z-10 flex flex-col gap-2 ${align === "right" ? "items-end max-md:items-start" : "items-start"} max-md:grid max-md:grid-cols-3 max-sm:grid-cols-2`}>
       {items.map((item) => (
         <DesktopIcon key={item.id} item={item} onOpen={() => onOpen(item.id)} align={align} />
       ))}
@@ -253,12 +253,12 @@ function DesktopIcon({ item, onOpen, align }: { item: DesktopItem; onOpen: () =>
   const Icon = item.icon;
   return (
     <button type="button" onClick={onOpen} className={`talos-desktop-icon group ${align === "right" ? "text-right" : "text-left"}`}>
-      <span className="relative grid h-14 w-14 place-items-center border-[3px] border-black bg-white shadow-[5px_5px_0_#000] transition-transform group-hover:-translate-y-1">
-        <span className={`absolute -right-2 -top-2 h-5 w-5 border-2 border-black ${item.accent}`} />
-        <Icon size={29} strokeWidth={2.5} />
+      <span className="relative grid h-10 w-10 place-items-center border-2 border-black bg-white shadow-[3px_3px_0_#000] transition-transform group-hover:-translate-y-0.5">
+        <span className={`absolute -right-1.5 -top-1.5 h-3.5 w-3.5 border border-black ${item.accent}`} />
+        <Icon size={20} strokeWidth={2.5} />
       </span>
-      <span className="mt-2 block rounded-sm bg-[#f5f1dc]/85 px-1 text-[13px] font-black leading-tight">{item.label}</span>
-      <span className="mt-0.5 block px-1 text-[11px] font-bold leading-tight text-[#555042]">{item.detail}</span>
+      <span className="mt-1 block rounded-sm bg-[#f5f1dc]/85 px-1 text-[11px] font-black leading-tight">{item.label}</span>
+      <span className="mt-0.5 block px-1 text-[9px] font-bold leading-tight text-[#555042]">{item.detail}</span>
     </button>
   );
 }

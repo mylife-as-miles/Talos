@@ -425,38 +425,38 @@ function renderWindowContent(
 
 function HomeContent({ onOpen }: { onOpen: (id: WindowId) => void }) {
   return (
-    <div className="grid gap-8 lg:grid-cols-[1.08fr_0.92fr]">
+    <div className="grid gap-4 lg:grid-cols-[1.08fr_0.92fr]">
       <div>
-        <div className="flex items-center gap-3">
-          <span className="grid h-12 w-12 place-items-center border-[3px] border-black bg-[#00c2c8] shadow-[4px_4px_0_#000]">
-            <ShieldCheck size={27} strokeWidth={3} />
+        <div className="flex items-center gap-2.5">
+          <span className="grid h-9 w-9 place-items-center border-2 border-black bg-[#00c2c8] shadow-[2.5px_2.5px_0_#000]">
+            <ShieldCheck size={20} strokeWidth={3} />
           </span>
           <div>
-            <p className="text-sm font-black uppercase tracking-wide text-[#5b5547]">Talos</p>
-            <p className="text-lg font-black">Self-healing Splunk AI Ops</p>
+            <p className="text-xs font-black uppercase tracking-wide text-[#5b5547]">Talos</p>
+            <p className="text-[15px] font-black">Self-healing Splunk AI Ops</p>
           </div>
         </div>
 
-        <h1 className="mt-8 max-w-[720px] text-[clamp(2.4rem,6vw,5.6rem)] font-black leading-[0.88]">
+        <h1 className="mt-4 max-w-[720px] text-[clamp(1.5rem,3.5vw,2.5rem)] font-black leading-[0.88]">
           Crash captured. Root cause found. Fix shipped.
         </h1>
-        <p className="mt-6 max-w-2xl text-xl font-bold leading-8 text-[#333025]">
+        <p className="mt-3 max-w-xl text-[14px] font-bold leading-6 text-[#333025]">
           Talos gives developers an npm SDK, a Splunk HEC ingest relay, a headless MCP resolver, and fix-ready AI triage reports in one open Product OS.
         </p>
 
-        <div className="mt-7 flex flex-wrap gap-3">
-          <button type="button" onClick={() => onOpen("sdk")} className="talos-primary-button h-12 px-5 text-base">
+        <div className="mt-4 flex flex-wrap gap-2">
+          <button type="button" onClick={() => onOpen("sdk")} className="talos-primary-button h-9.5 px-4 text-xs">
             Install SDK
           </button>
-          <Link href="/demo" className="talos-secondary-button h-12 px-5 text-base">
+          <Link href="/demo" className="talos-secondary-button h-9.5 px-4 text-xs">
             Run simulation
           </Link>
-          <Link href="/dashboard" className="talos-secondary-button h-12 px-5 text-base">
+          <Link href="/dashboard" className="talos-secondary-button h-9.5 px-4 text-xs">
             Open dashboard
           </Link>
         </div>
 
-        <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 text-[15px] font-black text-[#625c4f]">
+        <div className="mt-3 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-xs font-black text-[#625c4f]">
           <button type="button" onClick={() => onOpen("splunk")} className="underline decoration-2 underline-offset-4">
             Splunk MCP
           </button>
@@ -471,27 +471,27 @@ function HomeContent({ onOpen }: { onOpen: (id: WindowId) => void }) {
         </div>
       </div>
 
-      <div className="space-y-4">
-        <div className="border-[3px] border-black bg-[#00c2c8] p-4 shadow-[7px_7px_0_#000]">
-          <div className="flex items-center justify-between border-b-2 border-black pb-3 text-sm font-black uppercase">
+      <div className="space-y-3">
+        <div className="border-2 border-black bg-[#00c2c8] p-3 shadow-[4px_4px_0_#000]">
+          <div className="flex items-center justify-between border-b pb-2 text-xs font-black uppercase">
             <span>Resolver loop</span>
             <span>Mock or live</span>
           </div>
-          <ol className="mt-4 space-y-3 text-sm font-bold">
+          <ol className="mt-2.5 space-y-2 text-xs font-bold">
             {["SDK captures runtime crash", "Next.js ingest stores event and forwards HEC", "Splunk MCP returns related logs", "AI resolver creates fix-ready report"].map((step, index) => (
-              <li key={step} className="flex gap-3">
-                <span className="grid h-7 w-7 shrink-0 place-items-center border-2 border-black bg-[#ffe100] font-black">{index + 1}</span>
+              <li key={step} className="flex gap-2.5">
+                <span className="grid h-5 w-5 shrink-0 place-items-center border-2 border-black bg-[#ffe100] text-[10px] font-black">{index + 1}</span>
                 <span>{step}</span>
               </li>
             ))}
           </ol>
         </div>
-        <div className="border-[3px] border-black bg-white p-4 shadow-[7px_7px_0_#000]">
-          <div className="flex items-center gap-2 font-black">
-            <TerminalSquare size={21} />
+        <div className="border-2 border-black bg-white p-3 shadow-[4px_4px_0_#000]">
+          <div className="flex items-center gap-1.5 font-black text-sm">
+            <TerminalSquare size={16} />
             Local package
           </div>
-          <code className="mt-3 block overflow-x-auto border-2 border-black bg-black p-3 text-sm font-bold text-[#d8ff2f]">{command}</code>
+          <code className="mt-2 block overflow-x-auto border border-black bg-black p-2 text-xs font-bold text-[#d8ff2f]">{command}</code>
         </div>
       </div>
     </div>

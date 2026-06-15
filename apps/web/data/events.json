@@ -1,1 +1,272 @@
-[]
+[
+  {
+    "type": "talos.error",
+    "eventId": "63e478fb-3abc-423b-9fcf-325f46a91b33",
+    "timestamp": "2026-06-15T14:19:14.011Z",
+    "projectKey": "demo_project_key",
+    "service": "catalog-service",
+    "environment": "production",
+    "release": "v2.4.1",
+    "route": "/api/catalog/entities",
+    "runtime": {
+      "language": "typescript",
+      "framework": "Backstage",
+      "nodeVersion": "v24.14.0",
+      "url": "http://localhost:3000/dashboard"
+    },
+    "error": {
+      "name": "TypeError",
+      "message": "Cannot read properties of undefined (reading 'metadata')",
+      "stack": "TypeError: Cannot read properties of undefined (reading 'metadata')\n    at processCatalogEntity (packages/backend/src/plugins/catalog.ts:87:22)\n    at CatalogBuilder.build (packages/backend/src/catalog/CatalogBuilder.ts:142:9)"
+    },
+    "breadcrumbs": [
+      {
+        "timestamp": "2026-06-15T14:19:14.011Z",
+        "category": "discovery",
+        "message": "Entity provider refresh triggered"
+      },
+      {
+        "timestamp": "2026-06-15T14:19:14.011Z",
+        "category": "catalog",
+        "message": "Processing 847 entities from GitHub discovery"
+      },
+      {
+        "timestamp": "2026-06-15T14:19:14.011Z",
+        "category": "catalog",
+        "message": "Entity validation started for org component"
+      },
+      {
+        "timestamp": "2026-06-15T14:19:14.011Z",
+        "category": "api",
+        "message": "Catalog handler failed reading entity metadata field"
+      }
+    ],
+    "user": {
+      "id": "backstage-scheduler"
+    },
+    "tags": {
+      "feature": "entity-processing",
+      "region": "us-east-1"
+    },
+    "extra": {
+      "entityCount": 847,
+      "providerType": "github-discovery"
+    }
+  },
+  {
+    "type": "talos.error",
+    "eventId": "f5436b91-9e49-46bc-9e5e-21d7ec90b6dc",
+    "timestamp": "2026-06-15T14:19:12.637Z",
+    "projectKey": "demo_project_key",
+    "service": "techdocs-publisher",
+    "environment": "production",
+    "release": "v2.4.1",
+    "route": "/api/techdocs/sync",
+    "runtime": {
+      "language": "typescript",
+      "framework": "Backstage",
+      "nodeVersion": "v24.14.0",
+      "url": "http://localhost:3000/dashboard"
+    },
+    "error": {
+      "name": "TimeoutError",
+      "message": "TechDocs build timed out after 120000ms waiting for mkdocs subprocess",
+      "stack": "TimeoutError: TechDocs build timed out after 120000ms waiting for mkdocs subprocess\n    at TechDocsGenerator.generate (plugins/techdocs-node/src/stages/generate/techdocs.ts:95:13)\n    at publishAndSync (plugins/techdocs-backend/src/DocsBuilder.ts:44:7)"
+    },
+    "breadcrumbs": [
+      {
+        "timestamp": "2026-06-15T14:19:12.637Z",
+        "category": "techdocs",
+        "message": "Docs sync triggered for component backstage/catalog"
+      },
+      {
+        "timestamp": "2026-06-15T14:19:12.637Z",
+        "category": "techdocs",
+        "message": "mkdocs build started in container"
+      },
+      {
+        "timestamp": "2026-06-15T14:19:12.637Z",
+        "category": "techdocs",
+        "message": "Build output exceeded 500MB memory limit"
+      },
+      {
+        "timestamp": "2026-06-15T14:19:12.637Z",
+        "category": "system",
+        "message": "Subprocess watchdog killed mkdocs after 120s"
+      }
+    ],
+    "user": {
+      "id": "ci-pipeline-bot"
+    },
+    "tags": {
+      "feature": "techdocs-generation",
+      "region": "us-west-2"
+    },
+    "extra": {
+      "componentRef": "backstage/catalog",
+      "buildDuration": 120000
+    }
+  },
+  {
+    "type": "talos.error",
+    "eventId": "5df57a35-3cfd-4601-ae16-e0d709a643e5",
+    "timestamp": "2026-06-15T14:17:36.196Z",
+    "projectKey": "demo_project_key",
+    "service": "auth-resolver",
+    "environment": "production",
+    "release": "v2.4.1",
+    "route": "/api/auth/github/handler/frame",
+    "runtime": {
+      "language": "typescript",
+      "framework": "Backstage",
+      "nodeVersion": "v24.14.0",
+      "url": "http://localhost:3000/dashboard"
+    },
+    "error": {
+      "name": "AuthenticationError",
+      "message": "GitHub OAuth token exchange failed: invalid_client_id",
+      "stack": "AuthenticationError: GitHub OAuth token exchange failed: invalid_client_id\n    at GithubAuthProvider.handler (plugins/auth-backend/src/providers/github/provider.ts:112:15)\n    at OAuthAdapter.frameHandler (plugins/auth-backend/src/lib/oauth/OAuthAdapter.ts:67:22)"
+    },
+    "breadcrumbs": [
+      {
+        "timestamp": "2026-06-15T14:17:36.196Z",
+        "category": "auth",
+        "message": "User initiated GitHub OAuth sign-in flow"
+      },
+      {
+        "timestamp": "2026-06-15T14:17:36.196Z",
+        "category": "auth",
+        "message": "Authorization code received from GitHub"
+      },
+      {
+        "timestamp": "2026-06-15T14:17:36.196Z",
+        "category": "auth",
+        "message": "Token exchange POST to github.com/login/oauth/access_token"
+      },
+      {
+        "timestamp": "2026-06-15T14:17:36.196Z",
+        "category": "api",
+        "message": "GitHub responded 401: invalid_client_id"
+      }
+    ],
+    "user": {
+      "id": "oauth-callback"
+    },
+    "tags": {
+      "feature": "github-auth",
+      "region": "us-east-1"
+    },
+    "extra": {
+      "provider": "github",
+      "failedUsers": 23
+    }
+  },
+  {
+    "type": "talos.error",
+    "eventId": "a72c07fb-6474-42be-91ab-daddeb4f4ec7",
+    "timestamp": "2026-06-15T14:17:19.008Z",
+    "projectKey": "demo_project_key",
+    "service": "auth-resolver",
+    "environment": "production",
+    "release": "v2.4.1",
+    "route": "/api/auth/github/handler/frame",
+    "runtime": {
+      "language": "typescript",
+      "framework": "Backstage",
+      "nodeVersion": "v24.14.0",
+      "url": "http://localhost:3000/dashboard"
+    },
+    "error": {
+      "name": "AuthenticationError",
+      "message": "GitHub OAuth token exchange failed: invalid_client_id",
+      "stack": "AuthenticationError: GitHub OAuth token exchange failed: invalid_client_id\n    at GithubAuthProvider.handler (plugins/auth-backend/src/providers/github/provider.ts:112:15)\n    at OAuthAdapter.frameHandler (plugins/auth-backend/src/lib/oauth/OAuthAdapter.ts:67:22)"
+    },
+    "breadcrumbs": [
+      {
+        "timestamp": "2026-06-15T14:17:19.008Z",
+        "category": "auth",
+        "message": "User initiated GitHub OAuth sign-in flow"
+      },
+      {
+        "timestamp": "2026-06-15T14:17:19.008Z",
+        "category": "auth",
+        "message": "Authorization code received from GitHub"
+      },
+      {
+        "timestamp": "2026-06-15T14:17:19.008Z",
+        "category": "auth",
+        "message": "Token exchange POST to github.com/login/oauth/access_token"
+      },
+      {
+        "timestamp": "2026-06-15T14:17:19.008Z",
+        "category": "api",
+        "message": "GitHub responded 401: invalid_client_id"
+      }
+    ],
+    "user": {
+      "id": "oauth-callback"
+    },
+    "tags": {
+      "feature": "github-auth",
+      "region": "us-east-1"
+    },
+    "extra": {
+      "provider": "github",
+      "failedUsers": 23
+    }
+  },
+  {
+    "type": "talos.error",
+    "eventId": "9fc11656-f517-410e-8ca8-192b923bc5e0",
+    "timestamp": "2026-06-15T14:07:13.189Z",
+    "projectKey": "demo_project_key",
+    "service": "catalog-service",
+    "environment": "production",
+    "release": "v2.4.1",
+    "route": "/api/catalog/entities",
+    "runtime": {
+      "language": "typescript",
+      "framework": "Backstage",
+      "nodeVersion": "v24.14.0",
+      "url": "http://localhost:3000/dashboard"
+    },
+    "error": {
+      "name": "TypeError",
+      "message": "Cannot read properties of undefined (reading 'metadata')",
+      "stack": "TypeError: Cannot read properties of undefined (reading 'metadata')\n    at processCatalogEntity (packages/backend/src/plugins/catalog.ts:87:22)\n    at CatalogBuilder.build (packages/backend/src/catalog/CatalogBuilder.ts:142:9)"
+    },
+    "breadcrumbs": [
+      {
+        "timestamp": "2026-06-15T14:07:13.189Z",
+        "category": "discovery",
+        "message": "Entity provider refresh triggered"
+      },
+      {
+        "timestamp": "2026-06-15T14:07:13.189Z",
+        "category": "catalog",
+        "message": "Processing 847 entities from GitHub discovery"
+      },
+      {
+        "timestamp": "2026-06-15T14:07:13.189Z",
+        "category": "catalog",
+        "message": "Entity validation started for org component"
+      },
+      {
+        "timestamp": "2026-06-15T14:07:13.189Z",
+        "category": "api",
+        "message": "Catalog handler failed reading entity metadata field"
+      }
+    ],
+    "user": {
+      "id": "backstage-scheduler"
+    },
+    "tags": {
+      "feature": "entity-processing",
+      "region": "us-east-1"
+    },
+    "extra": {
+      "entityCount": 847,
+      "providerType": "github-discovery"
+    }
+  }
+]

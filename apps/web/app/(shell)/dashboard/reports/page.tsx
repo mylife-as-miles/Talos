@@ -15,22 +15,30 @@ export default async function ReportsPage() {
       <PageHeader title="Reports" description="Generated triage reports optimized for Slack, Discord, and engineering handoff." />
 
       {reports.length ? (
-        <div className="talos-fade-up talos-stagger-2 mt-4 grid gap-3">
+        <div className="talos-fade-up talos-stagger-2 mt-5 grid gap-4">
           {reports.map((report, index) => (
             <div key={report.incidentId} className="talos-row-enter" style={{ animationDelay: `${index * 45}ms` }}>
               <Card className="overflow-hidden">
-              <CardHeader title={report.incidentId} action={<Badge tone={report.priority === "critical" ? "critical" : "warn"}>{report.priority}</Badge>} />
-              <div className="p-3">
-                <p className="text-xs leading-5 text-slate-300">{report.summary}</p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <Badge tone="cyan">Mode: {report.splunk.mode.toUpperCase()}</Badge>
-                  <Badge tone="ok">{report.confidence}% confidence</Badge>
-                  <Link className="text-xs font-medium text-talos-cyan transition hover:text-white" href={`/incidents/${report.incidentId}`}>
-                    Open incident
-                  </Link>
+                <CardHeader
+                  title={report.incidentId}
+                  action={<Badge tone={report.priority === "critical" ? "critical" : "warn"}>{report.priority}</Badge>}
+                />
+                <div className="p-4">
+                  <p className="border-l-[6px] border-black bg-[#fffdf1] px-4 py-3 text-sm font-bold leading-6 text-black shadow-[4px_4px_0_#000]">
+                    {report.summary}
+                  </p>
+                  <div className="mt-4 flex flex-wrap items-center gap-3">
+                    <Badge tone="cyan">{report.splunk.mode === "simulation" ? "Simulated Telemetry" : report.splunk.mode}</Badge>
+                    <Badge tone="ok">{report.confidence}% confidence</Badge>
+                    <Link
+                      className="inline-flex min-h-9 items-center border-[3px] border-black bg-[#ffe100] px-3 text-xs font-black uppercase text-black shadow-[4px_4px_0_#000] transition hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0_#000]"
+                      href={`/dashboard/incidents/${report.incidentId}`}
+                    >
+                      Open incident
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            </Card>
+              </Card>
             </div>
           ))}
         </div>

@@ -7,18 +7,34 @@ export const runtime = "nodejs";
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-  const event = simulatedBackstageEvent();
-  await saveEvent(event);
+  try {
+    const event = simulatedBackstageEvent();
+    await saveEvent(event);
 
-  const hecUrl = req.headers.get("x-talos-hec-url") || undefined;
-  const hecToken = req.headers.get("x-talos-hec-token") || undefined;
-  const index = req.headers.get("x-talos-splunk-index") || undefined;
+    const hecUrl = req.headers.get("x-talos-hec-url") || undefined;
+    const hecToken = req.headers.get("x-talos-hec-token") || undefined;
+    const index = req.headers.get("x-talos-splunk-index") || undefined;
 
-  const hasHecOverride = Boolean(hecUrl && hecToken);
+    const hasHecOverride = Boolean(hecUrl && hecToken);
+    let hec: { sent: boolean; warning?: string } = { sent: false };
 
-  if (!isSimulationMode() || hasHecOverride) {
-    await sendToSplunkHEC(event, { hecUrl, hecToken, index });
+    if (!isSimulationMode() || hasHecOverride) {
+      try {
+        await sendToSplunkHEC(event, { hecUrl, hecToken, index });
+        hec = { sent: true };
+      } catch (error) {
+        hec = {
+          sent: false,
+          warning: error instanceof Error ? error.message : "Splunk HEC forwarding failed."
+        };
+      }
+    }
+
+    return Response.json({ ok: true, event, hec });
+  } catch (error) {
+    return Response.json(
+      { ok: false, error: error instanceof Error ? error.message : "Simulation failed." },
+      { status: 500 }
+    );
   }
-
-  return Response.json({ ok: true, event });
 }

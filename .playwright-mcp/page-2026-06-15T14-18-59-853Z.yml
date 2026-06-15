@@ -1,0 +1,207 @@
+- generic [ref=e2]:
+  - complementary [ref=e3]:
+    - link "Talos self-healing Splunk AI Ops" [ref=e5] [cursor=pointer]:
+      - /url: /
+      - img "Talos self-healing Splunk AI Ops" [ref=e6]
+    - navigation [ref=e7]:
+      - link "Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /dashboard
+        - img [ref=e9]
+        - text: Dashboard
+      - link "Incidents" [ref=e12] [cursor=pointer]:
+        - /url: /dashboard/incidents
+        - img [ref=e13]
+        - text: Incidents
+      - link "Reports" [ref=e18] [cursor=pointer]:
+        - /url: /dashboard/reports
+        - img [ref=e19]
+        - text: Reports
+      - link "Settings" [ref=e21] [cursor=pointer]:
+        - /url: /dashboard/settings
+        - img [ref=e22]
+        - text: Settings
+    - generic [ref=e27]:
+      - generic [ref=e30]:
+        - generic [ref=e31]: Talos Guardian
+        - generic [ref=e32]: Operational
+      - generic [ref=e33]: v1.4.2
+  - main [ref=e34]:
+    - generic [ref=e35]:
+      - generic [ref=e36]:
+        - heading "Talos Guardian Status" [level=1] [ref=e37]
+        - paragraph [ref=e38]: SDK intake, Splunk HEC forwarding, MCP investigation, and AI triage in one loud little operations OS.
+      - generic [ref=e39]:
+        - button "Last 24 hours" [ref=e40] [cursor=pointer]:
+          - img [ref=e41]
+          - text: Last 24 hours
+          - img [ref=e43]
+        - button "Auto-refresh" [ref=e45] [cursor=pointer]:
+          - img [ref=e46]
+          - text: Auto-refresh
+      - generic [ref=e52]: Focus always visible
+    - generic [ref=e54]:
+      - generic [ref=e55]:
+        - generic [ref=e56]: Simulation Mode
+        - heading "Simulate Incident" [level=3] [ref=e57]
+        - paragraph [ref=e58]: Trigger a Backstage-style production incident and watch Talos generate a Splunk-backed AI triage report.
+      - generic [ref=e60]:
+        - generic [ref=e61]:
+          - button "Simulate Incident" [ref=e62] [cursor=pointer]:
+            - img [ref=e63]
+            - text: Simulate Incident
+          - button "Run Resolver" [ref=e65] [cursor=pointer]:
+            - img [ref=e66]
+            - text: Run Resolver
+          - button "Send Notification" [disabled] [ref=e73]:
+            - img [ref=e74]
+            - text: Send Notification
+        - generic [ref=e77]: No simulation event yet
+    - generic [ref=e78]:
+      - generic [ref=e79]:
+        - generic [ref=e80]:
+          - generic [ref=e81]:
+            - generic [ref=e82]: Captured Errors
+            - generic [ref=e83]: "3"
+          - img [ref=e85]
+        - img [ref=e87]
+        - generic [ref=e89]: SDK runtime intake
+      - generic [ref=e90]:
+        - generic [ref=e91]:
+          - generic [ref=e92]:
+            - generic [ref=e93]: Critical Incidents
+            - generic [ref=e94]: "1"
+          - img [ref=e96]
+        - img [ref=e98]
+        - generic [ref=e100]: Production blast radius
+      - generic [ref=e101]:
+        - generic [ref=e102]:
+          - generic [ref=e103]:
+            - generic [ref=e104]: Diagnosis Confidence
+            - generic [ref=e105]: 88%
+          - img [ref=e107]
+        - img [ref=e117]
+        - generic [ref=e119]: Resolver scoring
+      - generic [ref=e121]:
+        - generic [ref=e122]:
+          - generic [ref=e123]: Latest Service
+          - generic [ref=e124]: auth-resolver
+          - generic [ref=e125]: Backstage / Splunk telemetry
+          - generic [ref=e126]: 1 min ago
+        - img [ref=e128]
+    - generic [ref=e131]:
+      - generic [ref=e132]:
+        - generic [ref=e133]:
+          - generic [ref=e134]:
+            - text: Runtime Error Intake
+            - img [ref=e135]
+          - generic [ref=e137]:
+            - 'button "Group by: Service" [ref=e138] [cursor=pointer]':
+              - text: "Group by: Service"
+              - img [ref=e139]
+            - button [ref=e141] [cursor=pointer]:
+              - img [ref=e142]
+        - generic [ref=e144]:
+          - generic [ref=e145]: Critical
+          - generic [ref=e147]: High
+          - generic [ref=e149]: Medium
+          - generic [ref=e151]: Low
+          - generic [ref=e153]: Info
+        - generic [ref=e155]:
+          - generic [ref=e156]:
+            - generic [ref=e158]: 1K
+            - generic [ref=e160]: "800"
+            - generic [ref=e162]: "600"
+            - generic [ref=e164]: "400"
+            - generic [ref=e166]: "200"
+            - generic [ref=e168]: "0"
+          - generic [ref=e219]:
+            - generic [ref=e220]: "-24h"
+            - generic [ref=e221]: "-18h"
+            - generic [ref=e222]: "-12h"
+            - generic [ref=e223]: "-6h"
+            - generic [ref=e224]: "-3h"
+            - generic [ref=e225]: now
+      - generic [ref=e226]:
+        - generic [ref=e227]:
+          - generic [ref=e228]:
+            - text: Splunk MCP Investigation
+            - img [ref=e229]
+          - img [ref=e231]
+        - generic [ref=e233]:
+          - generic [ref=e234]:
+            - generic [ref=e235]:
+              - img [ref=e236]
+              - text: MCP Connected
+            - generic [ref=e239]:
+              - img [ref=e240]
+              - text: HEC Ready
+          - generic [ref=e242]:
+            - generic [ref=e243]:
+              - generic [ref=e244]: Active Investigation
+              - generic [ref=e245]: "auth-resolver / AuthenticationError: GitHub OAuth token exchange failed: invalid_client_id"
+              - generic [ref=e246]:
+                - text: 1 min ago / Confidence
+                - generic [ref=e247]: 88%
+            - generic [ref=e248]: INC-A72C07FB
+          - generic [ref=e251]: Investigation Steps
+          - generic [ref=e252]:
+            - generic [ref=e253]:
+              - img [ref=e255]
+              - generic [ref=e260]:
+                - generic [ref=e261]: Querying Splunk via MCP
+                - generic [ref=e262]: index=main sourcetype=talos:error service=auth-resolver route=/api/auth/...
+            - generic [ref=e263]:
+              - img [ref=e265]
+              - generic [ref=e267]:
+                - generic [ref=e268]: Correlating Events
+                - generic [ref=e269]: 22 correlated events
+            - generic [ref=e270]:
+              - img [ref=e272]
+              - generic [ref=e274]:
+                - generic [ref=e275]: Root Cause Analysis
+                - generic [ref=e276]: The GitHub auth provider rejected OAuth token exchange because the confi...
+            - generic [ref=e277]:
+              - img [ref=e279]
+              - generic [ref=e281]:
+                - generic [ref=e282]: Remediation Recommendation
+                - generic [ref=e283]: Validate provider credentials at startup and block deploys when GitHub O...
+          - link "View Full Investigation" [ref=e284] [cursor=pointer]:
+            - /url: /dashboard/incidents/INC-A72C07FB
+            - text: View Full Investigation
+            - img [ref=e285]
+    - generic [ref=e287]:
+      - generic [ref=e288]:
+        - generic [ref=e289]: Active Incidents
+        - link "View Full Incidents" [ref=e290] [cursor=pointer]:
+          - /url: /dashboard/incidents
+      - table [ref=e292]:
+        - rowgroup [ref=e293]:
+          - row "ID Service Error Priority Status Created Confidence" [ref=e294]:
+            - columnheader "ID" [ref=e295]
+            - columnheader "Service" [ref=e296]
+            - columnheader "Error" [ref=e297]
+            - columnheader "Priority" [ref=e298]
+            - columnheader "Status" [ref=e299]
+            - columnheader "Created" [ref=e300]
+            - columnheader "Confidence" [ref=e301]
+            - columnheader [ref=e302]
+        - rowgroup [ref=e303]:
+          - 'row "INC-A72C07FB auth-resolver /api/auth/github/handler/frame AuthenticationError: GitHub OAuth token exchange failed: invalid_client_id critical triaged 1 min ago 88%" [ref=e304]':
+            - cell "INC-A72C07FB" [ref=e305]:
+              - link "INC-A72C07FB" [ref=e306] [cursor=pointer]:
+                - /url: /dashboard/incidents/INC-A72C07FB
+            - cell "auth-resolver /api/auth/github/handler/frame" [ref=e307]:
+              - generic [ref=e308]: auth-resolver
+              - text: /api/auth/github/handler/frame
+            - 'cell "AuthenticationError: GitHub OAuth token exchange failed: invalid_client_id" [ref=e309]'
+            - cell "critical" [ref=e310]:
+              - generic [ref=e311]: critical
+            - cell "triaged" [ref=e312]:
+              - generic [ref=e313]: triaged
+            - cell "1 min ago" [ref=e314]
+            - cell "88%" [ref=e315]:
+              - generic [ref=e317]: 88%
+            - cell [ref=e320]:
+              - link [ref=e321] [cursor=pointer]:
+                - /url: /dashboard/incidents/INC-A72C07FB
+                - img [ref=e322]

@@ -6,6 +6,19 @@ import { useState } from "react";
 import { readBrowserByokSettings, readBrowserSplunkSettings, readBrowserWebhookSettings } from "./byok-settings";
 import { Button } from "./ui";
 
+async function readJsonResponse(response: Response) {
+  const text = await response.text();
+  if (!text.trim()) {
+    return { ok: false, error: `Talos API returned an empty response (${response.status}).` };
+  }
+
+  try {
+    return JSON.parse(text) as Record<string, any>;
+  } catch {
+    return { ok: false, error: text.slice(0, 240) || `Talos API returned a non-JSON response (${response.status}).` };
+  }
+}
+
 export function DemoActions() {
   const router = useRouter();
   const [eventId, setEventId] = useState<string>();
@@ -27,10 +40,11 @@ export function DemoActions() {
         method: "POST",
         headers 
       });
-      const json = await response.json();
+      const json = await readJsonResponse(response);
       if (!response.ok) throw new Error(json.error || "Simulation failed");
-      setEventId(json.event.eventId);
-      setMessage(`Event ${json.event.eventId.slice(0, 8)} captured`);
+      const capturedEvent = json.event as { eventId: string };
+      setEventId(capturedEvent.eventId);
+      setMessage(`Event ${capturedEvent.eventId.slice(0, 8)} captured`);
       router.refresh();
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Simulation failed");
@@ -72,10 +86,11 @@ export function DemoActions() {
         headers,
         body: JSON.stringify({ eventId })
       });
-      const json = await response.json();
+      const json = await readJsonResponse(response);
       if (!response.ok) throw new Error(json.error || "Resolver failed");
-      setIncidentId(json.report.incidentId);
-      setMessage(`Report ${json.report.incidentId} generated`);
+      const report = json.report as { incidentId: string };
+      setIncidentId(report.incidentId);
+      setMessage(`Report ${report.incidentId} generated`);
       router.refresh();
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Resolver failed");
@@ -102,7 +117,7 @@ export function DemoActions() {
         headers,
         body: JSON.stringify({ incidentId })
       });
-      const json = await response.json();
+      const json = await readJsonResponse(response);
       if (!response.ok) throw new Error(json.error || "Notification failed");
       setMessage(`Notification sent for ${incidentId}`);
     } catch (error) {

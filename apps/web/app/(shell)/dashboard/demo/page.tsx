@@ -32,11 +32,11 @@ export default async function DemoPage() {
             {steps.map((step, index) => (
               <div
                 key={step}
-                className="talos-row-enter flex items-center gap-3 rounded-lg border border-talos-line bg-black/20 p-3"
+                className="talos-row-enter talos-brutal-row flex items-center gap-3 border-[2px] border-black bg-[#e5e1cf] p-3 shadow-[4px_4px_0_#000]"
                 style={{ animationDelay: `${index * 50}ms` }}
               >
                 <Badge tone="cyan">{index + 1}</Badge>
-                <span className="text-sm">{step}</span>
+                <span className="text-sm font-bold text-black">{step}</span>
               </div>
             ))}
           </div>
@@ -46,7 +46,9 @@ export default async function DemoPage() {
           <div className="p-5">
             {latestReport ? (
               <div className="space-y-4">
-                <p className="text-sm leading-6 text-slate-300">{latestReport.summary}</p>
+                <p className="border-l-[6px] border-black bg-[#fffdf1] px-4 py-3 text-sm font-bold leading-6 text-black shadow-[4px_4px_0_#000]">
+                  {latestReport.summary}
+                </p>
                 <CodeBlock value={latestReport.proposedFix.code || latestReport.proposedFix.explanation} />
               </div>
             ) : (

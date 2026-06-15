@@ -8,8 +8,8 @@ export async function getSplunkContext(
   { event }: { event: TalosErrorEvent },
   overrides?: { hecUrl?: string; hecToken?: string; index?: string; mcpMode?: string; mcpUrl?: string }
 ) {
-  const hasCustomSplunk = Boolean(overrides?.hecUrl || overrides?.hecToken || overrides?.mcpUrl);
-  if (isSimulationMode() && !hasCustomSplunk) {
+  const hasCustomInvestigation = Boolean(overrides?.mcpMode === "enabled" && overrides?.mcpUrl);
+  if (isSimulationMode() && !hasCustomInvestigation) {
     return simulateSplunkContext(event);
   }
 
@@ -29,7 +29,10 @@ export async function getSplunkContext(
     try {
       return await new SplunkMcpClient(mcpUrl, { index }).investigateError(input);
     } catch (error) {
-      console.warn("Splunk MCP failed, falling back to REST client", error);
+      console.warn("Splunk MCP failed; using secondary telemetry path", error);
+      if (isSimulationMode()) {
+        return simulateSplunkContext(event);
+      }
       return new SplunkRestClient({ index }).investigateError(input);
     }
   }

@@ -1,0 +1,124 @@
+- generic [ref=e2]:
+  - complementary [ref=e3]:
+    - link "Talos self-healing Splunk AI Ops" [ref=e5] [cursor=pointer]:
+      - /url: /
+      - img "Talos self-healing Splunk AI Ops" [ref=e6]
+    - navigation [ref=e7]:
+      - link "Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /dashboard
+        - img [ref=e9]
+        - text: Dashboard
+      - link "Incidents" [ref=e12] [cursor=pointer]:
+        - /url: /dashboard/incidents
+        - img [ref=e13]
+        - text: Incidents
+      - link "Reports" [ref=e18] [cursor=pointer]:
+        - /url: /dashboard/reports
+        - img [ref=e19]
+        - text: Reports
+      - link "Settings" [ref=e21] [cursor=pointer]:
+        - /url: /dashboard/settings
+        - img [ref=e22]
+        - text: Settings
+    - generic [ref=e27]:
+      - generic [ref=e30]:
+        - generic [ref=e31]: Talos Guardian
+        - generic [ref=e32]: Operational
+      - generic [ref=e33]: v1.4.2
+  - main [ref=e34]:
+    - generic [ref=e35]:
+      - generic [ref=e36]:
+        - heading "INC-63E478FB" [level=1] [ref=e37]
+        - paragraph [ref=e38]: catalog-service crashed on /api/catalog/entities after the SDK captured TypeError. Splunk context shows 12 matching errors.
+      - generic [ref=e39]:
+        - generic [ref=e40]: critical
+        - generic [ref=e41]: triaged
+        - generic [ref=e42]: 88% confidence
+    - generic [ref=e43]:
+      - generic [ref=e44]:
+        - generic [ref=e46]:
+          - heading "AI Triage Report" [level=2] [ref=e47]
+          - paragraph [ref=e48]: Root cause, evidence, and practical fix recommendation.
+        - generic [ref=e49]:
+          - generic [ref=e50]:
+            - heading "Root Cause" [level=2] [ref=e51]
+            - paragraph [ref=e52]: The catalog processor received an entity without a complete metadata block during provider refresh, so validation crashed before the entity could be rejected safely.
+          - generic [ref=e53]:
+            - heading "Evidence" [level=2] [ref=e54]
+            - generic [ref=e55]:
+              - generic [ref=e56]:
+                - generic [ref=e57]: sdk
+                - text: "SDK captured TypeError: Cannot read properties of undefined (reading 'metadata')"
+              - generic [ref=e58]:
+                - generic [ref=e59]: sdk
+                - text: Entity validation started for org component
+              - generic [ref=e60]:
+                - generic [ref=e61]: sdk
+                - text: Catalog handler failed reading entity metadata field
+              - generic [ref=e62]:
+                - generic [ref=e63]: splunk
+                - text: Cannot read properties of undefined (reading 'metadata')
+              - generic [ref=e64]:
+                - generic [ref=e65]: splunk
+                - text: Repeated TypeError in entity validation pipeline after provider refresh
+          - generic [ref=e66]:
+            - heading "Proposed Fix" [level=2] [ref=e67]
+            - paragraph [ref=e68]: Add a defensive metadata guard in the catalog entity processor and route invalid entities to a rejected-entity queue with enough context for the owning team.
+            - generic [ref=e70]: "if (!entity?.metadata?.name || !entity?.kind) { logger.warn({ entityRef, provider }, \"Skipping invalid catalog entity\"); return { status: \"rejected\", reason: \"missing metadata\" }; } await catalogProcessor.process(entity);"
+      - generic [ref=e71]:
+        - generic [ref=e72]:
+          - heading "Incident Metadata" [level=2] [ref=e75]
+          - generic [ref=e76]:
+            - generic [ref=e77]:
+              - term [ref=e78]: Trigger
+              - definition [ref=e79]: "TypeError: Cannot read properties of undefined (reading 'metadata')"
+            - generic [ref=e80]:
+              - term [ref=e81]: Affected service
+              - definition [ref=e82]: catalog-service
+            - generic [ref=e83]:
+              - term [ref=e84]: Affected route
+              - definition [ref=e85]: /api/catalog/entities
+            - generic [ref=e86]:
+              - term [ref=e87]: Splunk mode
+              - definition [ref=e88]: Simulated Telemetry
+            - generic [ref=e89]:
+              - term [ref=e90]: Anomaly score
+              - definition [ref=e91]: 100 - critical
+        - generic [ref=e92]:
+          - heading "Evidence Timeline" [level=2] [ref=e95]
+          - generic [ref=e96]:
+            - generic [ref=e97]:
+              - generic [ref=e98]: 15/06/2026, 15:19:14
+              - generic [ref=e99]: discovery
+              - generic [ref=e100]: Entity provider refresh triggered
+            - generic [ref=e101]:
+              - generic [ref=e102]: 15/06/2026, 15:19:14
+              - generic [ref=e103]: catalog
+              - generic [ref=e104]: Processing 847 entities from GitHub discovery
+            - generic [ref=e105]:
+              - generic [ref=e106]: 15/06/2026, 15:19:14
+              - generic [ref=e107]: catalog
+              - generic [ref=e108]: Entity validation started for org component
+            - generic [ref=e109]:
+              - generic [ref=e110]: 15/06/2026, 15:19:14
+              - generic [ref=e111]: api
+              - generic [ref=e112]: Catalog handler failed reading entity metadata field
+            - generic [ref=e113]:
+              - generic [ref=e114]: 15/06/2026, 15:16:46
+              - generic [ref=e115]: splunk
+              - generic [ref=e116]: First matching catalog-service error detected in Splunk
+            - generic [ref=e117]:
+              - generic [ref=e118]: 15/06/2026, 15:17:51
+              - generic [ref=e119]: splunk
+              - generic [ref=e120]: Correlated failures exceeded automated alert threshold
+            - generic [ref=e121]:
+              - generic [ref=e122]: 15/06/2026, 15:19:14
+              - generic [ref=e123]: sdk
+              - generic [ref=e124]: SDK captured structured crash payload
+    - generic [ref=e125]:
+      - generic [ref=e126]:
+        - heading "Splunk Query Used" [level=2] [ref=e129]
+        - generic [ref=e131]: index=main sourcetype=talos:error service=catalog-service route=/api/catalog/entities "Cannot read properties of undefined (reading 'metadata')" earliest=-15m
+      - generic [ref=e132]:
+        - heading "Raw Event JSON" [level=2] [ref=e135]
+        - generic [ref=e137]: "{ \"type\": \"talos.error\", \"eventId\": \"63e478fb-3abc-423b-9fcf-325f46a91b33\", \"timestamp\": \"2026-06-15T14:19:14.011Z\", \"projectKey\": \"demo_project_key\", \"service\": \"catalog-service\", \"environment\": \"production\", \"release\": \"v2.4.1\", \"route\": \"/api/catalog/entities\", \"runtime\": { \"language\": \"typescript\", \"framework\": \"Backstage\", \"nodeVersion\": \"v24.14.0\", \"url\": \"http://localhost:3000/dashboard\" }, \"error\": { \"name\": \"TypeError\", \"message\": \"Cannot read properties of undefined (reading 'metadata')\", \"stack\": \"TypeError: Cannot read properties of undefined (reading 'metadata')\\n at processCatalogEntity (packages/backend/src/plugins/catalog.ts:87:22)\\n at CatalogBuilder.build (packages/backend/src/catalog/CatalogBuilder.ts:142:9)\" }, \"breadcrumbs\": [ { \"timestamp\": \"2026-06-15T14:19:14.011Z\", \"category\": \"discovery\", \"message\": \"Entity provider refresh triggered\" }, { \"timestamp\": \"2026-06-15T14:19:14.011Z\", \"category\": \"catalog\", \"message\": \"Processing 847 entities from GitHub discovery\" }, { \"timestamp\": \"2026-06-15T14:19:14.011Z\", \"category\": \"catalog\", \"message\": \"Entity validation started for org component\" }, { \"timestamp\": \"2026-06-15T14:19:14.011Z\", \"category\": \"api\", \"message\": \"Catalog handler failed reading entity metadata field\" } ], \"user\": { \"id\": \"backstage-scheduler\" }, \"tags\": { \"feature\": \"entity-processing\", \"region\": \"us-east-1\" }, \"extra\": { \"entityCount\": 847, \"providerType\": \"github-discovery\" } }"

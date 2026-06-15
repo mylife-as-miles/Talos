@@ -34,22 +34,22 @@ export default async function IncidentsPage() {
                   <th className="px-3 py-2">Time</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-talos-line">
+              <tbody className="divide-y divide-talos-line text-black">
                 {reports.map((report, index) => (
                   <tr
                     key={report.incidentId}
-                    className="talos-row-enter transition hover:bg-white/[.03]"
+                    className="talos-row-enter transition hover:bg-[#ffe100]"
                     style={{ animationDelay: `${index * 40}ms` }}
                   >
                     <td className="px-3 py-2.5 font-medium text-talos-cyan">
-                      <Link href={`/incidents/${report.incidentId}`}>{report.incidentId}</Link>
+                      <Link href={`/dashboard/incidents/${report.incidentId}`}>{report.incidentId}</Link>
                     </td>
                     <td className="px-3 py-2.5">{report.affectedService}</td>
                     <td className="px-3 py-2.5 text-talos-muted">{report.affectedRoute}</td>
                     <td className="px-3 py-2.5">
                       <Badge tone={report.priority === "critical" ? "critical" : "warn"}>{report.priority}</Badge>
                     </td>
-                    <td className="max-w-sm px-3 py-2.5 text-slate-300">{report.rootCause}</td>
+                    <td className="max-w-sm px-3 py-2.5 font-bold text-black">{report.rootCause}</td>
                     <td className="px-3 py-2.5">
                       <Badge tone="ok">{report.status}</Badge>
                     </td>

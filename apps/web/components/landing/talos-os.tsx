@@ -60,33 +60,33 @@ type DesktopItem = {
 };
 
 const desktopItems: DesktopItem[] = [
-  { id: "home", label: "home.mdx", detail: "Start here", icon: FileText, accent: "bg-[#00c2c8]", dock: true, side: "left" },
-  { id: "sdk", label: "SDK install", detail: "npm package", icon: Package, accent: "bg-[#ffe100]", dock: true, side: "left" },
-  { id: "docs", label: "Docs", detail: "How to use Talos", icon: BookOpen, accent: "bg-[#ff00ff]", dock: true, side: "left" },
-  { id: "splunk", label: "splunk.mdx", detail: "HEC + MCP", icon: Boxes, accent: "bg-[#f5a019]", dock: true, side: "left" },
+  { id: "home", label: "home.mdx", detail: "Crash to fix", icon: FileText, accent: "bg-[#00c2c8]", dock: true, side: "left" },
+  { id: "sdk", label: "SDK install", detail: "Capture context", icon: Package, accent: "bg-[#ffe100]", dock: true, side: "left" },
+  { id: "docs", label: "Docs", detail: "Ship the loop", icon: BookOpen, accent: "bg-[#ff00ff]", dock: true, side: "left" },
+  { id: "splunk", label: "splunk.mdx", detail: "Logs to RCA", icon: Boxes, accent: "bg-[#f5a019]", dock: true, side: "left" },
   { id: "byok", label: "BYOK", detail: "AI provider keys", icon: KeyRound, accent: "bg-[#c7ff45]", side: "left" },
   { id: "demo", label: "demo.mov", detail: "Video flow", icon: MonitorPlay, accent: "bg-[#ff4d5a]", dock: true, side: "left" },
-  { id: "why", label: "Why Talos?", detail: "Crash to fix", icon: CircleHelp, accent: "bg-[#00c2c8]", side: "right" },
+  { id: "why", label: "Why Talos?", detail: "Fewer blind alerts", icon: CircleHelp, accent: "bg-[#00c2c8]", side: "right" },
   { id: "changelog", label: "Changelog", detail: "MVP release", icon: Bell, accent: "bg-[#ffe100]", side: "right" },
   { id: "handbook", label: "Open source handbook", detail: "Build in public", icon: Archive, accent: "bg-[#ff00ff]", side: "right" },
-  { id: "tools", label: "tools.mdx", detail: "SDK, agent, notify", icon: Settings, accent: "bg-[#c7ff45]", side: "right" },
+  { id: "tools", label: "tools.mdx", detail: "The fix pipeline", icon: Settings, accent: "bg-[#c7ff45]", side: "right" },
   { id: "github", label: "GitHub repo", detail: "Source", icon: Github, accent: "bg-[#f5a019]", side: "right" },
   { id: "contributors", label: "Join as contributor", detail: "Community", icon: Users, accent: "bg-[#00c2c8]", side: "right" },
-  { id: "trash", label: "Recycle bin", detail: "Old ops habits", icon: Recycle, accent: "bg-[#b8b3a0]", side: "right" }
+  { id: "trash", label: "Recycle bin", detail: "Old incident work", icon: Recycle, accent: "bg-[#b8b3a0]", side: "right" }
 ];
 
 const windowMeta: Record<WindowId, { title: string; subtitle: string; w: string; x: string; y: string }> = {
   home: { title: "home.mdx", subtitle: "Talos Product OS", w: "min(940px, calc(100vw - 32px))", x: "16vw", y: "4vh" },
   sdk: { title: "SDK install", subtitle: "npm package", w: "680px", x: "8vw", y: "8vh" },
-  docs: { title: "Docs", subtitle: "Install and run Talos", w: "720px", x: "12vw", y: "7vh" },
-  splunk: { title: "splunk.mdx", subtitle: "HEC ingestion and MCP investigation", w: "760px", x: "14vw", y: "9vh" },
-  why: { title: "Why Talos?", subtitle: "Developer operations, self-healed", w: "700px", x: "23vw", y: "7vh" },
+  docs: { title: "Docs", subtitle: "Install the crash-to-fix loop", w: "720px", x: "12vw", y: "7vh" },
+  splunk: { title: "splunk.mdx", subtitle: "Turn Splunk logs into fix evidence", w: "760px", x: "14vw", y: "9vh" },
+  why: { title: "Why Talos?", subtitle: "Stop handing developers blind alerts", w: "700px", x: "23vw", y: "7vh" },
   changelog: { title: "Changelog", subtitle: "MVP notes", w: "640px", x: "26vw", y: "10vh" },
   handbook: { title: "Open source handbook", subtitle: "How we build Talos", w: "680px", x: "16vw", y: "10vh" },
-  tools: { title: "tools.mdx", subtitle: "Talos system pieces", w: "760px", x: "10vw", y: "6vh" },
-  byok: { title: "BYOK", subtitle: "Bring your own AI key", w: "640px", x: "18vw", y: "9vh" },
-  demo: { title: "demo.mov", subtitle: "Devpost walkthrough", w: "740px", x: "20vw", y: "6vh" },
-  github: { title: "GitHub repo", subtitle: "Open source Talos", w: "620px", x: "24vw", y: "8vh" },
+  tools: { title: "tools.mdx", subtitle: "What closes the loop", w: "760px", x: "10vw", y: "6vh" },
+  byok: { title: "BYOK", subtitle: "Use your own AI and Splunk keys", w: "640px", x: "18vw", y: "9vh" },
+  demo: { title: "demo.mov", subtitle: "See a checkout crash resolved", w: "740px", x: "20vw", y: "6vh" },
+  github: { title: "GitHub repo", subtitle: "Clone the open source incident loop", w: "620px", x: "24vw", y: "8vh" },
   contributors: { title: "Join as contributor", subtitle: "Help shape agentic ops", w: "640px", x: "18vw", y: "8vh" },
   trash: { title: "Recycle bin", subtitle: "Deprecated operations rituals", w: "760px", x: "8vw", y: "5vh" }
 };
@@ -579,7 +579,7 @@ function StatusSticker() {
         <span className="talos-live-dot h-3.5 w-3.5 border border-black bg-[#ff00ff]" />
         Runtime loop online
       </div>
-      <p className="mt-2 text-[19px] font-black leading-[0.94]">SDK crash in. Splunk context out. Fix report ready.</p>
+      <p className="mt-2 text-[19px] font-black leading-[0.94]">From crash alert to fix plan before the thread goes cold.</p>
     </div>
   );
 }
@@ -636,15 +636,15 @@ function HomeContent({ onOpen }: { onOpen: (id: WindowId) => void }) {
           </span>
           <div>
             <p className="text-[11px] font-black uppercase tracking-wide text-[#5b5547]">Talos</p>
-            <p className="text-[16px] font-black">Self-healing Splunk AI Ops</p>
+            <p className="text-[16px] font-black">Crash-to-fix AI ops for Splunk</p>
           </div>
         </div>
 
         <h1 className="mt-4 max-w-[720px] text-[clamp(1.7rem,3.8vw,2.8rem)] font-black leading-[0.88]">
-          Crash captured. Root cause found. Fix shipped.
+          Stop shipping alerts. Ship the fix plan.
         </h1>
         <p className="mt-3 max-w-xl text-[15px] font-bold leading-6 text-[#333025]">
-          Talos gives developers an npm SDK, a Splunk HEC ingest relay, a headless MCP resolver, and fix-ready AI triage reports in one open Product OS.
+          Talos captures runtime failures, pulls the matching Splunk evidence, scores the blast radius, and gives developers a root cause plus the next code change to make.
         </p>
 
         <div className="mt-4 flex flex-wrap gap-2.5">
@@ -652,10 +652,10 @@ function HomeContent({ onOpen }: { onOpen: (id: WindowId) => void }) {
             Install SDK
           </button>
           <Link href="/demo" className="talos-secondary-button h-10.5 px-4.5 text-xs">
-            Run simulation
+            See a crash resolved
           </Link>
           <Link href="/dashboard" className="talos-secondary-button h-10.5 px-4.5 text-xs">
-            Open dashboard
+            Open incident dashboard
           </Link>
         </div>
 
@@ -677,11 +677,11 @@ function HomeContent({ onOpen }: { onOpen: (id: WindowId) => void }) {
       <div className="space-y-3">
         <div className="border-2 border-black bg-[#00c2c8] p-3 shadow-[4px_4px_0_#000]">
           <div className="flex items-center justify-between border-b pb-2 text-[13px] font-black uppercase">
-            <span>Resolver loop</span>
-            <span>Mock or live</span>
+            <span>Crash-to-fix loop</span>
+            <span>Demo or live</span>
           </div>
           <ol className="mt-2.5 space-y-2 text-[13px] font-bold">
-            {["SDK captures runtime crash", "Next.js ingest stores event and forwards HEC", "Splunk MCP returns related logs", "AI resolver creates fix-ready report"].map((step, index) => (
+            {["SDK captures the crash with route, user, release, and breadcrumbs", "Server relay keeps Splunk HEC tokens out of the browser", "Splunk MCP brings back the logs that matter", "AI resolver returns evidence, severity, root cause, and fix steps"].map((step, index) => (
               <li key={step} className="flex gap-2.5">
                 <span className="grid h-5 w-5 shrink-0 place-items-center border-2 border-black bg-[#ffe100] text-[10px] font-black">{index + 1}</span>
                 <span>{step}</span>
@@ -705,9 +705,9 @@ function SdkContent() {
   return (
     <div className="grid gap-4 lg:grid-cols-[0.85fr_1.15fr]">
       <div className="space-y-3">
-        <h3 className="text-2xl font-black leading-none">Install the collector.</h3>
+        <h3 className="text-2xl font-black leading-none">Add crash context in minutes.</h3>
         <p className="text-sm font-bold leading-6 text-[#3d392f]">
-          Published as a scoped npm package. The browser SDK sends to Talos ingest, never directly to Splunk HEC.
+          Drop the SDK into the app path that breaks revenue. Talos captures the error, breadcrumbs, route, release, and tags, then sends them through your server-side ingest relay.
         </p>
         <div className="border-2 border-black bg-[#ffe100] p-3 shadow-[3px_3px_0_#000]">
           <p className="text-[10px] font-black uppercase">npm</p>
@@ -727,12 +727,12 @@ function SdkContent() {
 function DocsContent({ onOpen }: { onOpen: (id: WindowId) => void }) {
   return (
     <div>
-      <h3 className="text-2xl font-black">How to use Talos</h3>
+      <h3 className="text-2xl font-black">Close the first incident loop</h3>
       <div className="mt-4 grid gap-3 sm:grid-cols-3">
         {[
-          ["1", "Install SDK", "Capture errors as AI-readable operational events."],
-          ["2", "Configure Splunk", "Forward events through HEC and investigate through MCP."],
-          ["3", "Run resolver", "Generate priority, evidence, root cause, and patch suggestions."]
+          ["1", "Capture the failure", "Turn runtime errors into operational events with stack, route, release, user, and breadcrumbs."],
+          ["2", "Bring Splunk evidence", "Forward events through HEC and let MCP search the logs around the incident."],
+          ["3", "Hand devs the fix", "Generate severity, evidence, root cause, and concrete remediation steps."]
         ].map(([number, title, body]) => (
           <button key={title} type="button" onClick={() => onOpen(number === "1" ? "sdk" : number === "2" ? "splunk" : "demo")} className="text-left border-2 border-black bg-white p-3 shadow-[3px_3px_0_#000] transition-transform hover:-translate-y-1">
             <span className="grid h-7.5 w-7.5 place-items-center border-2 border-black bg-[#ff00ff] text-base font-black">{number}</span>
@@ -742,7 +742,7 @@ function DocsContent({ onOpen }: { onOpen: (id: WindowId) => void }) {
         ))}
       </div>
       <div className="mt-4 border-2 border-black bg-[#d8ff2f] p-3.5 shadow-[4px_4px_0_#000]">
-        <h4 className="text-base font-black">Local run path</h4>
+        <h4 className="text-base font-black">Run the demo loop locally</h4>
         <code className="mt-2 block overflow-x-auto border border-black bg-black p-2.5 text-xs font-bold text-[#d8ff2f]">
           corepack pnpm install{"\n"}corepack pnpm --filter @talos/web dev
         </code>
@@ -755,16 +755,16 @@ function SplunkContent() {
   return (
     <div className="grid gap-3.5 md:grid-cols-2">
       <InfoPanel title="HEC intake" color="bg-[#00c2c8]" icon={Boxes}>
-        <p className="text-xs">Talos ingest validates SDK events, stores them locally for the MVP dashboard, then forwards structured payloads to Splunk HEC when mock mode is off.</p>
+        <p className="text-xs">Talos keeps Splunk credentials server-side, validates SDK events, stores a local dashboard copy, and forwards clean payloads to HEC when mock mode is off.</p>
         <code className="mt-2.5 block border border-black bg-black p-2.5 text-[10px] font-bold text-[#d8ff2f]">POST /services/collector/event</code>
       </InfoPanel>
       <InfoPanel title="MCP investigation" color="bg-[#ff00ff]" icon={Sparkles}>
-        <p className="text-xs">The headless resolver treats Splunk MCP as the primary investigation path, with REST fallback and mock context for local demos.</p>
+        <p className="text-xs">The resolver uses Splunk MCP first so the AI report cites nearby logs instead of guessing. REST and mock modes keep demos reliable.</p>
         <code className="mt-2.5 block border border-black bg-black p-2.5 text-[10px] font-bold text-[#d8ff2f]">SPLUNK_MCP_MODE=enabled</code>
       </InfoPanel>
       <div className="md:col-span-2 border-2 border-black bg-white p-3.5 shadow-[4px_4px_0_#000]">
-        <h4 className="text-base font-black">Query Talos uses</h4>
-        <p className="mt-1 text-xs font-bold text-[#514c40]">The resolver scopes by service, route, error message, sourcetype, and recent time window.</p>
+        <h4 className="text-base font-black">Evidence-first query</h4>
+        <p className="mt-1 text-xs font-bold text-[#514c40]">Talos narrows the search by service, route, error text, sourcetype, and the incident window so engineers see relevant proof fast.</p>
         <code className="mt-2.5 block overflow-x-auto border border-black bg-black p-3 text-[10px] font-bold text-[#d8ff2f]">
           index=main sourcetype=talos:error service=checkout-service route=/api/checkout "Cannot read properties"
         </code>
@@ -776,12 +776,12 @@ function SplunkContent() {
 function WhyContent() {
   return (
     <div className="space-y-3">
-      <h3 className="text-2xl font-black leading-none">Observability should not stop at a red chart.</h3>
+      <h3 className="text-2xl font-black leading-none">Observability should not hand you another mystery.</h3>
       <p className="text-sm font-bold leading-6 text-[#3d392f]">
-        Talos turns runtime failures into structured Splunk events, then asks an AI resolver to investigate logs, score impact, and produce a concise triage report engineers can act on.
+        Alerts tell you something broke. Talos packages the crash, searches Splunk for the surrounding facts, ranks urgency, and gives the engineer a report they can act on before context fades.
       </p>
       <div className="grid gap-3 sm:grid-cols-3">
-        {["SDK-native crash context", "Splunk-first operations data", "Fix-ready report output"].map((item, index) => (
+        {["Crash context developers trust", "Splunk evidence instead of guesses", "Fix steps tied to code"].map((item, index) => (
           <div key={item} className="border-2 border-black bg-white p-3 shadow-[3px_3px_0_#000]">
             <span className={`grid h-7.5 w-7.5 place-items-center border-2 border-black text-sm font-black ${index === 0 ? "bg-[#00c2c8]" : index === 1 ? "bg-[#ffe100]" : "bg-[#ff00ff]"}`}>
               {index + 1}
@@ -796,9 +796,9 @@ function WhyContent() {
 
 function ChangelogContent() {
   const changes = [
-    ["0.1.0", "SDK published", "@mylife-as-miles/talos-sdk is available for demo installs."],
-    ["MVP", "Neo-brutalist dashboard", "Incident, report, demo, and settings views are styled for hackathon storytelling."],
-    ["Agent", "Mock-safe resolver", "Reports work locally without a live Splunk instance, while MCP remains the documented primary path."]
+    ["0.1.0", "SDK published", "@mylife-as-miles/talos-sdk is ready to capture runtime failures in demo apps."],
+    ["MVP", "Incident OS dashboard", "Incidents, reports, simulation, and settings are wired for a crash-to-resolution product story."],
+    ["Agent", "Evidence-safe resolver", "Reports work locally without live Splunk, while MCP remains the production investigation path."]
   ];
   return (
     <div>
@@ -821,14 +821,14 @@ function ChangelogContent() {
 function HandbookContent() {
   return (
     <div className="space-y-3">
-      <h3 className="text-2xl font-black">Open source handbook</h3>
+      <h3 className="text-2xl font-black">Build the resolver with us</h3>
       <div className="border-2 border-black bg-[#ffe100] p-3.5 shadow-[4px_4px_0_#000]">
         <p className="text-sm font-black leading-6">
-          Talos is built like a practical devtool: small SDK surface, clear data contracts, MCP-first investigation, and mock mode so contributors can run it without enterprise infrastructure.
+          Talos is built for engineers who want incident response to end with evidence and action, not another tab. Small SDK surface, clear data contracts, MCP-first investigation, and mock mode make it easy to contribute without enterprise infrastructure.
         </p>
       </div>
       <div className="grid gap-3 sm:grid-cols-2">
-        {["Make the demo real before making it large.", "Keep Splunk HEC ingestion server-side.", "Never invent evidence in AI reports.", "Prefer boring storage until the workflow is proven."].map((rule) => (
+        {["Prove the crash-to-fix loop before expanding scope.", "Keep Splunk HEC ingestion server-side.", "Never invent evidence in AI reports.", "Prefer boring storage until the workflow is proven."].map((rule) => (
           <div key={rule} className="border-2 border-black bg-white p-3 text-sm font-black shadow-[3px_3px_0_#000]">
             {rule}
           </div>
@@ -840,14 +840,14 @@ function HandbookContent() {
 
 function ToolsContent({ onOpen }: { onOpen: (id: WindowId) => void }) {
   const tools: Array<[WindowId, string, string, typeof Code2]> = [
-    ["sdk", "SDK collector", "Captures exceptions, breadcrumbs, users, tags, and runtime context.", Code2],
-    ["splunk", "HEC relay", "Validates events and forwards to Splunk with sourcetype talos:error.", Boxes],
-    ["demo", "Resolver agent", "Scores anomalies and generates strict JSON triage reports.", Sparkles],
-    ["contributors", "Triage output", "Posts concise incident summaries to Discord or Slack.", Mail]
+    ["sdk", "Crash collector", "Captures the details developers need before the reproduction window closes.", Code2],
+    ["splunk", "Splunk relay", "Protects HEC secrets while sending structured events with sourcetype talos:error.", Boxes],
+    ["demo", "Resolver agent", "Scores severity and writes strict JSON reports with evidence and fix steps.", Sparkles],
+    ["contributors", "Team handoff", "Turns the report into concise Slack or Discord updates people can act on.", Mail]
   ];
   return (
     <div>
-      <h3 className="text-2xl font-black">Talos tools</h3>
+      <h3 className="text-2xl font-black">What closes the loop</h3>
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
         {tools.map(([id, title, body, Icon], index) => (
           <button key={title} type="button" onClick={() => onOpen(id)} className="group text-left border-2 border-black bg-white p-3.5 shadow-[3.5px_3.5px_0_#000] transition-transform hover:-translate-y-1">
@@ -866,15 +866,15 @@ function ToolsContent({ onOpen }: { onOpen: (id: WindowId) => void }) {
 function ByokContent() {
   return (
     <div className="space-y-3">
-      <h3 className="text-2xl font-black">Bring your own key.</h3>
+      <h3 className="text-2xl font-black">Use your own keys.</h3>
       <p className="text-sm font-bold leading-6 text-[#3d392f]">
-        Talos keeps provider credentials in environment variables. The MVP is OpenAI-compatible and can run in mock mode while you wire Gemini, OpenAI, or another compatible endpoint.
+        Talos keeps provider and Splunk credentials in environment variables. Run mock mode for the demo, then connect Gemini, OpenAI-compatible endpoints, Splunk HEC, and team notifications when you are ready.
       </p>
       <div className="grid gap-3 sm:grid-cols-2">
         {["AI_PROVIDER", "GEMINI_API_KEY", "SPLUNK_HEC_TOKEN", "DISCORD_WEBHOOK_URL"].map((name, index) => (
           <div key={name} className={`border-2 border-black p-3 shadow-[3px_3px_0_#000] ${index % 2 ? "bg-white" : "bg-[#d8ff2f]"}`}>
             <p className="font-black text-sm">{name}</p>
-            <p className="mt-0.5 text-xs font-bold text-[#4d473d]">Configured through .env.local. No secrets committed.</p>
+            <p className="mt-0.5 text-xs font-bold text-[#4d473d]">Configured through .env.local so secrets stay out of the repo.</p>
           </div>
         ))}
       </div>
@@ -893,12 +893,12 @@ function DemoContent({ onOpen }: { onOpen: (id: WindowId) => void }) {
             <p className="mt-1 text-[10px] font-black uppercase">YouTube URL pending</p>
           </div>
         </div>
-        <p className="mt-2.5 text-xs font-bold text-[#d8ff2f]">This slot is ready for the Devpost video link when you send it.</p>
+        <p className="mt-2.5 text-xs font-bold text-[#d8ff2f]">Watch Talos move from checkout crash to evidence-backed remediation plan.</p>
       </div>
       <div>
-        <h3 className="text-2xl font-black">3-minute Devpost flow</h3>
+        <h3 className="text-2xl font-black">3-minute crash-to-fix flow</h3>
         <ol className="mt-3.5 space-y-2">
-          {["Problem: crashes need context", "Show SDK install", "Trigger checkout crash", "Run resolver", "Open AI report", "Send Discord notification"].map((step, index) => (
+          {["Start with the cost of blind alerts", "Install the SDK in the app", "Trigger a checkout crash", "Let Splunk MCP gather evidence", "Open the fix-ready AI report", "Notify the team with the next action"].map((step, index) => (
             <li key={step} className="flex gap-2.5 border-2 border-black bg-white p-2 text-xs font-black shadow-[2.5px_2.5px_0_#000]">
               <span className="grid h-5 w-5 shrink-0 place-items-center border-2 border-black bg-[#ffe100] text-[10px]">{index + 1}</span>
               {step}
@@ -906,7 +906,7 @@ function DemoContent({ onOpen }: { onOpen: (id: WindowId) => void }) {
           ))}
         </ol>
         <button type="button" onClick={() => onOpen("docs")} className="talos-primary-button mt-3.5 h-9 px-3.5 text-xs">
-          Open setup docs
+          See setup path
         </button>
       </div>
     </div>
@@ -916,9 +916,9 @@ function DemoContent({ onOpen }: { onOpen: (id: WindowId) => void }) {
 function GithubContent() {
   return (
     <div className="space-y-3">
-      <h3 className="text-2xl font-black">Open source repo</h3>
+      <h3 className="text-2xl font-black">Clone the incident loop</h3>
       <p className="text-sm font-bold leading-6 text-[#3d392f]">
-        Talos is organized as a pnpm workspace: SDK package, Next.js web app, Splunk MCP infrastructure, docs, and references.
+        Talos ships as a pnpm workspace with the SDK, Next.js dashboard, ingest APIs, Splunk MCP integration notes, demo data, and docs in one place.
       </p>
       <div className="border-2 border-black bg-white p-3.5 shadow-[4px_4px_0_#000]">
         <div className="flex items-center gap-2.5 text-lg font-black">
@@ -938,9 +938,9 @@ function ContributorsContent({ status, setStatus }: { status: string; setStatus:
   return (
     <div className="grid gap-4 md:grid-cols-[0.9fr_1.1fr]">
       <div>
-        <h3 className="text-2xl font-black leading-none">Join Talos as a contributor.</h3>
+        <h3 className="text-2xl font-black leading-none">Help make incidents actionable.</h3>
         <p className="mt-2.5 text-sm font-bold leading-6 text-[#3d392f]">
-          Good first areas: SDK ergonomics, Splunk query adapters, incident UX, AI evals, notification templates, and docs.
+          Good first areas: SDK ergonomics, Splunk query adapters, report quality, AI evals, notification templates, and docs that help teams trust the handoff.
         </p>
       </div>
       <form
@@ -960,22 +960,22 @@ function ContributorsContent({ status, setStatus }: { status: string; setStatus:
           <option>Frontend polish</option>
         </select>
         <button type="submit" className="talos-primary-button mt-3.5 h-9 px-3.5 text-xs">
-          Ask to join
+          Raise my hand
         </button>
-        {status === "saved" ? <p className="mt-2.5 border border-black bg-white p-2 text-xs font-black">Contributor request captured locally for demo mode.</p> : null}
+        {status === "saved" ? <p className="mt-2.5 border border-black bg-white p-2 text-xs font-black">Contributor interest captured locally for demo mode.</p> : null}
       </form>
     </div>
   );
 }
 
 function TrashContent({ removedTrash, setRemovedTrash }: { removedTrash: string[]; setRemovedTrash: (value: string[]) => void }) {
-  const trash = ["Manual log digging", "Screenshots without stack traces", "Untriaged production alerts", "Mystery checkout failures", "Secrets in browser SDKs", "AI reports with invented evidence"];
+  const trash = ["Manual log digging", "Screenshots without stack traces", "Blind production alerts", "Mystery checkout failures", "Secrets in browser SDKs", "AI reports with invented evidence"];
   const visible = trash.filter((item) => !removedTrash.includes(item));
   return (
     <div>
       <div className="border-2 border-black bg-[#e5e1cf] p-3 shadow-[4px_4px_0_#000]">
         <h3 className="text-2xl font-black">Recycle bin</h3>
-        <p className="mt-1.5 text-sm font-bold text-[#3f3a31]">Things Talos is trying to remove from incident response.</p>
+        <p className="mt-1.5 text-sm font-bold text-[#3f3a31]">The incident-response work Talos moves out of the critical path.</p>
       </div>
       <div className="mt-4 grid gap-3 sm:grid-cols-3">
         {visible.map((item) => (

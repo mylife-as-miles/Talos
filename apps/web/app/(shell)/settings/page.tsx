@@ -38,7 +38,7 @@ export default function SettingsPage() {
         <CardHeader title="Local SDK Usage Example" />
         <div className="p-5">
           <CodeBlock
-            value={`import { Talos } from "@talos/sdk";\n\nTalos.init({\n  projectKey: "demo_project_key",\n  environment: "production",\n  release: "v1.0.0",\n  service: "checkout-service",\n  ingestUrl: "/api/ingest",\n});`}
+            value={`import { Talos } from "@mylife-as-miles/talos-sdk";\n\nTalos.init({\n  projectKey: "demo_project_key",\n  environment: "production",\n  release: "v1.0.0",\n  service: "checkout-service",\n  ingestUrl: "/api/ingest",\n});`}
           />
         </div>
       </Card>

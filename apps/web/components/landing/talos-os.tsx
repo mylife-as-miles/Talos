@@ -500,21 +500,21 @@ function HomeContent({ onOpen }: { onOpen: (id: WindowId) => void }) {
 
 function SdkContent() {
   return (
-    <div className="grid gap-5 lg:grid-cols-[0.85fr_1.15fr]">
-      <div className="space-y-4">
-        <h3 className="text-4xl font-black leading-none">Install the collector.</h3>
-        <p className="text-lg font-bold leading-7 text-[#3d392f]">
+    <div className="grid gap-4 lg:grid-cols-[0.85fr_1.15fr]">
+      <div className="space-y-3">
+        <h3 className="text-2xl font-black leading-none">Install the collector.</h3>
+        <p className="text-sm font-bold leading-6 text-[#3d392f]">
           Published as a scoped npm package. The browser SDK sends to Talos ingest, never directly to Splunk HEC.
         </p>
-        <div className="border-[3px] border-black bg-[#ffe100] p-4 shadow-[5px_5px_0_#000]">
-          <p className="text-xs font-black uppercase">npm</p>
-          <code className="mt-2 block overflow-x-auto text-lg font-black">{command}</code>
+        <div className="border-2 border-black bg-[#ffe100] p-3 shadow-[3px_3px_0_#000]">
+          <p className="text-[10px] font-black uppercase">npm</p>
+          <code className="mt-1 block overflow-x-auto text-base font-black">{command}</code>
         </div>
-        <button type="button" className="talos-secondary-button h-11 px-4" onClick={() => navigator.clipboard?.writeText(command)}>
+        <button type="button" className="talos-secondary-button h-9 px-3.5 text-xs" onClick={() => navigator.clipboard?.writeText(command)}>
           Copy install command
         </button>
       </div>
-      <pre className="max-h-[430px] overflow-auto border-[3px] border-black bg-black p-5 text-[13px] font-bold leading-6 text-[#d8ff2f] shadow-[6px_6px_0_#000]">
+      <pre className="max-h-[280px] overflow-auto border-2 border-black bg-black p-3 text-xs font-bold leading-5 text-[#d8ff2f] shadow-[4px_4px_0_#000]">
         {sdkExample}
       </pre>
     </div>
@@ -524,23 +524,23 @@ function SdkContent() {
 function DocsContent({ onOpen }: { onOpen: (id: WindowId) => void }) {
   return (
     <div>
-      <h3 className="text-4xl font-black">How to use Talos</h3>
-      <div className="mt-6 grid gap-4 sm:grid-cols-3">
+      <h3 className="text-2xl font-black">How to use Talos</h3>
+      <div className="mt-4 grid gap-3 sm:grid-cols-3">
         {[
           ["1", "Install SDK", "Capture errors as AI-readable operational events."],
           ["2", "Configure Splunk", "Forward events through HEC and investigate through MCP."],
           ["3", "Run resolver", "Generate priority, evidence, root cause, and patch suggestions."]
         ].map(([number, title, body]) => (
-          <button key={title} type="button" onClick={() => onOpen(number === "1" ? "sdk" : number === "2" ? "splunk" : "demo")} className="text-left border-[3px] border-black bg-white p-4 shadow-[5px_5px_0_#000] transition-transform hover:-translate-y-1">
-            <span className="grid h-9 w-9 place-items-center border-2 border-black bg-[#ff00ff] text-xl font-black">{number}</span>
-            <h4 className="mt-4 text-xl font-black">{title}</h4>
-            <p className="mt-2 text-sm font-bold leading-6 text-[#4c473c]">{body}</p>
+          <button key={title} type="button" onClick={() => onOpen(number === "1" ? "sdk" : number === "2" ? "splunk" : "demo")} className="text-left border-2 border-black bg-white p-3 shadow-[3px_3px_0_#000] transition-transform hover:-translate-y-1">
+            <span className="grid h-7.5 w-7.5 place-items-center border-2 border-black bg-[#ff00ff] text-base font-black">{number}</span>
+            <h4 className="mt-3 text-base font-black">{title}</h4>
+            <p className="mt-1 text-xs font-bold leading-5 text-[#4c473c]">{body}</p>
           </button>
         ))}
       </div>
-      <div className="mt-6 border-[3px] border-black bg-[#d8ff2f] p-5 shadow-[6px_6px_0_#000]">
-        <h4 className="text-2xl font-black">Local run path</h4>
-        <code className="mt-3 block overflow-x-auto border-2 border-black bg-black p-4 text-sm font-bold text-[#d8ff2f]">
+      <div className="mt-4 border-2 border-black bg-[#d8ff2f] p-3.5 shadow-[4px_4px_0_#000]">
+        <h4 className="text-base font-black">Local run path</h4>
+        <code className="mt-2 block overflow-x-auto border border-black bg-black p-2.5 text-xs font-bold text-[#d8ff2f]">
           corepack pnpm install{"\n"}corepack pnpm --filter @talos/web dev
         </code>
       </div>
@@ -550,19 +550,19 @@ function DocsContent({ onOpen }: { onOpen: (id: WindowId) => void }) {
 
 function SplunkContent() {
   return (
-    <div className="grid gap-5 md:grid-cols-2">
+    <div className="grid gap-3.5 md:grid-cols-2">
       <InfoPanel title="HEC intake" color="bg-[#00c2c8]" icon={Boxes}>
-        <p>Talos ingest validates SDK events, stores them locally for the MVP dashboard, then forwards structured payloads to Splunk HEC when mock mode is off.</p>
-        <code className="mt-4 block border-2 border-black bg-black p-3 text-xs font-bold text-[#d8ff2f]">POST /services/collector/event</code>
+        <p className="text-xs">Talos ingest validates SDK events, stores them locally for the MVP dashboard, then forwards structured payloads to Splunk HEC when mock mode is off.</p>
+        <code className="mt-2.5 block border border-black bg-black p-2.5 text-[10px] font-bold text-[#d8ff2f]">POST /services/collector/event</code>
       </InfoPanel>
       <InfoPanel title="MCP investigation" color="bg-[#ff00ff]" icon={Sparkles}>
-        <p>The headless resolver treats Splunk MCP as the primary investigation path, with REST fallback and mock context for local demos.</p>
-        <code className="mt-4 block border-2 border-black bg-black p-3 text-xs font-bold text-[#d8ff2f]">SPLUNK_MCP_MODE=enabled</code>
+        <p className="text-xs">The headless resolver treats Splunk MCP as the primary investigation path, with REST fallback and mock context for local demos.</p>
+        <code className="mt-2.5 block border border-black bg-black p-2.5 text-[10px] font-bold text-[#d8ff2f]">SPLUNK_MCP_MODE=enabled</code>
       </InfoPanel>
-      <div className="md:col-span-2 border-[3px] border-black bg-white p-5 shadow-[6px_6px_0_#000]">
-        <h4 className="text-2xl font-black">Query Talos uses</h4>
-        <p className="mt-2 text-sm font-bold text-[#514c40]">The resolver scopes by service, route, error message, sourcetype, and recent time window.</p>
-        <code className="mt-4 block overflow-x-auto border-2 border-black bg-black p-4 text-xs font-bold text-[#d8ff2f]">
+      <div className="md:col-span-2 border-2 border-black bg-white p-3.5 shadow-[4px_4px_0_#000]">
+        <h4 className="text-base font-black">Query Talos uses</h4>
+        <p className="mt-1 text-xs font-bold text-[#514c40]">The resolver scopes by service, route, error message, sourcetype, and recent time window.</p>
+        <code className="mt-2.5 block overflow-x-auto border border-black bg-black p-3 text-[10px] font-bold text-[#d8ff2f]">
           index=main sourcetype=talos:error service=checkout-service route=/api/checkout "Cannot read properties"
         </code>
       </div>
@@ -572,18 +572,18 @@ function SplunkContent() {
 
 function WhyContent() {
   return (
-    <div className="space-y-5">
-      <h3 className="text-5xl font-black leading-none">Observability should not stop at a red chart.</h3>
-      <p className="text-lg font-bold leading-8 text-[#3d392f]">
+    <div className="space-y-3">
+      <h3 className="text-2xl font-black leading-none">Observability should not stop at a red chart.</h3>
+      <p className="text-sm font-bold leading-6 text-[#3d392f]">
         Talos turns runtime failures into structured Splunk events, then asks an AI resolver to investigate logs, score impact, and produce a concise triage report engineers can act on.
       </p>
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-3">
         {["SDK-native crash context", "Splunk-first operations data", "Fix-ready report output"].map((item, index) => (
-          <div key={item} className="border-[3px] border-black bg-white p-4 shadow-[5px_5px_0_#000]">
-            <span className={`grid h-10 w-10 place-items-center border-2 border-black text-lg font-black ${index === 0 ? "bg-[#00c2c8]" : index === 1 ? "bg-[#ffe100]" : "bg-[#ff00ff]"}`}>
+          <div key={item} className="border-2 border-black bg-white p-3 shadow-[3px_3px_0_#000]">
+            <span className={`grid h-7.5 w-7.5 place-items-center border-2 border-black text-sm font-black ${index === 0 ? "bg-[#00c2c8]" : index === 1 ? "bg-[#ffe100]" : "bg-[#ff00ff]"}`}>
               {index + 1}
             </span>
-            <p className="mt-4 text-lg font-black">{item}</p>
+            <p className="mt-2.5 text-sm font-black">{item}</p>
           </div>
         ))}
       </div>
@@ -599,14 +599,14 @@ function ChangelogContent() {
   ];
   return (
     <div>
-      <h3 className="text-4xl font-black">Changelog</h3>
-      <div className="mt-5 space-y-4">
+      <h3 className="text-2xl font-black">Changelog</h3>
+      <div className="mt-3.5 space-y-2.5">
         {changes.map(([tag, title, body]) => (
-          <div key={title} className="grid gap-4 border-[3px] border-black bg-white p-4 shadow-[5px_5px_0_#000] sm:grid-cols-[100px_1fr]">
-            <span className="h-fit border-2 border-black bg-[#d8ff2f] px-3 py-2 text-center text-sm font-black">{tag}</span>
+          <div key={title} className="grid gap-3.5 border-2 border-black bg-white p-3 shadow-[3px_3px_0_#000] sm:grid-cols-[80px_1fr]">
+            <span className="h-fit border-2 border-black bg-[#d8ff2f] px-2.5 py-1.5 text-center text-xs font-black">{tag}</span>
             <div>
-              <h4 className="text-xl font-black">{title}</h4>
-              <p className="mt-1 text-sm font-bold leading-6 text-[#4b463b]">{body}</p>
+              <h4 className="text-base font-black">{title}</h4>
+              <p className="mt-0.5 text-xs font-bold leading-5 text-[#4b463b]">{body}</p>
             </div>
           </div>
         ))}
@@ -617,16 +617,16 @@ function ChangelogContent() {
 
 function HandbookContent() {
   return (
-    <div className="space-y-5">
-      <h3 className="text-4xl font-black">Open source handbook</h3>
-      <div className="border-[3px] border-black bg-[#ffe100] p-5 shadow-[6px_6px_0_#000]">
-        <p className="text-xl font-black leading-7">
+    <div className="space-y-3">
+      <h3 className="text-2xl font-black">Open source handbook</h3>
+      <div className="border-2 border-black bg-[#ffe100] p-3.5 shadow-[4px_4px_0_#000]">
+        <p className="text-sm font-black leading-6">
           Talos is built like a practical devtool: small SDK surface, clear data contracts, MCP-first investigation, and mock mode so contributors can run it without enterprise infrastructure.
         </p>
       </div>
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-3 sm:grid-cols-2">
         {["Make the demo real before making it large.", "Keep Splunk HEC ingestion server-side.", "Never invent evidence in AI reports.", "Prefer boring storage until the workflow is proven."].map((rule) => (
-          <div key={rule} className="border-[3px] border-black bg-white p-4 text-lg font-black shadow-[5px_5px_0_#000]">
+          <div key={rule} className="border-2 border-black bg-white p-3 text-sm font-black shadow-[3px_3px_0_#000]">
             {rule}
           </div>
         ))}
@@ -644,15 +644,15 @@ function ToolsContent({ onOpen }: { onOpen: (id: WindowId) => void }) {
   ];
   return (
     <div>
-      <h3 className="text-4xl font-black">Talos tools</h3>
-      <div className="mt-6 grid gap-4 sm:grid-cols-2">
+      <h3 className="text-2xl font-black">Talos tools</h3>
+      <div className="mt-4 grid gap-3 sm:grid-cols-2">
         {tools.map(([id, title, body, Icon], index) => (
-          <button key={title} type="button" onClick={() => onOpen(id)} className="group text-left border-[3px] border-black bg-white p-5 shadow-[6px_6px_0_#000] transition-transform hover:-translate-y-1">
-            <span className={`grid h-12 w-12 place-items-center border-2 border-black ${index % 2 ? "bg-[#ff00ff]" : "bg-[#00c2c8]"}`}>
-              <Icon size={25} strokeWidth={2.7} />
+          <button key={title} type="button" onClick={() => onOpen(id)} className="group text-left border-2 border-black bg-white p-3.5 shadow-[3.5px_3.5px_0_#000] transition-transform hover:-translate-y-1">
+            <span className={`grid h-9 w-9 place-items-center border-2 border-black ${index % 2 ? "bg-[#ff00ff]" : "bg-[#00c2c8]"}`}>
+              <Icon size={18} strokeWidth={2.7} />
             </span>
-            <h4 className="mt-4 text-2xl font-black">{title}</h4>
-            <p className="mt-2 text-sm font-bold leading-6 text-[#4d473c]">{body}</p>
+            <h4 className="mt-3 text-base font-black">{title}</h4>
+            <p className="mt-1 text-xs font-bold leading-5 text-[#4d473c]">{body}</p>
           </button>
         ))}
       </div>
@@ -662,16 +662,16 @@ function ToolsContent({ onOpen }: { onOpen: (id: WindowId) => void }) {
 
 function ByokContent() {
   return (
-    <div className="space-y-5">
-      <h3 className="text-4xl font-black">Bring your own key.</h3>
-      <p className="text-lg font-bold leading-7 text-[#3d392f]">
+    <div className="space-y-3">
+      <h3 className="text-2xl font-black">Bring your own key.</h3>
+      <p className="text-sm font-bold leading-6 text-[#3d392f]">
         Talos keeps provider credentials in environment variables. The MVP is OpenAI-compatible and can run in mock mode while you wire Gemini, OpenAI, or another compatible endpoint.
       </p>
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-3 sm:grid-cols-2">
         {["AI_PROVIDER", "GEMINI_API_KEY", "SPLUNK_HEC_TOKEN", "DISCORD_WEBHOOK_URL"].map((name, index) => (
-          <div key={name} className={`border-[3px] border-black p-4 shadow-[5px_5px_0_#000] ${index % 2 ? "bg-white" : "bg-[#d8ff2f]"}`}>
-            <p className="font-black">{name}</p>
-            <p className="mt-1 text-sm font-bold text-[#4d473d]">Configured through .env.local. No secrets committed.</p>
+          <div key={name} className={`border-2 border-black p-3 shadow-[3px_3px_0_#000] ${index % 2 ? "bg-white" : "bg-[#d8ff2f]"}`}>
+            <p className="font-black text-sm">{name}</p>
+            <p className="mt-0.5 text-xs font-bold text-[#4d473d]">Configured through .env.local. No secrets committed.</p>
           </div>
         ))}
       </div>
@@ -681,28 +681,28 @@ function ByokContent() {
 
 function DemoContent({ onOpen }: { onOpen: (id: WindowId) => void }) {
   return (
-    <div className="grid gap-6 lg:grid-cols-[1fr_0.8fr]">
-      <div className="border-[3px] border-black bg-black p-4 text-white shadow-[6px_6px_0_#000]">
-        <div className="grid aspect-video place-items-center border-2 border-[#d8ff2f] bg-[linear-gradient(135deg,#00c2c8,#ff00ff_55%,#ffe100)] text-center text-black">
+    <div className="grid gap-4 lg:grid-cols-[1fr_0.8fr]">
+      <div className="border-2 border-black bg-black p-3 text-white shadow-[4px_4px_0_#000]">
+        <div className="grid aspect-video place-items-center border border-[#d8ff2f] bg-[linear-gradient(135deg,#00c2c8,#ff00ff_55%,#ffe100)] text-center text-black">
           <div>
-            <Play className="mx-auto mb-3 h-14 w-14 fill-black" strokeWidth={3} />
-            <p className="text-4xl font-black">demo.mov</p>
-            <p className="mt-2 text-sm font-black uppercase">YouTube URL pending</p>
+            <Play className="mx-auto mb-2 h-10 w-10 fill-black" strokeWidth={3} />
+            <p className="text-2xl font-black">demo.mov</p>
+            <p className="mt-1 text-[10px] font-black uppercase">YouTube URL pending</p>
           </div>
         </div>
-        <p className="mt-3 text-sm font-bold text-[#d8ff2f]">This slot is ready for the Devpost video link when you send it.</p>
+        <p className="mt-2.5 text-xs font-bold text-[#d8ff2f]">This slot is ready for the Devpost video link when you send it.</p>
       </div>
       <div>
-        <h3 className="text-4xl font-black">3-minute Devpost flow</h3>
-        <ol className="mt-5 space-y-3">
+        <h3 className="text-2xl font-black">3-minute Devpost flow</h3>
+        <ol className="mt-3.5 space-y-2">
           {["Problem: crashes need context", "Show SDK install", "Trigger checkout crash", "Run resolver", "Open AI report", "Send Discord notification"].map((step, index) => (
-            <li key={step} className="flex gap-3 border-[3px] border-black bg-white p-3 font-black shadow-[4px_4px_0_#000]">
-              <span className="grid h-8 w-8 shrink-0 place-items-center border-2 border-black bg-[#ffe100]">{index + 1}</span>
+            <li key={step} className="flex gap-2.5 border-2 border-black bg-white p-2 text-xs font-black shadow-[2.5px_2.5px_0_#000]">
+              <span className="grid h-5 w-5 shrink-0 place-items-center border-2 border-black bg-[#ffe100] text-[10px]">{index + 1}</span>
               {step}
             </li>
           ))}
         </ol>
-        <button type="button" onClick={() => onOpen("docs")} className="talos-primary-button mt-5 h-11 px-4">
+        <button type="button" onClick={() => onOpen("docs")} className="talos-primary-button mt-3.5 h-9 px-3.5 text-xs">
           Open setup docs
         </button>
       </div>
@@ -712,19 +712,19 @@ function DemoContent({ onOpen }: { onOpen: (id: WindowId) => void }) {
 
 function GithubContent() {
   return (
-    <div className="space-y-5">
-      <h3 className="text-4xl font-black">Open source repo</h3>
-      <p className="text-lg font-bold leading-7 text-[#3d392f]">
+    <div className="space-y-3">
+      <h3 className="text-2xl font-black">Open source repo</h3>
+      <p className="text-sm font-bold leading-6 text-[#3d392f]">
         Talos is organized as a pnpm workspace: SDK package, Next.js web app, Splunk MCP infrastructure, docs, and references.
       </p>
-      <div className="border-[3px] border-black bg-white p-5 shadow-[6px_6px_0_#000]">
-        <div className="flex items-center gap-3 text-2xl font-black">
-          <FolderGit2 />
+      <div className="border-2 border-black bg-white p-3.5 shadow-[4px_4px_0_#000]">
+        <div className="flex items-center gap-2.5 text-lg font-black">
+          <FolderGit2 size={20} />
           C:\Users\MILES\Documents\Talos
         </div>
-        <button type="button" onClick={() => openExternal("https://github.com/mylife-as-miles/talos")} className="talos-primary-button mt-5 h-11 px-4">
+        <button type="button" onClick={() => openExternal("https://github.com/mylife-as-miles/talos")} className="talos-primary-button mt-3.5 h-9 px-3.5 text-xs">
           Open GitHub
-          <ExternalLink size={17} />
+          <ExternalLink size={14} />
         </button>
       </div>
     </div>
@@ -733,33 +733,33 @@ function GithubContent() {
 
 function ContributorsContent({ status, setStatus }: { status: string; setStatus: (value: string) => void }) {
   return (
-    <div className="grid gap-5 md:grid-cols-[0.9fr_1.1fr]">
+    <div className="grid gap-4 md:grid-cols-[0.9fr_1.1fr]">
       <div>
-        <h3 className="text-4xl font-black leading-none">Join Talos as a contributor.</h3>
-        <p className="mt-4 text-lg font-bold leading-7 text-[#3d392f]">
+        <h3 className="text-2xl font-black leading-none">Join Talos as a contributor.</h3>
+        <p className="mt-2.5 text-sm font-bold leading-6 text-[#3d392f]">
           Good first areas: SDK ergonomics, Splunk query adapters, incident UX, AI evals, notification templates, and docs.
         </p>
       </div>
       <form
-        className="border-[3px] border-black bg-[#d8ff2f] p-5 shadow-[6px_6px_0_#000]"
+        className="border-2 border-black bg-[#d8ff2f] p-3.5 shadow-[4px_4px_0_#000]"
         onSubmit={(event) => {
           event.preventDefault();
           setStatus("saved");
         }}
       >
-        <label className="block text-sm font-black uppercase">Contributor handle</label>
-        <input className="mt-2 h-12 w-full border-[3px] border-black bg-white px-3 font-bold outline-none focus:shadow-[4px_4px_0_#000]" placeholder="@your-handle" />
-        <label className="mt-4 block text-sm font-black uppercase">Area of interest</label>
-        <select className="mt-2 h-12 w-full border-[3px] border-black bg-white px-3 font-bold outline-none focus:shadow-[4px_4px_0_#000]">
+        <label className="block text-xs font-black uppercase">Contributor handle</label>
+        <input className="mt-1.5 h-9 w-full border-2 border-black bg-white px-2.5 text-xs font-bold outline-none focus:shadow-[3px_3px_0_#000]" placeholder="@your-handle" />
+        <label className="mt-2.5 block text-xs font-black uppercase">Area of interest</label>
+        <select className="mt-1.5 h-9 w-full border-2 border-black bg-white px-2.5 text-xs font-bold outline-none focus:shadow-[3px_3px_0_#000]">
           <option>SDK</option>
           <option>Splunk MCP</option>
           <option>AI resolver</option>
           <option>Frontend polish</option>
         </select>
-        <button type="submit" className="talos-primary-button mt-5 h-11 px-4">
+        <button type="submit" className="talos-primary-button mt-3.5 h-9 px-3.5 text-xs">
           Ask to join
         </button>
-        {status === "saved" ? <p className="mt-4 border-2 border-black bg-white p-3 text-sm font-black">Contributor request captured locally for demo mode.</p> : null}
+        {status === "saved" ? <p className="mt-2.5 border border-black bg-white p-2 text-xs font-black">Contributor request captured locally for demo mode.</p> : null}
       </form>
     </div>
   );
@@ -770,23 +770,23 @@ function TrashContent({ removedTrash, setRemovedTrash }: { removedTrash: string[
   const visible = trash.filter((item) => !removedTrash.includes(item));
   return (
     <div>
-      <div className="border-[3px] border-black bg-[#e5e1cf] p-4 shadow-[6px_6px_0_#000]">
-        <h3 className="text-4xl font-black">Recycle bin</h3>
-        <p className="mt-2 text-lg font-bold text-[#3f3a31]">Things Talos is trying to remove from incident response.</p>
+      <div className="border-2 border-black bg-[#e5e1cf] p-3 shadow-[4px_4px_0_#000]">
+        <h3 className="text-2xl font-black">Recycle bin</h3>
+        <p className="mt-1.5 text-sm font-bold text-[#3f3a31]">Things Talos is trying to remove from incident response.</p>
       </div>
-      <div className="mt-6 grid gap-4 sm:grid-cols-3">
+      <div className="mt-4 grid gap-3 sm:grid-cols-3">
         {visible.map((item) => (
           <button
             key={item}
             type="button"
             onClick={() => setRemovedTrash([...removedTrash, item])}
-            className="min-h-32 border-[3px] border-black bg-white p-4 text-center font-black shadow-[5px_5px_0_#000] transition-transform hover:-translate-y-1"
+            className="min-h-24 border-2 border-black bg-white p-2.5 text-center text-xs font-black shadow-[3px_3px_0_#000] transition-transform hover:-translate-y-1"
           >
-            <Recycle className="mx-auto mb-3" size={30} />
+            <Recycle className="mx-auto mb-2" size={20} />
             {item}
           </button>
         ))}
-        {visible.length === 0 ? <p className="col-span-full border-[3px] border-black bg-[#d8ff2f] p-5 text-2xl font-black shadow-[5px_5px_0_#000]">Trash emptied. Resolver online.</p> : null}
+        {visible.length === 0 ? <p className="col-span-full border-2 border-black bg-[#d8ff2f] p-3.5 text-lg font-black shadow-[3px_3px_0_#000]">Trash emptied. Resolver online.</p> : null}
       </div>
     </div>
   );
@@ -794,12 +794,12 @@ function TrashContent({ removedTrash, setRemovedTrash }: { removedTrash: string[
 
 function InfoPanel({ title, color, icon: Icon, children }: { title: string; color: string; icon: typeof FileText; children: React.ReactNode }) {
   return (
-    <div className={`border-[3px] border-black p-5 font-bold leading-7 shadow-[6px_6px_0_#000] ${color}`}>
-      <div className="mb-4 flex items-center gap-3">
-        <span className="grid h-11 w-11 place-items-center border-2 border-black bg-white">
-          <Icon size={23} strokeWidth={2.7} />
+    <div className={`border-2 border-black p-3.5 font-bold leading-6 shadow-[3.5px_3.5px_0_#000] ${color}`}>
+      <div className="mb-2.5 flex items-center gap-2.5">
+        <span className="grid h-8 w-8 place-items-center border-2 border-black bg-white">
+          <Icon size={16} strokeWidth={2.7} />
         </span>
-        <h4 className="text-2xl font-black">{title}</h4>
+        <h4 className="text-base font-black">{title}</h4>
       </div>
       {children}
     </div>

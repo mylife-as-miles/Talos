@@ -66,8 +66,8 @@ export default async function IncidentsPage() {
               compact
               icon={Siren}
               title="No incidents yet"
-              description="Run the guided simulation to capture a crash and generate your first AI triage report."
-              action={{ label: "Run Simulation", href: "/dashboard/demo" }}
+              description="Send a real SDK event and run the resolver to generate your first AI triage report."
+              action={{ label: "Open Live Console", href: "/dashboard/demo" }}
             />
           </div>
         )}

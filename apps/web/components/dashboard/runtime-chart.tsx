@@ -46,7 +46,7 @@ export function RuntimeChart({ bars, empty }: { bars: IntakeBar[]; empty?: boole
         </div>
         {empty ? (
           <div className="absolute inset-0 flex items-center justify-center bg-[#f5f1dc]/80 backdrop-blur-[1px]">
-            <p className="border-[2px] border-black bg-[#ffe100] px-3 py-1.5 text-xs font-black text-black shadow-[3px_3px_0_#000]">No intake yet - run the demo flow to populate this chart.</p>
+            <p className="border-[2px] border-black bg-[#ffe100] px-3 py-1.5 text-xs font-black text-black shadow-[3px_3px_0_#000]">No intake yet - send a real SDK event to populate this chart.</p>
           </div>
         ) : null}
       </div>

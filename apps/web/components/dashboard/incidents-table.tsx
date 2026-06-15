@@ -99,8 +99,8 @@ export function IncidentsTable({ reports }: { reports: TalosTriageReport[] }) {
             compact
             icon={Siren}
             title="No incidents yet"
-            description="Run the guided simulation to capture a crash, investigate with Splunk MCP, and generate your first AI triage report."
-            action={{ label: "Run Simulation", href: "/dashboard/demo" }}
+            description="Send a real SDK event, investigate with Splunk MCP, and generate your first AI triage report."
+            action={{ label: "Open Live Console", href: "/dashboard/demo" }}
             secondaryAction={{ label: "View settings", href: "/dashboard/settings" }}
           />
         </div>

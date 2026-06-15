@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Brain, ChevronDown, ChevronRight, Crosshair, FlaskConical, Info, Link2, RefreshCw } from "lucide-react";
+import { Brain, ChevronDown, ChevronRight, Crosshair, Info, Link2, RefreshCw } from "lucide-react";
 import { EmptyState } from "@/components/empty-state";
 import { formatRelativeTime } from "@/lib/dashboard-stats";
 import type { TalosTriageReport } from "@/lib/types";
@@ -23,8 +23,8 @@ export function InvestigationPanel({ report }: { report?: TalosTriageReport }) {
           compact
           icon={Brain}
           title="No active investigation"
-          description="Trigger a simulation and run the resolver to populate Splunk MCP investigation steps."
-          action={{ label: "Run Simulation", href: "/dashboard/demo" }}
+          description="Send a real SDK event, sync IndexedDB, and run the resolver to populate Splunk MCP investigation steps."
+          action={{ label: "Open Live Console", href: "/dashboard/demo" }}
         />
       </section>
     );

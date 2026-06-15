@@ -28,7 +28,7 @@ export default async function ReportsPage() {
                     {report.summary}
                   </p>
                   <div className="mt-4 flex flex-wrap items-center gap-3">
-                    <Badge tone="cyan">{report.splunk.mode === "simulation" ? "Simulated Telemetry" : report.splunk.mode}</Badge>
+                    <Badge tone="cyan">{report.splunk.mode === "mcp" ? "Splunk MCP" : "REST Fallback"}</Badge>
                     <Badge tone="ok">{report.confidence}% confidence</Badge>
                     <Link
                       className="inline-flex min-h-9 items-center border-[3px] border-black bg-[#ffe100] px-3 text-xs font-black uppercase text-black shadow-[4px_4px_0_#000] transition hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0_#000]"
@@ -48,7 +48,7 @@ export default async function ReportsPage() {
             icon={BarChart3}
             title="No reports generated yet"
             description="Reports appear after the headless resolver investigates Splunk context and produces fix-ready triage output."
-            action={{ label: "Run Simulation", href: "/dashboard/demo" }}
+            action={{ label: "Open Live Console", href: "/dashboard/demo" }}
           />
         </div>
       )}

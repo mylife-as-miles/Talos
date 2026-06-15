@@ -26,12 +26,7 @@ export default async function IncidentDetailPage({ params }: { params: Promise<{
   const report = await getReport(id);
   if (!report) notFound();
   const event = await getEvent(report.eventId);
-  const splunkModeLabel =
-    report.splunk.mode === "simulation"
-      ? "Simulated Telemetry"
-      : report.splunk.mode === "mcp"
-        ? "Splunk MCP"
-        : "REST Fallback";
+  const splunkModeLabel = report.splunk.mode === "mcp" ? "Splunk MCP" : "REST Fallback";
 
   return (
     <>

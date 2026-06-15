@@ -21,7 +21,7 @@ export function AppNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="mt-2 space-y-2 px-2">
+    <nav className="mt-4 space-y-3 px-3">
       {nav.map((item) => {
         const active = isActive(pathname, item.href);
         return (
@@ -29,13 +29,13 @@ export function AppNav() {
             key={item.href}
             href={item.href}
             prefetch
-            className={`flex h-[62px] items-center gap-4 rounded-md border-l-4 px-7 text-[17px] transition-[background-color,color,border-color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.99] ${
+            className={`talos-brutal-control flex h-[56px] items-center gap-4 border-[3px] px-5 text-[16px] font-black shadow-[4px_4px_0_#000] transition-[background-color,box-shadow,transform] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[2px_2px_0_#000] ${
               active
-                ? "border-[#22d9f3] bg-[#10262f] text-[#d8fbff] shadow-[inset_0_0_28px_rgba(34,217,243,.08)]"
-                : "border-transparent text-[#b5c0cb] hover:bg-white/[.035] hover:text-white"
+                ? "border-black bg-[#0000ff] text-white"
+                : "border-black bg-white text-black hover:bg-[#ffe100]"
             }`}
           >
-            <item.icon size={23} strokeWidth={1.7} className="shrink-0 text-current" />
+            <item.icon size={23} strokeWidth={2.7} className="shrink-0 text-current" />
             {item.label}
           </Link>
         );

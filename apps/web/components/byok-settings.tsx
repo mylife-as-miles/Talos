@@ -153,7 +153,7 @@ export function ByokSettings({ envConfigured }: { envConfigured: boolean }) {
             <CheckCircle2 size={14} /> Demo behavior
           </div>
           <p>
-            When you run the resolver, Talos sends this key directly to the Node API route for that request only. If no browser key or env key exists, Talos uses the deterministic mock report so the demo still works.
+            When you run the resolver, Talos sends this key directly to the Node API route for that request only. If no browser key or env key exists, Talos uses the local analysis engine so the demo still works.
           </p>
           <p className="mt-3">
             Do not put this key in the SDK. Browser apps should send errors to Talos ingest only; server routes handle AI and Splunk calls.
@@ -319,7 +319,7 @@ export function SplunkMcpSettings({ envConfigured }: { envConfigured: boolean })
               }}
               className="w-full border-[3px] border-black bg-white px-4 py-3 text-sm font-black text-black shadow-[4px_4px_0_#000] outline-none focus:bg-[#fffce2] focus:ring-4 focus:ring-[#00c2c8]"
             >
-              <option value="disabled">Disabled (Mock/REST fallback)</option>
+              <option value="disabled">Disabled (REST fallback)</option>
               <option value="enabled">Enabled (AI search tools enabled)</option>
             </select>
           </label>
@@ -353,7 +353,7 @@ export function SplunkMcpSettings({ envConfigured }: { envConfigured: boolean })
             The Splunk MCP server enables LLMs to query Splunk indexes securely.
           </p>
           <p className="mt-3">
-            When the resolver runs, Talos directs query operations to this browser-configured MCP endpoint. It acts as the primary telemetry gatherer before fallback to static mocks.
+            When the resolver runs, Talos directs query operations to this browser-configured MCP endpoint. It acts as the primary telemetry gatherer before fallback to cached telemetry.
           </p>
         </div>
       </div>

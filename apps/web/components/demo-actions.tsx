@@ -45,7 +45,7 @@ export function DemoActions() {
     const splunk = readBrowserSplunkSettings();
     const webhooks = readBrowserWebhookSettings();
 
-    setMessage(byok ? "Running resolver with your BYOK Gemini key..." : "Running resolver in mock AI fallback mode...");
+    setMessage(byok ? "Running resolver with your BYOK Gemini key..." : "Running resolver with local analysis engine...");
     try {
       const headers: Record<string, string> = {
         "Content-Type": "application/json"

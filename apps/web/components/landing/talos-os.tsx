@@ -85,7 +85,7 @@ const windowMeta: Record<WindowId, { title: string; subtitle: string; w: string;
   handbook: { title: "Open source handbook", subtitle: "How we build Talos", w: "680px", x: "16vw", y: "10vh" },
   tools: { title: "tools.mdx", subtitle: "What closes the loop", w: "760px", x: "10vw", y: "6vh" },
   byok: { title: "BYOK", subtitle: "Use your own AI and Splunk keys", w: "640px", x: "18vw", y: "9vh" },
-  demo: { title: "demo.mov", subtitle: "See a checkout crash resolved", w: "740px", x: "20vw", y: "6vh" },
+  demo: { title: "demo.mov", subtitle: "See a Backstage incident resolved", w: "740px", x: "20vw", y: "6vh" },
   github: { title: "GitHub repo", subtitle: "Clone the open source incident loop", w: "620px", x: "24vw", y: "8vh" },
   contributors: { title: "Join as contributor", subtitle: "Help shape agentic ops", w: "640px", x: "18vw", y: "8vh" },
   trash: { title: "Recycle bin", subtitle: "Deprecated operations rituals", w: "760px", x: "8vw", y: "5vh" }
@@ -97,16 +97,16 @@ const sdkExample = `import { Talos } from "@mylife-as-miles/talos-sdk";
 
 Talos.init({
   projectKey: "demo_project_key",
-  service: "checkout-service",
+  service: "catalog-service",
   environment: "production",
   release: "v1.0.0",
   ingestUrl: "https://your-app.com/api/ingest"
 });
 
 Talos.captureException(error, {
-  route: "/api/checkout",
+  route: "/api/catalog/entities",
   userId: "demo-user-123",
-  tags: { feature: "checkout", region: "prod" }
+  tags: { feature: "entity-processing", region: "prod" }
 });`;
 
 function openExternal(url: string) {
@@ -969,18 +969,18 @@ function SplunkContent() {
   return (
     <div className="grid gap-3.5 md:grid-cols-2">
       <InfoPanel title="HEC intake" color="bg-[#00c2c8]" icon={Boxes}>
-        <p className="text-xs">Talos keeps Splunk credentials server-side, validates SDK events, stores a local dashboard copy, and forwards clean payloads to HEC when mock mode is off.</p>
+        <p className="text-xs">Talos keeps Splunk credentials server-side, validates SDK events, stores a local dashboard copy, and forwards clean payloads to HEC when HEC credentials are configured.</p>
         <code className="mt-2.5 block border border-black bg-black p-2.5 text-[10px] font-bold text-[#d8ff2f]">POST /services/collector/event</code>
       </InfoPanel>
       <InfoPanel title="MCP investigation" color="bg-[#ff00ff]" icon={Sparkles}>
-        <p className="text-xs">The resolver uses Splunk MCP first so the AI report cites nearby logs instead of guessing. REST and mock modes keep demos reliable.</p>
+        <p className="text-xs">The resolver uses Splunk MCP first so the AI report cites nearby logs instead of guessing. REST fallback keeps the resolver resilient.</p>
         <code className="mt-2.5 block border border-black bg-black p-2.5 text-[10px] font-bold text-[#d8ff2f]">SPLUNK_MCP_MODE=enabled</code>
       </InfoPanel>
       <div className="md:col-span-2 border-2 border-black bg-white p-3.5 shadow-[4px_4px_0_#000]">
         <h4 className="text-base font-black">Evidence-first query</h4>
         <p className="mt-1 text-xs font-bold text-[#514c40]">Talos narrows the search by service, route, error text, sourcetype, and the incident window so engineers see relevant proof fast.</p>
         <code className="mt-2.5 block overflow-x-auto border border-black bg-black p-3 text-[10px] font-bold text-[#d8ff2f]">
-          index=main sourcetype=talos:error service=checkout-service route=/api/checkout "Cannot read properties"
+          index=main sourcetype=talos:error service=catalog-service route=/api/catalog/entities "Cannot read properties"
         </code>
       </div>
     </div>
@@ -1038,7 +1038,7 @@ function HandbookContent() {
       <h3 className="text-2xl font-black">Build the resolver with us</h3>
       <div className="border-2 border-black bg-[#ffe100] p-3.5 shadow-[4px_4px_0_#000]">
         <p className="text-sm font-black leading-6">
-          Talos is built for engineers who want incident response to end with evidence and action, not another tab. Small SDK surface, clear data contracts, MCP-first investigation, and mock mode make it easy to contribute without enterprise infrastructure.
+          Talos is built for engineers who want incident response to end with evidence and action, not another tab. Small SDK surface, clear data contracts, MCP-first investigation, and simulation sandboxes make it easy to contribute without enterprise infrastructure.
         </p>
       </div>
       <div className="grid gap-3 sm:grid-cols-2">
@@ -1082,7 +1082,7 @@ function ByokContent() {
     <div className="space-y-3">
       <h3 className="text-2xl font-black">Use your own keys.</h3>
       <p className="text-sm font-bold leading-6 text-[#3d392f]">
-        Talos keeps provider and Splunk credentials in environment variables. Run mock mode for the demo, then connect Gemini, OpenAI-compatible endpoints, Splunk HEC, and team notifications when you are ready.
+        Talos keeps provider and Splunk credentials in environment variables. Start with simulation mode, then connect Gemini, OpenAI-compatible endpoints, Splunk HEC, and team notifications when you are ready.
       </p>
       <div className="grid gap-3 sm:grid-cols-2">
         {["AI_PROVIDER", "GEMINI_API_KEY", "SPLUNK_HEC_TOKEN", "DISCORD_WEBHOOK_URL"].map((name, index) => (
@@ -1107,12 +1107,12 @@ function DemoContent({ onOpen }: { onOpen: (id: WindowId) => void }) {
             <p className="mt-1 text-[10px] font-black uppercase">YouTube URL pending</p>
           </div>
         </div>
-        <p className="mt-2.5 text-xs font-bold text-[#d8ff2f]">Watch Talos move from checkout crash to evidence-backed remediation plan.</p>
+        <p className="mt-2.5 text-xs font-bold text-[#d8ff2f]">Watch Talos move from Backstage incident to evidence-backed remediation plan.</p>
       </div>
       <div>
         <h3 className="text-2xl font-black">3-minute crash-to-fix flow</h3>
         <ol className="mt-3.5 space-y-2">
-          {["Start with the cost of blind alerts", "Install the SDK in the app", "Trigger a checkout crash", "Let Splunk MCP gather evidence", "Open the fix-ready AI report", "Notify the team with the next action"].map((step, index) => (
+          {["Start with the cost of blind alerts", "Install the SDK in the app", "Trigger a catalog incident", "Let Splunk MCP gather evidence", "Open the fix-ready AI report", "Notify the team with the next action"].map((step, index) => (
             <li key={step} className="flex gap-2.5 border-2 border-black bg-white p-2 text-xs font-black shadow-[2.5px_2.5px_0_#000]">
               <span className="grid h-5 w-5 shrink-0 place-items-center border-2 border-black bg-[#ffe100] text-[10px]">{index + 1}</span>
               {step}
@@ -1183,7 +1183,7 @@ function ContributorsContent({ status, setStatus }: { status: string; setStatus:
 }
 
 function TrashContent({ removedTrash, setRemovedTrash }: { removedTrash: string[]; setRemovedTrash: (value: string[]) => void }) {
-  const trash = ["Manual log digging", "Screenshots without stack traces", "Blind production alerts", "Mystery checkout failures", "Secrets in browser SDKs", "AI reports with invented evidence"];
+  const trash = ["Manual log digging", "Screenshots without stack traces", "Blind production alerts", "Mystery catalog failures", "Secrets in browser SDKs", "AI reports with invented evidence"];
   const visible = trash.filter((item) => !removedTrash.includes(item));
   return (
     <div>

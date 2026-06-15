@@ -138,17 +138,17 @@ export function TalosOsLanding() {
   }
 
   return (
-    <main className="talos-os min-h-screen overflow-hidden bg-[#f5f1dc] text-black">
+    <main className="talos-os h-screen overflow-hidden bg-[#f5f1dc] text-black">
       <TopBar onOpen={openWindow} />
 
-      <section className="relative min-h-[calc(100vh-54px)] overflow-hidden px-4 pb-24 pt-5 sm:px-7">
+      <section className="relative h-[calc(100vh-44px)] overflow-hidden px-4 pb-16 pt-3 sm:px-6">
         <div className="talos-paper-grain absolute inset-0" aria-hidden />
         <div className="talos-os-grid absolute inset-0" aria-hidden />
 
-        <div className="relative z-10 grid min-h-[calc(100vh-160px)] grid-cols-[112px_1fr_112px] gap-4 max-lg:grid-cols-[96px_1fr] max-md:grid-cols-1">
+        <div className="relative z-10 grid h-[calc(100vh-115px)] grid-cols-[96px_1fr_96px] gap-2 max-lg:grid-cols-[80px_1fr] max-md:grid-cols-1">
           <DesktopColumn items={desktopItems.filter((item) => item.side === "left")} onOpen={openWindow} />
 
-          <div className="relative hidden min-h-[600px] lg:block">
+          <div className="relative hidden lg:block">
             <Image
               src="/assets/talos-os-island.png"
               alt="Illustration of the Talos developer operations island"
@@ -156,7 +156,7 @@ export function TalosOsLanding() {
               height={768}
               priority
               unoptimized
-              className="talos-os-island pointer-events-none absolute right-[-5vw] top-[7vh] w-[68vw] max-w-[1180px] object-contain"
+              className="talos-os-island pointer-events-none absolute right-[-5vw] top-[2vh] w-[64vw] max-w-[1180px] object-contain"
             />
             <StatusSticker />
           </div>
@@ -371,12 +371,12 @@ function Dock({
 
 function StatusSticker() {
   return (
-    <div className="talos-status-sticker absolute left-[4vw] top-[7vh] max-w-[360px] rotate-[-2deg] border-[3px] border-black bg-[#d8ff2f] p-4 shadow-[7px_7px_0_#000]">
-      <div className="flex items-center gap-3 text-xs font-black uppercase tracking-wide">
-        <span className="talos-live-dot h-4 w-4 border-2 border-black bg-[#ff00ff]" />
+    <div className="talos-status-sticker absolute left-[4vw] top-[3vh] max-w-[250px] rotate-[-2deg] border-2 border-black bg-[#d8ff2f] p-2.5 shadow-[4px_4px_0_#000]">
+      <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-wide">
+        <span className="talos-live-dot h-3 w-3 border border-black bg-[#ff00ff]" />
         Runtime loop online
       </div>
-      <p className="mt-2 text-[30px] font-black leading-[0.94]">SDK crash in. Splunk context out. Fix report ready.</p>
+      <p className="mt-1.5 text-[17px] font-black leading-[0.94]">SDK crash in. Splunk context out. Fix report ready.</p>
     </div>
   );
 }

@@ -14,9 +14,18 @@
 
 body {
   margin: 0;
-  background: #f5f1dc;
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.055) 1px, transparent 1px),
+    #f5f1dc;
+  background-size: 24px 24px, 24px 24px, auto;
   color: #000000;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+:focus-visible {
+  outline: 5px solid #0000ff;
+  outline-offset: 4px;
 }
 
 a {
@@ -29,9 +38,9 @@ pre {
 }
 
 .talos-panel {
-  border: 2px solid #000000;
+  border: 3px solid #000000;
   background: #fffdf1;
-  box-shadow: 8px 8px 0 #000000;
+  box-shadow: 10px 10px 0 #000000;
 }
 
 @keyframes talos-shimmer {
@@ -81,10 +90,84 @@ pre {
   }
 }
 
+@keyframes talos-sticker-wiggle {
+  0%,
+  100% {
+    transform: rotate(-2deg) translateY(0);
+  }
+  50% {
+    transform: rotate(1deg) translateY(-4px);
+  }
+}
+
+@keyframes talos-scan {
+  to {
+    transform: translateX(120%);
+  }
+}
+
 .talos-skeleton {
-  background: linear-gradient(90deg, #152027 0%, #22343c 45%, #152027 100%);
+  border: 2px solid #000000;
+  background: linear-gradient(90deg, #fffdf1 0%, #d8ff2f 45%, #fffdf1 100%);
   background-size: 200% 100%;
   animation: talos-shimmer 1.4s linear infinite;
+}
+
+.talos-app-shell {
+  background:
+    radial-gradient(circle at 80% 9%, rgba(255, 0, 255, 0.18), transparent 18rem),
+    radial-gradient(circle at 17% 16%, rgba(0, 194, 200, 0.18), transparent 20rem),
+    linear-gradient(rgba(0, 0, 0, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.055) 1px, transparent 1px),
+    #f5f1dc;
+  background-size: auto, auto, 24px 24px, 24px 24px, auto;
+}
+
+.talos-panel,
+.talos-brutal-control,
+.talos-brutal-row {
+  transition: transform 180ms var(--ease-out), box-shadow 180ms var(--ease-out), background-color 180ms var(--ease-out);
+}
+
+.talos-poster-title {
+  text-shadow: 3px 3px 0 #00c2c8, 6px 6px 0 #ff00ff;
+}
+
+.talos-black-strip {
+  border: 3px solid #000000;
+  background: #000000;
+  color: #fffdf1;
+  box-shadow: 7px 7px 0 #000000;
+}
+
+.talos-sticker {
+  border: 3px solid #000000;
+  background: #ffe100;
+  color: #000000;
+  box-shadow: 5px 5px 0 #000000;
+  transform: rotate(-2deg);
+  animation: talos-sticker-wiggle 3.8s var(--ease-in-out) infinite;
+}
+
+.talos-danger-sticker {
+  background: #ff4d5a;
+  transform: rotate(2deg);
+}
+
+.talos-scanline {
+  position: relative;
+  overflow: hidden;
+}
+
+.talos-scanline::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(110deg, transparent 0%, transparent 42%, rgba(255, 255, 255, 0.82) 50%, transparent 58%, transparent 100%);
+  transform: translateX(-120%);
+  animation: talos-scan 3.4s var(--ease-in-out) infinite;
+  mix-blend-mode: multiply;
 }
 
 .talos-fade-up {
@@ -132,6 +215,17 @@ pre {
   .talos-btn-glow:hover {
     box-shadow: 0 0 24px rgba(34, 217, 243, 0.18);
   }
+
+  .talos-panel:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 14px 14px 0 #000000;
+  }
+
+  .talos-brutal-control:hover,
+  .talos-brutal-row:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 7px 7px 0 #000000;
+  }
 }
 
 .talos-row-enter {
@@ -157,6 +251,260 @@ pre {
   .talos-spinner {
     animation: none !important;
     opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+.talos-os {
+  color-scheme: light;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.talos-paper-grain {
+  background-image:
+    radial-gradient(#14120c 0.75px, transparent 0.75px),
+    radial-gradient(#14120c 0.55px, transparent 0.55px);
+  background-position: 0 0, 8px 8px;
+  background-size: 16px 16px;
+  opacity: 0.16;
+  pointer-events: none;
+}
+
+.talos-os-grid {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(circle at 58% 44%, black 0, transparent 64%);
+  pointer-events: none;
+}
+
+.talos-menu-item {
+  border: 2px solid transparent;
+  padding: 7px 9px;
+  transition: background-color 140ms var(--ease-out), border-color 140ms var(--ease-out), transform 140ms var(--ease-out);
+}
+
+.talos-menu-item:hover,
+.talos-menu-item:focus-visible {
+  border-color: #000;
+  background: #fffdf1;
+  transform: translateY(-1px);
+}
+
+.talos-primary-button,
+.talos-secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 3px solid #000;
+  font-weight: 900;
+  line-height: 1;
+  text-align: center;
+  box-shadow: 4px 4px 0 #000;
+  transition: transform 140ms var(--ease-out), box-shadow 140ms var(--ease-out);
+}
+
+.talos-primary-button {
+  background: #f5a019;
+  color: #000;
+}
+
+.talos-secondary-button {
+  background: #fffdf1;
+  color: #000;
+}
+
+.talos-primary-button:hover,
+.talos-secondary-button:hover,
+.talos-top-icon:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 6px 6px 0 #000;
+}
+
+.talos-primary-button:active,
+.talos-secondary-button:active,
+.talos-top-icon:active,
+.talos-dock-icon:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 #000;
+}
+
+.talos-top-icon {
+  display: grid;
+  height: 36px;
+  width: 36px;
+  place-items: center;
+  border: 2px solid #000;
+  background: #fffdf1;
+  box-shadow: 3px 3px 0 #000;
+  transition: transform 140ms var(--ease-out), box-shadow 140ms var(--ease-out);
+}
+
+.talos-desktop-icon {
+  width: 96px;
+  color: #000;
+  outline: none;
+}
+
+.talos-desktop-icon:focus-visible > span:first-child {
+  outline: 4px solid #ff00ff;
+  outline-offset: 3px;
+}
+
+.talos-os-island {
+  animation: talos-os-float 7s var(--ease-in-out) infinite;
+  filter: drop-shadow(14px 18px 0 rgba(0, 0, 0, 0.88));
+}
+
+.talos-status-sticker {
+  animation: talos-window-pop 260ms var(--ease-out) both;
+}
+
+.talos-live-dot {
+  animation: talos-os-blink 1s steps(2, jump-none) infinite;
+}
+
+.talos-window {
+  animation: talos-window-pop 180ms var(--ease-out) both;
+  transition: transform 160ms var(--ease-out), filter 160ms var(--ease-out);
+}
+
+.talos-window-active {
+  filter: saturate(1.04);
+}
+
+.talos-window:not(.talos-window-active) {
+  transform: translate(4px, 4px);
+}
+
+.talos-window-body {
+  scrollbar-color: #000 #e5e1cf;
+  scrollbar-width: thin;
+}
+
+.talos-window-body::-webkit-scrollbar {
+  width: 12px;
+}
+
+.talos-window-body::-webkit-scrollbar-track {
+  background: #e5e1cf;
+  border-left: 2px solid #000;
+}
+
+.talos-window-body::-webkit-scrollbar-thumb {
+  background: #000;
+  border: 2px solid #e5e1cf;
+}
+
+.talos-window-control,
+.talos-toolbar-button {
+  display: inline-grid;
+  place-items: center;
+  border: 2px solid #000;
+  background: #fffdf1;
+  color: #000;
+}
+
+.talos-window-control {
+  height: 28px;
+  width: 28px;
+}
+
+.talos-toolbar-button {
+  min-width: 54px;
+  height: 28px;
+  padding: 0 8px;
+}
+
+.talos-dock-icon {
+  position: relative;
+  display: grid;
+  height: 48px;
+  width: 48px;
+  place-items: center;
+  border: 3px solid #000;
+  background: #fffdf1;
+  box-shadow: 3px 3px 0 #000;
+  transition: transform 150ms var(--ease-out), box-shadow 150ms var(--ease-out), background-color 150ms var(--ease-out);
+}
+
+.talos-dock-icon:hover,
+.talos-dock-icon-active {
+  background: #d8ff2f;
+  transform: translateY(-5px);
+  box-shadow: 5px 8px 0 #000;
+}
+
+@keyframes talos-os-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-0.35deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(0.45deg);
+  }
+}
+
+@keyframes talos-window-pop {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes talos-os-blink {
+  0%,
+  100% {
+    background: #ff00ff;
+  }
+  50% {
+    background: #00c2c8;
+  }
+}
+
+@media (max-width: 1023px) {
+  .talos-window {
+    left: 16px !important;
+    right: 16px !important;
+    top: 94px !important;
+    width: auto !important;
+    max-height: calc(100vh - 180px);
+  }
+}
+
+@media (max-width: 767px) {
+  .talos-os {
+    overflow-x: hidden;
+  }
+
+  .talos-window {
+    border-width: 2px;
+    box-shadow: 5px 5px 0 #000;
+  }
+
+  .talos-desktop-icon {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .talos-os-island,
+  .talos-status-sticker,
+  .talos-window,
+  .talos-live-dot {
+    animation: none !important;
+  }
+
+  .talos-window,
+  .talos-window:not(.talos-window-active),
+  .talos-dock-icon:hover,
+  .talos-dock-icon-active {
     transform: none !important;
   }
 }
